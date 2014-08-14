@@ -1,0 +1,6 @@
+body { padding-top: 70px; }
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  background-color: transparent;
+  color: #777777;
+}
