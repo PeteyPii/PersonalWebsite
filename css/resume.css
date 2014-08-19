@@ -14,3 +14,28 @@ a:hover
   text-decoration: underline;
   color: #2A64B0
 }
+
+.jumbotron h5
+{
+  font-size: 18px;
+  margin-bottom: 4px
+}
+
+.jumbotron ul
+{
+  margin-left: 35px
+}
+
+.jumbotron li
+{
+  font-size: 12px;
+  margin-left: 50px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  list-style-type: circle
+}
+
+.jumbotron small
+{
+  color: #777777
+}
