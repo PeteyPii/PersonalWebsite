@@ -15,6 +15,11 @@ a:hover
   color: #2A64B0
 }
 
+.jumbotron
+{
+  background: #FFFFFF
+}
+
 .jumbotron h5
 {
   font-size: 18px;
