@@ -44,3 +44,14 @@ a:hover
 {
   color: #777777;
 }
+
+.grey
+{
+  color: #777777;
+}
+
+.work-thumbnail
+{
+  max-width: 24px;
+  max-height: 24px;
+}
