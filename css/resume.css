@@ -1,6 +1,9 @@
 small
 {
+  font-size: 14px;
   color: #333333;
+  margin-top: -10px;
+  margin-bottom: 0px;
 }
 
 a
@@ -54,4 +57,9 @@ a:hover
 {
   max-width: 24px;
   max-height: 24px;
+}
+
+li.item-shift-left
+{
+  margin-left: 20px;
 }
