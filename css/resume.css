@@ -1,9 +1,8 @@
 small
 {
   font-size: 14px;
-  color: #333333;
-  margin-top: -10px;
-  margin-bottom: 0px;
+  margin-top: 2px;
+  margin-bottom: -10px;
 }
 
 a
@@ -31,7 +30,7 @@ a:hover
 
 .jumbotron ul
 {
-  margin-left: 35px;
+  margin-left: 0px;
 }
 
 .jumbotron li
@@ -48,6 +47,11 @@ a:hover
   color: #777777;
 }
 
+.jumbotron hr
+{
+  border-color: #777777;
+}
+
 .grey
 {
   color: #777777;
@@ -61,5 +65,10 @@ a:hover
 
 li.item-shift-left
 {
-  margin-left: 20px;
+  margin-left: 15px;
+}
+
+.shift-up
+{
+  margin-top: -3px;
 }
