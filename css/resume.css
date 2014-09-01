@@ -22,6 +22,18 @@ a:hover
   background: #FFFFFF;
 }
 
+.jumbotron h3
+{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.jumbotron h4
+{
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
 .jumbotron h5
 {
   font-size: 18px;
@@ -71,4 +83,9 @@ li.item-shift-left
 .shift-up
 {
   margin-top: -3px;
+}
+
+.affix
+{
+  width: 262px;
 }
