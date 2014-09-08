@@ -39,13 +39,19 @@ $(document).ready(function()
 
     $("div." + value).hover(function()
     {
-      $("span." + value).css("background-color", labelHoverColour);
-      $(this).css("background-color", divHoverColour);
+      if(!($("#pane-skills").is(":hidden")))
+      {
+        $("span." + value).css("background-color", labelHoverColour);
+        $(this).css("background-color", divHoverColour);
+      }
     },
     function()
     {
-      $("span." + value).css("background-color", labelUnhoverColour);
-      $(this).css("background-color", divUnhoverColour);
+      if(!($("#pane-skills").is(":hidden")))
+      {
+        $("span." + value).css("background-color", labelUnhoverColour);
+        $(this).css("background-color", divUnhoverColour);
+      }
     });
   })
 });
