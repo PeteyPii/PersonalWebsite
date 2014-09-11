@@ -3,20 +3,18 @@ span.glyphicon-chevron-right
   margin: 0 auto;
 }
 
-.carousel-indicators-shadow
+.carousel-indicators-shadow-3
 {
-  /*background: -webkit-radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 50%); /* Safari 5.1 to 6.0 */
-  /*background: -o-radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 50%); /* For Opera 11.6 to 12.0 */
-  /*background: -moz-radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 50%); /* For Firefox 3.6 to 15 */
-  /*background: radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 50%); /* Standard syntax */
-  background-image: url('../assets/carousel_indicator_shadow.png');
+  background-image: url('../assets/carousel_indicator_shadow_3.png');
   background-repeat: no-repeat;
   background-position: center center;
 }
 
-.well p
+.carousel-indicators-shadow-5
 {
-  font-size: 16px;
+  background-image: url('../assets/carousel_indicator_shadow_5.png');
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .vertical-align-center
@@ -25,4 +23,19 @@ span.glyphicon-chevron-right
   align-items: center;
   justify-content: center;
   flex-direction: row;
+}
+
+.jumbotron .well
+{
+  margin-top: 62px;
+}
+
+.jumbotron .first-well
+{
+  margin-top: 45px;
+}
+
+.well p
+{
+  font-size: 16px;
 }
