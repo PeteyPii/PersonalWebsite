@@ -3,6 +3,13 @@ span.glyphicon-chevron-right
   margin: 0 auto;
 }
 
+.carousel-indicators-shadow-2
+{
+  background-image: url('../assets/carousel_indicator_shadow_2.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 .carousel-indicators-shadow-3
 {
   background-image: url('../assets/carousel_indicator_shadow_3.png');
