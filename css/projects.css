@@ -24,17 +24,44 @@ span.glyphicon-chevron-right
   background-position: center center;
 }
 
-.vertical-align-center
+@media (max-width: 991px)
 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
+  .well p
+  {
+    margin-bottom: 25px;
+  }
+
+  .carousel-inner
+  {
+    max-width: 350px !important;
+  }
 }
 
-.jumbotron .well
+@media (min-width: 992px)
 {
-  margin-top: 62px;
+  .vertical-align-center
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px)
+{
+  .jumbotron .well
+  {
+    margin-top: 62px;
+  }
+}
+
+@media (max-width: 767px)
+{
+  .jumbotron .well
+  {
+    margin-top: 30px;
+  }
 }
 
 .jumbotron .first-well
@@ -45,6 +72,11 @@ span.glyphicon-chevron-right
 .well p
 {
   font-size: 16px;
+}
+
+h2
+{
+  white-space: nowrap;
 }
 
 /*h2 a
