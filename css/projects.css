@@ -79,6 +79,27 @@ h2
   white-space: nowrap;
 }
 
+.img-thumbnail
+{
+  background: #ABC147;
+}
+
+.carousel-inner
+{
+  background: none;
+}
+
+.carousel-control.left, .carousel-control.right
+{
+  background-image: none;
+}
+
+.carousel-grouper
+{
+  display: inline-block;
+  background: none;
+}
+
 /*h2 a
 {
   color: #333333;
