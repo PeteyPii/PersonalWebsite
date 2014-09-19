@@ -17,9 +17,52 @@ a:hover
   color: #2A64B0;
 }
 
+.title
+{
+  font-size: 40px;
+  font-weight: 900;
+}
+
 .jumbotron
 {
   background: #FFFFFF;
+}
+
+.jumbotron h2
+{
+  white-space: nowrap;
+}
+
+@media (max-width: 767px)
+{
+  .title
+  {
+    text-align: center;
+  }
+
+  .uw-se
+  {
+    margin-bottom: 100px;
+    text-align: center;
+  }
+
+  .jumbotron h4
+  {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px)
+{
+  .title
+  {
+    margin-left: -8px;
+  }
+
+  .uw-se
+  {
+    margin-left: -5px;
+  }
 }
 
 .jumbotron h3
@@ -30,8 +73,9 @@ a:hover
 
 .jumbotron h4
 {
-  font-size: 16px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-right: -5px;
+  margin-bottom: -5px;
   white-space: nowrap;
 }
 
