@@ -24,6 +24,19 @@ span.glyphicon-chevron-right
   background-position: center center;
 }
 
+@-moz-document url-prefix()
+{
+  .carousel-inner
+  {
+    max-width: 250px !important;
+  }
+
+  #carousel_briscola
+  {
+    max-width: 180px !important;
+  }
+}
+
 @media (max-width: 991px)
 {
   .well p
