@@ -28,7 +28,7 @@ span.glyphicon-chevron-right
 {
   .carousel-inner
   {
-    max-width: 250px !important;
+    max-width: 240px !important;
   }
 
   #carousel_briscola
@@ -69,14 +69,6 @@ span.glyphicon-chevron-right
   }
 }
 
-@media (max-width: 767px)
-{
-  .jumbotron .well
-  {
-    margin-top: 30px;
-  }
-}
-
 .jumbotron .first-well
 {
   margin-top: 45px;
@@ -111,6 +103,49 @@ h2
 {
   display: inline-block;
   background: none;
+}
+
+#foot-note
+{
+  margin-top: 30px;
+}
+
+@media (max-width: 767px)
+{
+  .jumbotron .well
+  {
+    margin-top: 30px;
+  }
+
+  .jumbotron h1
+  {
+    white-space: normal;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+  .jumbotron h2
+  {
+    white-space: normal;
+    margin: 0px;
+    margin-bottom: 10px;
+  }
+
+  #foot-note
+  {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  @-moz-document url-prefix()
+  {
+    .moz-xs
+    {
+      visibility: hidden;
+      max-width: 0px;
+      max-height: 0px;
+    }
+  }
 }
 
 /*h2 a
