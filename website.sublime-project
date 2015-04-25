@@ -3,13 +3,15 @@
   [
     {
       "path": ".",
-      "file_exclude_patterns": [".tags", ".tags_sorted_by_file", ".gemtags", "go.sh", "*sublime*", "Apache*", "*git*"],
-      "folder_exclude_patterns": ["Apache*", "*git*"]
+      "file_exclude_patterns": ["*.sublime-workspace", ".gitattributes", "*.svg", "*.woff*", "*.otf", "*.css", "*.min.*"],
+      "folder_exclude_patterns": [".git", "node_modules"]
     }
   ],
   "settings":
   {
+    "ensure_newline_at_eof_on_save": true,
     "tab_size": 2,
-    "translate_tabs_to_spaces": true
+    "translate_tabs_to_spaces": true,
+    "trim_trailing_white_space_on_save": true
   }
 }

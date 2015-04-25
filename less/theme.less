@@ -1,0 +1,138 @@
+/* Constants */
+@black-font-colour: #111;
+
+/* Site theming */
+body {
+  font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  color: @black-font-colour;
+  background-color: #CCC;
+}
+
+img {
+  padding: 5px;
+  background-color: #EEE;
+}
+
+hr {
+  border-top: 1px solid @black-font-colour;
+}
+
+/* Bootstrap theming */
+.navbar {
+  min-height: 64px;
+  background-color: #04C;
+}
+
+.navbar-brand {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 64px;
+  margin-right: 25px;
+  color: #EEE;
+
+  &:hover {
+    color: #EEE;
+  }
+
+  &:focus {
+    color: #EEE;
+    background-color: #08C;
+    outline-width: 0;
+  }
+}
+
+.navbar-nav {
+  & > li {
+    & > a {
+      height: 64px;
+      padding: 22px;
+      font-size: 18px;
+      color: #EEE;
+
+      &:hover,
+      &:focus {
+        background-color: #08C;
+        outline-width: 0;
+      }
+
+      &.navbar-icon {
+        font-size: 40px;
+        padding-right: 10px;
+        padding-left: 10px;
+
+        &:hover,
+        &:focus {
+          color: #9BC;
+          background-color: inherit;
+        }
+      }
+    }
+  }
+  & > li.active {
+    & > a {
+      background-color: #06C;
+
+      &:hover,
+      &:focus {
+        background-color: #08C;
+        outline-width: 0;
+      }
+    }
+  }
+}
+
+.navbar-right {
+  margin-right: 0;
+}
+
+.jumbotron
+{
+  margin-top: 64px;
+  background-color: #027;
+  color: #EEE;
+
+  h1 {
+    margin-top: 0;
+  }
+  p {
+    margin-bottom: 28px;
+  }
+  img {
+    width: 100%;
+  }
+}
+
+/* Projects page */
+.projects-list {
+  & > ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  & > ul > li .title {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  & > ul > li > ul {
+    list-style-type: square;
+    padding-left: 50px;
+  }
+  & > ul > li ul > li {
+    font-size: 16px;
+    font-weight: normal;
+  }
+}
+
+/* Helper classes */
+.last-item
+{
+  margin-bottom: 0 !important;
+}
+
+.center-vertically
+{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}

@@ -1,0 +1,108 @@
+/* Constants */
+/* Site theming */
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #111111;
+  background-color: #CCC;
+}
+img {
+  padding: 5px;
+  background-color: #EEE;
+}
+hr {
+  border-top: 1px solid #111111;
+}
+/* Bootstrap theming */
+.navbar {
+  min-height: 64px;
+  background-color: #04C;
+}
+.navbar-brand {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 64px;
+  margin-right: 25px;
+  color: #EEE;
+}
+.navbar-brand:hover {
+  color: #EEE;
+}
+.navbar-brand:focus {
+  color: #EEE;
+  background-color: #08C;
+  outline-width: 0;
+}
+.navbar-nav > li > a {
+  height: 64px;
+  padding: 22px;
+  font-size: 18px;
+  color: #EEE;
+}
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+  background-color: #08C;
+  outline-width: 0;
+}
+.navbar-nav > li > a.navbar-icon {
+  font-size: 40px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.navbar-nav > li > a.navbar-icon:hover,
+.navbar-nav > li > a.navbar-icon:focus {
+  color: #9BC;
+  background-color: inherit;
+}
+.navbar-nav > li.active > a {
+  background-color: #06C;
+}
+.navbar-nav > li.active > a:hover,
+.navbar-nav > li.active > a:focus {
+  background-color: #08C;
+  outline-width: 0;
+}
+.navbar-right {
+  margin-right: 0;
+}
+.jumbotron {
+  margin-top: 64px;
+  background-color: #027;
+  color: #EEE;
+}
+.jumbotron h1 {
+  margin-top: 0;
+}
+.jumbotron p {
+  margin-bottom: 28px;
+}
+.jumbotron img {
+  width: 100%;
+}
+/* Projects page */
+.projects-list > ul {
+  list-style-type: none;
+  padding: 0;
+}
+.projects-list > ul > li .title {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.projects-list > ul > li > ul {
+  list-style-type: square;
+  padding-left: 50px;
+}
+.projects-list > ul > li ul > li {
+  font-size: 16px;
+  font-weight: normal;
+}
+/* Helper classes */
+.last-item {
+  margin-bottom: 0 !important;
+}
+.center-vertically {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
