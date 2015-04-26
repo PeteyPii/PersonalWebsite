@@ -1,16 +1,35 @@
 /* Constants */
+@xs-max-width: 767px;
+@sm-min-width: 768px;
+@sm-max-width: 991px;
+@md-min-width: 992px;
+@md-max-width: 1199px;
+@lg-min-width: 1200px;
+
 @black-font-colour: #111;
+@dark-font-colour: #444;
+@white-font-colour: #EEE;
+@grey-bg-colour: #CCC;
+
+@dark-theme-colour: #027;
+@medium-theme-colour: #04C;
+@light-theme-colour: #06C;
+@lighter-theme-colour: #08C;
+@washed-theme-colour: #9BC;
+
+@navbar-height: 64px;
+@navbar-brand-font-size: 32px;
 
 /* Site theming */
 body {
   font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
   color: @black-font-colour;
-  background-color: #CCC;
+  background-color: @grey-bg-colour;
 }
 
 img {
   padding: 5px;
-  background-color: #EEE;
+  background-color: @white-font-colour;
 }
 
 hr {
@@ -19,40 +38,55 @@ hr {
 
 /* Bootstrap theming */
 .navbar {
-  min-height: 64px;
-  background-color: #04C;
+  min-height: @navbar-height;
+  background-color: @medium-theme-colour;
+}
+
+.navbar-static-top {
+  margin-bottom: 0;
 }
 
 .navbar-brand {
-  font-size: 32px;
+  font-size: @navbar-brand-font-size;
   font-weight: bold;
-  line-height: 34px;
-  height: 64px;
-  margin-right: 25px;
-  color: #EEE;
+  line-height: @navbar-brand-font-size + 2;
+  height: @navbar-height;
+  color: @white-font-colour;
 
   &:hover {
-    color: #EEE;
+    color: @white-font-colour;
   }
 
   &:focus {
-    color: #EEE;
-    background-color: #08C;
+    color: @white-font-colour;
+    background-color: @lighter-theme-colour;
     outline-width: 0;
+  }
+
+  @media(max-width: @sm-max-width) {
+    margin-right: 0;
+  }
+  @media(min-width: @md-min-width) {
+    margin-right: 25px;
   }
 }
 
 .navbar-nav {
   & > li {
     & > a {
-      height: 64px;
+      height: @navbar-height;
       padding: 22px;
       font-size: 18px;
       color: #EEE;
 
+      @media(max-width: @md-max-width) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
       &:hover,
       &:focus {
-        background-color: #08C;
+        background-color: @lighter-theme-colour;
         outline-width: 0;
       }
 
@@ -63,7 +97,7 @@ hr {
 
         &:hover,
         &:focus {
-          color: #9BC;
+          color: @washed-theme-colour;
           background-color: inherit;
         }
       }
@@ -71,11 +105,11 @@ hr {
   }
   & > li.active {
     & > a {
-      background-color: #06C;
+      background-color: @light-theme-colour;
 
       &:hover,
       &:focus {
-        background-color: #08C;
+        background-color: @lighter-theme-colour;
         outline-width: 0;
       }
     }
@@ -86,20 +120,34 @@ hr {
   margin-right: 0;
 }
 
-.jumbotron
-{
-  margin-top: 64px;
-  background-color: #027;
-  color: #EEE;
+.jumbotron {
+  // margin-top: @navbar-height;
+  background-color: @dark-theme-colour;
+  color: @white-font-colour;
 
   h1 {
     margin-top: 0;
   }
   p {
     margin-bottom: 28px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
   img {
     width: 100%;
+  }
+}
+
+/* Footer */
+
+/* Home page */
+.home-content {
+  @media(min-width: @sm-min-width) {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
   }
 }
 
@@ -107,32 +155,33 @@ hr {
 .projects-list {
   & > ul {
     list-style-type: none;
+    margin: 0;
     padding: 0;
-  }
-  & > ul > li .title {
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-  & > ul > li > ul {
-    list-style-type: square;
-    padding-left: 50px;
-  }
-  & > ul > li ul > li {
-    font-size: 16px;
-    font-weight: normal;
-  }
-}
 
-/* Helper classes */
-.last-item
-{
-  margin-bottom: 0 !important;
-}
+    & > li {
+      margin-bottom: 10px;
 
-.center-vertically
-{
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+      &:last-child {
+        margin-bottom: 0;
+      }
+      .header {
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+      .subheader {
+        color: @dark-font-colour;
+        font-size: 16px;
+        font-style: italic;
+      }
+      ul {
+        list-style-type: square;
+        padding-left: 40px;
+        li {
+          font-size: 16px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
 }

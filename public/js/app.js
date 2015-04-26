@@ -7,7 +7,7 @@ app.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider.
     when('/Home', {
-      templateUrl: 'templates/home.html',
+      templateUrl: 'views/home.html',
       controller: 'HomeController',
       title: 'Home - '
     }).
@@ -15,22 +15,22 @@ app.config(['$routeProvider', '$locationProvider',
       redirectTo: '/Home'
     }).
     when('/Projects', {
-      templateUrl: 'templates/projects.html',
+      templateUrl: 'views/projects.html',
       controller: 'ProjectsController',
       title: 'Projects - '
     }).
     when('/Resume', {
-      templateUrl: 'templates/resume.html',
+      templateUrl: 'views/resume.html',
       controller: 'ResumeController',
       title: 'Resume - '
     }).
     when('/AboutMe', {
-      templateUrl: 'templates/about.html',
+      templateUrl: 'views/about.html',
       controller: 'AboutController',
       title: 'About Me - '
     }).
     otherwise({
-      templateUrl: 'templates/404.html',
+      templateUrl: 'views/404.html',
       controller: 'MissingPageController',
       title: 'Page Does Not Exist - '
     });

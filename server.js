@@ -30,7 +30,6 @@ file.walkSync('less', function(dirPath, dirs, files) {
 console.log('Starting server up');
 
 var app = express();
-
 var server = http.createServer(app);
 
 reload(server, app);
@@ -38,7 +37,7 @@ reload(server, app);
 app.use(express.static('public'));
 
 app.get('*', function(req, res){
-  console.log(req.url);
+  console.log(req.method + ' request at ' + req.url);
   res.sendFile('index.html', {
     root: __dirname + '/'
   });
