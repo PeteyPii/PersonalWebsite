@@ -80,6 +80,18 @@ hr {
   background-color: #0088cc;
   outline-width: 0;
 }
+.navbar-toggle {
+  color: #eeeeee;
+  font-size: 40px;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 10px;
+  height: 64px;
+}
+.navbar-toggle:hover,
+.navbar-toggle:focus {
+  background-color: #0088cc;
+}
 .navbar-right {
   margin-right: 0;
 }

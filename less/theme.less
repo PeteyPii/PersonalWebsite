@@ -19,6 +19,9 @@
 
 @navbar-height: 64px;
 @navbar-brand-font-size: 32px;
+@navbar-link-font-size: 18px;
+@navbar-icon-size: 40px;
+@navbar-icon-horizontal-padding: 10px;
 
 /* Site theming */
 body {
@@ -76,7 +79,7 @@ hr {
     & > a {
       height: @navbar-height;
       padding: 22px;
-      font-size: 18px;
+      font-size: @navbar-link-font-size;
       color: #EEE;
 
       @media(max-width: @md-max-width) {
@@ -91,9 +94,9 @@ hr {
       }
 
       &.navbar-icon {
-        font-size: 40px;
-        padding-right: 10px;
-        padding-left: 10px;
+        font-size: @navbar-icon-size;
+        padding-right: @navbar-icon-horizontal-padding;
+        padding-left: @navbar-icon-horizontal-padding;
 
         &:hover,
         &:focus {
@@ -116,12 +119,25 @@ hr {
   }
 }
 
+.navbar-toggle {
+  color: @white-font-colour;
+  font-size: @navbar-icon-size;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 @navbar-icon-horizontal-padding;
+  height: @navbar-height;
+
+  &:hover,
+  &:focus, {
+    background-color: @lighter-theme-colour;
+  }
+}
+
 .navbar-right {
   margin-right: 0;
 }
 
 .jumbotron {
-  // margin-top: @navbar-height;
   background-color: @dark-theme-colour;
   color: @white-font-colour;
 

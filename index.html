@@ -30,15 +30,13 @@
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
+          <a class="navbar-brand" href="/Home" tabindex="-1">Patrick Wrobel</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+            <span class="fa fa-bars"></span>
           </button>
-          <a class="navbar-brand" href="/Home" tabindex="-1">Patrick Wrobel</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false">
           <ul class="nav navbar-nav">
             <li id="nav-home"><a href="/Home">Home</a></li>
             <li id="nav-projects"><a href="/Projects">Projects</a></li>
@@ -46,8 +44,10 @@
             <li id="nav-about"><a href="/AboutMe">About Me</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a class="navbar-icon fa fa-linkedin-square" href="http://ca.linkedin.com/in/patrickwrobel"></a></li>
-            <li><a class="navbar-icon fa fa-github" href="https://github.com/PeteyPii"></a></li>
+            <li class="hidden-xs"><a class="navbar-icon fa fa-linkedin-square" href="http://ca.linkedin.com/in/patrickwrobel"></a></li>
+            <li class="hidden-xs"><a class="navbar-icon fa fa-github" href="https://github.com/PeteyPii"></a></li>
+            <li class="visible-xs"><a href="https://github.com/PeteyPii"><span class="fa fa-lg fa-github"></span> GitHub</a></li>
+            <li class="visible-xs"><a href="http://ca.linkedin.com/in/patrickwrobel"><span class="fa fa-lg fa-linkedin-square"></span> LinkedIn</a></li>
           </ul>
         </div>
       </div>
