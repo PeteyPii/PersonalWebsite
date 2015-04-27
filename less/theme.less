@@ -44,7 +44,7 @@ hr {
   border-top: 1px solid @black-font-colour;
 }
 
-/* Bootstrap theming */
+/* Bootstrap */
 .navbar {
   min-height: @navbar-height;
   background-color: @medium-theme-colour;
@@ -170,6 +170,21 @@ hr {
   }
   img {
     width: 100%;
+  }
+}
+
+/* Footer */
+.footer {
+  .contact {
+    @media(max-width: @xs-max-width) {
+      margin-bottom: 0;
+    }
+  }
+
+  .license {
+    @media(min-width: @sm-min-width) {
+      text-align: right;
+    }
   }
 }
 
