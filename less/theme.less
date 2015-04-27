@@ -23,6 +23,11 @@
 @navbar-icon-size: 40px;
 @navbar-icon-horizontal-padding: 10px;
 
+@projects-title-font-size: 24px;
+@projects-link-size: @projects-title-font-size;
+@projects-languages-font-size: 16px;
+@projects-dates-font-size: @projects-languages-font-size;
+
 /* Site theming */
 body {
   font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -156,8 +161,6 @@ hr {
   }
 }
 
-/* Footer */
-
 /* Home page */
 .home-content {
   @media(min-width: @sm-min-width) {
@@ -180,16 +183,30 @@ hr {
       &:last-child {
         margin-bottom: 0;
       }
-      .header {
-        font-size: 24px;
+
+      .title {
+        font-size: @projects-title-font-size;
         font-weight: bold;
         text-decoration: underline;
       }
-      .subheader {
+      .cta-github {
+        font-size: @projects-link-size;
+
+        a:hover,
+        a:focus {
+          text-decoration: none;
+        }
+      }
+      .languages {
         color: @dark-font-colour;
-        font-size: 16px;
+        font-size: @projects-languages-font-size;
         font-style: italic;
       }
+      .time {
+        float: right;
+        font-size: @projects-dates-font-size;
+      }
+
       ul {
         list-style-type: square;
         padding-left: 40px;
