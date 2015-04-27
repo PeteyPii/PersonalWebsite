@@ -48,6 +48,16 @@ hr {
 .navbar {
   min-height: @navbar-height;
   background-color: @medium-theme-colour;
+  border: 0;
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.navbar-collapse {
+  border: 0;
 }
 
 .navbar-static-top {
@@ -139,7 +149,9 @@ hr {
 }
 
 .navbar-right {
-  margin-right: 0;
+  @media(min-width: @sm-min-width) {
+    margin-right: 0;
+  }
 }
 
 .jumbotron {
