@@ -9,7 +9,7 @@ app.config(['$routeProvider', '$locationProvider',
     when('/Home', {
       templateUrl: 'views/home.html',
       controller: 'HomeController',
-      title: 'Home - '
+      title: 'Home'
     }).
     when('/', {
       redirectTo: '/Home'
@@ -17,22 +17,22 @@ app.config(['$routeProvider', '$locationProvider',
     when('/Projects', {
       templateUrl: 'views/projects.html',
       controller: 'ProjectsController',
-      title: 'Projects - '
+      title: 'Projects'
     }).
     when('/Resume', {
       templateUrl: 'views/resume.html',
       controller: 'ResumeController',
-      title: 'Resume - '
+      title: 'Resume'
     }).
     when('/AboutMe', {
       templateUrl: 'views/about.html',
       controller: 'AboutController',
-      title: 'About Me - '
+      title: 'About Me'
     }).
     otherwise({
       templateUrl: 'views/404.html',
       controller: 'MissingPageController',
-      title: 'Page Does Not Exist - '
+      title: 'Page Does Not Exist'
     });
 
     $locationProvider.html5Mode(true);

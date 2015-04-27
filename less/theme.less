@@ -178,7 +178,7 @@ hr {
     padding: 0;
 
     & > li {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
 
       &:last-child {
         margin-bottom: 0;
@@ -197,14 +197,20 @@ hr {
           text-decoration: none;
         }
       }
+      .time {
+        font-size: @projects-dates-font-size;
+
+        @media(min-width: @sm-min-width) {
+          float: right;
+        }
+        @media(max-width: @xs-max-width) {
+          display: block;
+        }
+      }
       .languages {
         color: @dark-font-colour;
         font-size: @projects-languages-font-size;
         font-style: italic;
-      }
-      .time {
-        float: right;
-        font-size: @projects-dates-font-size;
       }
 
       ul {
