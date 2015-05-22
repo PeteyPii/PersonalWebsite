@@ -1,0 +1,3 @@
+[submodule "MyLoLFantasy"]
+	path = MyLoLFantasy
+	url = git@github.com:PeteyPii/MyLoLFantasy.git
