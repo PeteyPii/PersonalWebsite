@@ -41,9 +41,7 @@ try {
 
     var httpsServer = https.createServer({
       key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
-      requestCert: true,
-      rejectUnauthorized: false
+      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem'))
     }, app);
 
     reload(httpsServer, app);
@@ -55,7 +53,7 @@ try {
       });
     });
 
-    httpsServer.listen(443, '127.0.0.1', function() {
+    httpsServer.listen(443, function() {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
@@ -66,9 +64,6 @@ try {
     var httpServer = http.createServer(redirectApp);
 
     reload(httpServer, app);
-    /*redirectApp.get('/MLF/*', function(req, res) {
-      res.redirect('https://' + req.hostname + req.url);
-    });*/
     redirectApp.get('/MLF', function(req, res) {
       res.redirect('https://' + req.hostname + req.url);
     });
