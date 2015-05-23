@@ -40,9 +40,8 @@ try {
     app.use(express.static(path.join(__dirname, 'public')));
 
     var httpsServer = https.createServer({
-      key: fs.readFileSync(path.join(__dirname, 'certs/server.key')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/server.crt')),
-      ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
+      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
       requestCert: true,
       rejectUnauthorized: false
     }, app);
