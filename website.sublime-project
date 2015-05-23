@@ -4,7 +4,7 @@
     {
       "path": ".",
       "file_exclude_patterns": ["*.sublime-workspace", ".gitattributes", "*.svg", "*.woff*", "*.otf", "*.css", "*.min.*"],
-      "folder_exclude_patterns": [".git", "node_modules"]
+      "folder_exclude_patterns": [".git", "node_modules", "MyLoLFantasy"]
     }
   ],
   "settings":

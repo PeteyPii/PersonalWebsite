@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var fs = require('fs');
 var path = require('path');
 
@@ -7,47 +8,88 @@ var file = require('file');
 var less = require('less');
 var reload = require('reload');
 
-console.log('Rendering LESS files');
+var mlf = require('./MyLoLFantasy/app.js');
 
-file.walkSync('less', function(dirPath, dirs, files) {
-  for (var i = 0; i < files.length; i++) {
-    var filePath = path.join(dirPath, files[i]);
-    less.render(fs.readFileSync(filePath).toString('utf8'), {
-      paths: ['less'],
-      filename: filePath,
-      compress: false
-    }, function(err, output) {
-      if (err) {
-        throw err;
-      }
+try {
+  console.log('Rendering LESS files');
 
-      var outFileName = path.join('public/css', dirPath.split(path.sep).slice(1).join(path.sep), path.basename(files[i], '.less') + '.css');
-      fs.writeFileSync(outFileName, output.css);
-    });
-  }
-});
+  file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
+    for (var i = 0; i < files.length; i++) {
+      var filePath = path.join(dirPath, files[i]);
+      less.render(fs.readFileSync(filePath).toString('utf8'), {
+        paths: [path.join(__dirname, 'less')],
+        filename: filePath,
+        compress: false
+      }, function(err, output) {
+        if (err) {
+          throw err;
+        }
 
-console.log('Starting server up');
-
-var app = express();
-var server = http.createServer(app);
-
-reload(server, app);
-
-app.use(express.static('public'));
-
-app.get('*', function(req, res){
-  console.log(req.method + ' request at ' + req.url);
-  res.sendFile('index.html', {
-    root: __dirname + '/'
+        var outFileName = path.join(__dirname, 'public/css', path.basename(files[i], '.less') + '.css');
+        fs.writeFileSync(outFileName, output.css);
+      });
+    }
   });
-});
 
-server.listen(80, '127.0.0.1', function() {
-  var host = server.address().address;
-  var port = server.address().port;
+  console.log('Starting server up');
 
-  console.log('Server listening at http://%s:%s', host, port);
-});
+  mlf.createApp(true).then(function(mlfApp) {
+    var app = express();
+
+    app.use('/MLF', mlfApp);
+    app.use(express.static(path.join(__dirname, 'public')));
+
+    var httpsServer = https.createServer({
+      key: fs.readFileSync(path.join(__dirname, 'certs/server.key')),
+      cert: fs.readFileSync(path.join(__dirname, 'certs/server.crt')),
+      ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
+      requestCert: true,
+      rejectUnauthorized: false
+    }, app);
+
+    reload(httpsServer, app);
+
+    app.get('*', function(req, res) {
+      console.log(req.method + ' request at ' + req.url);
+      res.sendFile('index.html', {
+        root: __dirname + '/'
+      });
+    });
+
+    httpsServer.listen(443, '127.0.0.1', function() {
+      var host = httpsServer.address().address;
+      var port = httpsServer.address().port;
+
+      console.log('Server listening at http://%s:%s', host, port);
+    });
+
+    var redirectApp = express();
+    var httpServer = http.createServer(redirectApp);
+
+    reload(httpServer, app);
+    /*redirectApp.get('/MLF/*', function(req, res) {
+      res.redirect('https://' + req.hostname + req.url);
+    });*/
+    redirectApp.get('/MLF', function(req, res) {
+      res.redirect('https://' + req.hostname + req.url);
+    });
+    redirectApp.use('/', app);
+
+    httpServer.listen(80);
+
+  }).fail(function(err) {
+    if (err.stack) {
+      console.error(err.stack);
+    } else {
+      console.error('Error: ' + err);
+    }
+  }).done();
+} catch (err) {
+  if (err.stack) {
+    console.error(err.stack);
+  } else {
+    console.error('Error: ' + err);
+  }
+}
 
 
