@@ -7,6 +7,7 @@ var express = require('express');
 var file = require('file');
 var less = require('less');
 var reload = require('reload');
+var Q = require('q');
 
 var mlf = require('./MyLoLFantasy/app.js');
 
@@ -33,10 +34,25 @@ try {
 
   console.log('Starting server up');
 
-  mlf.createApp(true).then(function(mlfApp) {
+  var settings = {};
+  settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
+
+  Q.Promise(function(resolve, reject, notify) {
+    if (settings.dont_host_mlf) {
+      resolve();
+    } else {
+      resolve(mlf.createApp(true));
+    }
+  }).then(function(mlfApp) {
     var app = express();
 
-    app.use('/MLF', mlfApp);
+    if (mlfApp) {
+      app.use('/MLF', mlfApp);
+      console.log('Hosting MLF');
+    } else {
+      console.log('Opted out of hosting MLF');
+    }
+
     app.use(express.static(path.join(__dirname, 'public')));
 
     var httpsServer = https.createServer({

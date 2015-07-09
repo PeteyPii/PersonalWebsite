@@ -2,6 +2,7 @@
 *.sublime-workspace
 *.css
 node_modules/
+settings.json
 
 !bootstrap.min.css
 !bootstrap-theme.min.css
