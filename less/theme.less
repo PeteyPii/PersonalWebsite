@@ -35,6 +35,13 @@ body {
   background-color: @grey-bg-colour;
 }
 
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 img {
   padding: 5px;
   background-color: @white-font-colour;
@@ -257,4 +264,14 @@ hr {
       }
     }
   }
+}
+
+/* Game */
+body.game-mode {
+  overflow: hidden;
+}
+
+#game-canvas {
+  width: 100vw;
+  height: 100vh;
 }
