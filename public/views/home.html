@@ -1,17 +1,23 @@
-<div class="jumbotron">
-  <div class="container">
-    <div class="row home-content">
-      <div class="col-md-3 col-sm-6 hidden-xs">
-        <img src="/assets/jace.jpg" alt="Jace from MTG. An avatar I like to use."></img>
-      </div>
-      <div class="col-md-8 col-md-push-1 col-sm-6 col-xs-12">
-        <div>
-          <p>Hi there! I'm an avid programmer and gamer and I'm a 2B Software Engineering student at the University of Waterloo. I have many cool projects that you can check out here and on my GitHub page.</p>
-          <p>Take a look at my latest project that I'm working on: <a href="/MLF" target="_self">My LoL Fantasy</a></p>
+<div class="main-site">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row home-content">
+        <div class="col-md-3 col-sm-6 hidden-xs">
+          <img src="/assets/jace.jpg" alt="Jace from MTG. An avatar I like to use."></img>
+        </div>
+        <div class="col-md-8 col-md-push-1 col-sm-6 col-xs-12">
+          <div>
+            <p>Hi there! I'm an avid programmer and gamer and I'm a 2B Software Engineering student at the University of Waterloo. I have many cool projects that you can check out here and on my GitHub page.</p>
+            <p>Take a look at my latest project that I'm working on: <a href="/MLF" target="_self">My LoL Fantasy</a></p>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <button id="begin-game-btn">Begin</button>
 </div>
 
-<button id="begin-game-btn">Begin</button>
+<div id="game-container">
+  <div data-ng-include data-src="'partials/game.html'"></div>
+</div>
