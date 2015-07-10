@@ -8,6 +8,7 @@ var file = require('file');
 var less = require('less');
 var reload = require('reload');
 var Q = require('q');
+var _ = require('lodash');
 
 var mlf = require('./MyLoLFantasy/app.js');
 
