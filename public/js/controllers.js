@@ -46,28 +46,69 @@ controllers.controller('GameController', ['$scope',
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
 
+      // Constants
+      var bgColour = 'black';
+
+      var gemSize = 0.01;
+      var gemSizeInnerFactor = 0.6;
+      var gemColour = [255, 255, 255];
+      var gemShadeFactor = 0.6;
+      var gemShadedColour = gemColour.map(function(c) { return (c * gemShadeFactor) | 0});
+
+      function tripleToColour(triple) {
+        return 'rgb(' + triple[0] + ',' + triple[1] + ',' + triple[2] + ')';
+      }
+
       function draw() {
         if (isSupported) {
           var width  = ctx.canvas.width  = window.innerWidth;
           var height = ctx.canvas.height = window.innerHeight;
+          var midX = width / 2;
+          var midY = height / 2;
+          var scale = Math.sqrt(width*width + height*height);
 
-          ctx.fillStyle = '#000000';
+          ctx.fillStyle = bgColour;
           ctx.fillRect(0, 0, width, height);
 
+          // draw gem
           var path = new Path2D();
 
-          path.moveTo(width / 2 + 25, height / 2);
-          path.lineTo(width / 2, height / 2 + 25);
-          path.lineTo(width / 2 - 25, height / 2);
-          path.lineTo(width / 2, height / 2 - 25);
-          path.lineTo(width / 2 + 25, height / 2);
+          path.moveTo(midX + scale * gemSize, midY);
+          path.lineTo(midX, midY + scale * gemSize);
+          path.lineTo(midX - scale * gemSize, midY);
+          path.lineTo(midX, midY - scale * gemSize);
+          path.lineTo(midX + scale * gemSize, midY);
 
-          ctx.fillStyle = 'white';
+          ctx.fillStyle = tripleToColour(gemShadedColour);
           ctx.fill(path);
+
+          path = new Path2D();
+
+          path.moveTo(midX + scale * gemSize, midY);
+          path.lineTo(midX, midY + scale * gemSize);
+          path.lineTo(midX - scale * gemSize, midY);
+          path.lineTo(midX, midY - scale * gemSize);
+          path.lineTo(midX + scale * gemSize, midY);
+
+          path.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+          path.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
+          path.lineTo(midX, midY + scale * gemSize);
+          path.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
+          path.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
+          path.lineTo(midX - scale * gemSize, midY);
+          path.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
+          path.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
+          path.lineTo(midX, midY - scale * gemSize);
+          path.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
+          path.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+
+          ctx.strokeStyle = tripleToColour(gemColour);
+          ctx.stroke(path);
+
         }
       }
 
-      draw();
+      setInterval(draw, 1000);
     });
   }
 ]);
