@@ -42,6 +42,19 @@ controllers.controller('GameController', ['$scope',
       $('body').addClass('game-mode');
       $('#game-container').show();
 
+      var cursorX;
+      var cursorY;
+
+      document.onmousemove = function(e) {
+        cursorX = e.pageX;
+        cursorY = e.pageY;
+      }
+
+      document.onmouseenter = function(e) {
+        cursorX = e.pageX;
+        cursorY = e.pageY;
+      }
+
       var canvas = document.getElementById('game-canvas')
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
@@ -55,6 +68,10 @@ controllers.controller('GameController', ['$scope',
       var gemShadeFactor = 0.6;
       var gemShadedColour = gemColour.map(function(c) { return (c * gemShadeFactor) | 0});
 
+      var wallDistance = 0.03;
+      var wallHalfWidth = 2 * Math.PI * 0.15;
+      var wallColour = '#ffffff'
+
       function tripleToColour(triple) {
         return 'rgb(' + triple[0] + ',' + triple[1] + ',' + triple[2] + ')';
       }
@@ -66,6 +83,7 @@ controllers.controller('GameController', ['$scope',
           var midX = width / 2;
           var midY = height / 2;
           var scale = Math.sqrt(width*width + height*height);
+          var wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
           ctx.fillStyle = bgColour;
           ctx.fillRect(0, 0, width, height);
@@ -105,10 +123,17 @@ controllers.controller('GameController', ['$scope',
           ctx.strokeStyle = tripleToColour(gemColour);
           ctx.stroke(path);
 
+          // draw wall
+          path = new Path2D();
+
+          path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
+
+          ctx.strokeStyle = wallColour;
+          ctx.stroke(path);
         }
       }
 
-      setInterval(draw, 1000);
+      setInterval(draw, 33);
     });
   }
 ]);
