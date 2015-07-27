@@ -59,10 +59,15 @@ controllers.controller('GameController', ['$scope',
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
 
+      function tripleToColour(triple) {
+        return 'rgb(' + (triple[0] | 0) + ',' + (triple[1] | 0) + ',' + (triple[2] | 0) + ')';
+      }
+
       // Constants
       var bgColour = 'black';
 
       var gemSize = 0.01;
+      var gemLineThickness = 1 / 750;
       var gemSizeInnerFactor = 0.6;
       var gemColour = [255, 255, 255];
       var gemShadeFactor = 0.6;
@@ -70,10 +75,43 @@ controllers.controller('GameController', ['$scope',
 
       var wallDistance = 0.03;
       var wallHalfWidth = 2 * Math.PI * 0.15;
-      var wallColour = '#ffffff'
+      var wallColour = '#ffffff';
+      var wallThickness = 1 / 500;
 
-      function tripleToColour(triple) {
-        return 'rgb(' + triple[0] + ',' + triple[1] + ',' + triple[2] + ')';
+      var bgSegments = 16;
+      var bgProgress = [];
+      for (var i = 0; i < bgSegments; i++) {
+        bgProgress.push(0);
+      }
+
+      // must have 2 elements, if a constant function is desired
+      // put the constant value twice
+      var bgColourFunction = [
+        [0,   0,   0],
+        [255, 0,   0],
+        [255, 255, 0],
+        [0,   255, 0],
+        [0,   255, 255],
+        [0,   0,   255],
+        [255, 0,   255],
+        [255, 255, 255]
+      ];
+
+      function bgColourCalculation(progress) {
+        progress = Math.max(Math.min(1, progress), 0);
+
+        if (progress == 1) {
+          return bgColourFunction[bgColourFunction.length - 1];
+        }
+
+        var ix = Math.floor(progress * (bgColourFunction.length - 1));
+        var frac = progress * (bgColourFunction.length - 1) - ix;
+
+        return tripleToColour([
+          bgColourFunction[ix][0] * (1 - frac) + bgColourFunction[ix + 1][0] * frac,
+          bgColourFunction[ix][1] * (1 - frac) + bgColourFunction[ix + 1][1] * frac,
+          bgColourFunction[ix][2] * (1 - frac) + bgColourFunction[ix + 1][2] * frac,
+        ]);
       }
 
       function draw() {
@@ -85,8 +123,19 @@ controllers.controller('GameController', ['$scope',
           var scale = Math.sqrt(width*width + height*height);
           var wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
-          ctx.fillStyle = bgColour;
-          ctx.fillRect(0, 0, width, height);
+          var path;
+
+          // draw bg
+          for (var i = 0; i < bgSegments; i++) {
+            path = new Path2D();
+
+            path.moveTo(midX, midY);
+            path.lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * i), midY + scale * Math.sin(2 * Math.PI / bgSegments * i));
+            path.lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * (i + 1)), midY + scale * Math.sin(2 * Math.PI / bgSegments * (i + 1)));
+
+            ctx.fillStyle = bgColourCalculation(bgProgress[i]);
+            ctx.fill(path);
+          }
 
           // draw gem
           var path = new Path2D();
@@ -120,6 +169,7 @@ controllers.controller('GameController', ['$scope',
           path.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
           path.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
 
+          ctx.lineWidth = scale * gemLineThickness;
           ctx.strokeStyle = tripleToColour(gemColour);
           ctx.stroke(path);
 
@@ -128,6 +178,7 @@ controllers.controller('GameController', ['$scope',
 
           path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
 
+          ctx.lineWidth = scale * wallThickness;
           ctx.strokeStyle = wallColour;
           ctx.stroke(path);
         }
