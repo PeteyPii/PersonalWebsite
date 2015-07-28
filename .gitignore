@@ -3,6 +3,7 @@
 *.css
 node_modules/
 settings.json
+Thumbs.db
 
 !bootstrap.min.css
 !bootstrap-theme.min.css
