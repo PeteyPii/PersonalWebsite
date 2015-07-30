@@ -59,12 +59,13 @@ controllers.controller('GameController', ['$scope',
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
 
+      // Generic helper functions
       function tripleToColour(triple) {
         return 'rgb(' + (triple[0] | 0) + ',' + (triple[1] | 0) + ',' + (triple[2] | 0) + ')';
       }
 
       // Constants
-      var bgColour = 'black';
+      var bgColour = '#000000';
 
       var gemSize = 0.01;
       var gemLineThickness = 1 / 750;
@@ -110,6 +111,12 @@ controllers.controller('GameController', ['$scope',
         ]);
       }
 
+      var dotSpawnChance = 1 / 60;
+      var dotMinSpeed = 1 / 600;
+      var dotMaxSpeed = 1 / 600;
+      var dotSize = 1 / 400;
+      var dotColour = '#ffffff';
+
       // Semi-constants for stuff that only changes sometimes (e.f=g. on screen resize)
       var width;
       var height;
@@ -131,9 +138,32 @@ controllers.controller('GameController', ['$scope',
       for (var i = 0; i < bgSegments; i++) {
         bgProgress.push(0);
       }
+      var idCounter = 0;
+      var dots = {};
 
       function step() {
         wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
+
+        for (var dotId in dots) {
+          var dot = dots[dotId];
+
+          dot.distance -= dot.speed;
+
+          if (dot.distance <= 0) {
+            delete dots[dot.id];
+          }
+        }
+
+        if (Math.random() < dotSpawnChance) {
+          var dot = {};
+
+          dot.speed = Math.random() * (dotMaxSpeed - dotMinSpeed) + dotMinSpeed;
+          dot.direction = 2 * Math.PI * Math.random();
+          dot.id = idCounter++;
+          dot.distance = 1;
+
+          dots[dot.id] = dot;
+        }
       }
 
       function screenResize() {
@@ -200,12 +230,22 @@ controllers.controller('GameController', ['$scope',
 
         // Draw wall
         var path = new Path2D();
-
         path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
 
         ctx.lineWidth = scale * wallThickness;
         ctx.strokeStyle = wallColour;
         ctx.stroke(path);
+
+        // Draw dots
+        for (var dotId in dots) {
+          var dot = dots[dotId];
+
+          path = new Path2D();
+          path.arc(midX + scale * dot.distance * Math.cos(dot.direction), midY + scale * dot.distance * Math.sin(dot.direction), scale * dotSize, 0, 2 * Math.PI);
+
+          ctx.fillStyle = dotColour;
+          ctx.fill(path);
+        }
       }
 
       function gameLoop() {
