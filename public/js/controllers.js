@@ -79,12 +79,8 @@ controllers.controller('GameController', ['$scope',
       var wallThickness = 1 / 500;
 
       var bgSegments = 16;
-      var bgProgress = [];
-      for (var i = 0; i < bgSegments; i++) {
-        bgProgress.push(0);
-      }
 
-      // must have 2 elements, if a constant function is desired
+      // Must have 2 elements, if a constant function is desired
       // put the constant value twice
       var bgColourFunction = [
         [0,   0,   0],
@@ -114,77 +110,118 @@ controllers.controller('GameController', ['$scope',
         ]);
       }
 
-      function draw() {
-        if (isSupported) {
-          var width  = ctx.canvas.width  = window.innerWidth;
-          var height = ctx.canvas.height = window.innerHeight;
-          var midX = width / 2;
-          var midY = height / 2;
-          var scale = Math.sqrt(width*width + height*height);
-          var wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
+      // Semi-constants for stuff that only changes sometimes (e.f=g. on screen resize)
+      var width;
+      var height;
+      var midX;
+      var midY;
+      var scale;
 
-          var path;
-
-          // draw bg
-          for (var i = 0; i < bgSegments; i++) {
-            path = new Path2D();
-
-            path.moveTo(midX, midY);
-            path.lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * i), midY + scale * Math.sin(2 * Math.PI / bgSegments * i));
-            path.lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * (i + 1)), midY + scale * Math.sin(2 * Math.PI / bgSegments * (i + 1)));
-
-            ctx.fillStyle = bgColourCalculation(bgProgress[i]);
-            ctx.fill(path);
-          }
-
-          // draw gem
-          var path = new Path2D();
-
-          path.moveTo(midX + scale * gemSize, midY);
-          path.lineTo(midX, midY + scale * gemSize);
-          path.lineTo(midX - scale * gemSize, midY);
-          path.lineTo(midX, midY - scale * gemSize);
-          path.lineTo(midX + scale * gemSize, midY);
-
-          ctx.fillStyle = tripleToColour(gemShadedColour);
-          ctx.fill(path);
-
-          path = new Path2D();
-
-          path.moveTo(midX + scale * gemSize, midY);
-          path.lineTo(midX, midY + scale * gemSize);
-          path.lineTo(midX - scale * gemSize, midY);
-          path.lineTo(midX, midY - scale * gemSize);
-          path.lineTo(midX + scale * gemSize, midY);
-
-          path.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
-          path.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
-          path.lineTo(midX, midY + scale * gemSize);
-          path.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
-          path.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
-          path.lineTo(midX - scale * gemSize, midY);
-          path.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
-          path.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
-          path.lineTo(midX, midY - scale * gemSize);
-          path.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
-          path.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
-
-          ctx.lineWidth = scale * gemLineThickness;
-          ctx.strokeStyle = tripleToColour(gemColour);
-          ctx.stroke(path);
-
-          // draw wall
-          path = new Path2D();
-
-          path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
-
-          ctx.lineWidth = scale * wallThickness;
-          ctx.strokeStyle = wallColour;
-          ctx.stroke(path);
-        }
+      var bgSegmentPaths = [];
+      for (var i = 0; i < bgSegments; i++) {
+        bgSegmentPaths.push(null);
       }
 
-      setInterval(draw, 33);
+      var gemInnerPath = null;
+      var gemOuterPath = null;
+
+      // Variable declarations
+      var wallAngle;
+      var bgProgress = [];
+      for (var i = 0; i < bgSegments; i++) {
+        bgProgress.push(0);
+      }
+
+      function step() {
+        wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
+      }
+
+      function screenResize() {
+        // Update certain semi-constants after the screen size changes
+        width  = ctx.canvas.width  = window.innerWidth;
+        height = ctx.canvas.height = window.innerHeight;
+        midX = width / 2;
+        midY = height / 2;
+        scale = Math.sqrt(width*width + height*height);
+
+        // Bg updates
+        for (var i = 0; i < bgSegments; i++) {
+          bgSegmentPaths[i] = new Path2D();
+
+          bgSegmentPaths[i].moveTo(midX, midY);
+          bgSegmentPaths[i].lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * i), midY + scale * Math.sin(2 * Math.PI / bgSegments * i));
+          bgSegmentPaths[i].lineTo(midX + scale * Math.cos(2 * Math.PI / bgSegments * (i + 1)), midY + scale * Math.sin(2 * Math.PI / bgSegments * (i + 1)));
+        }
+
+        // Gem updates
+        gemInnerPath = new Path2D();
+
+        gemInnerPath.moveTo(midX + scale * gemSize, midY);
+        gemInnerPath.lineTo(midX, midY + scale * gemSize);
+        gemInnerPath.lineTo(midX - scale * gemSize, midY);
+        gemInnerPath.lineTo(midX, midY - scale * gemSize);
+        gemInnerPath.lineTo(midX + scale * gemSize, midY);
+
+        gemOuterPath = new Path2D();
+
+        gemOuterPath.moveTo(midX + scale * gemSize, midY);
+        gemOuterPath.lineTo(midX, midY + scale * gemSize);
+        gemOuterPath.lineTo(midX - scale * gemSize, midY);
+        gemOuterPath.lineTo(midX, midY - scale * gemSize);
+        gemOuterPath.lineTo(midX + scale * gemSize, midY);
+
+        gemOuterPath.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+        gemOuterPath.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
+        gemOuterPath.lineTo(midX, midY + scale * gemSize);
+        gemOuterPath.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
+        gemOuterPath.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
+        gemOuterPath.lineTo(midX - scale * gemSize, midY);
+        gemOuterPath.lineTo(midX - scale * gemSize * gemSizeInnerFactor, midY);
+        gemOuterPath.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
+        gemOuterPath.lineTo(midX, midY - scale * gemSize);
+        gemOuterPath.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
+        gemOuterPath.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+      }
+
+      function draw() {
+        // Draw bg
+        for (var i = 0; i < bgSegments; i++) {
+          ctx.fillStyle = bgColourCalculation(bgProgress[i]);
+          ctx.fill(bgSegmentPaths[i]);
+        }
+
+        // Draw gem
+        ctx.fillStyle = tripleToColour(gemShadedColour);
+        ctx.fill(gemInnerPath);
+
+        ctx.lineWidth = scale * gemLineThickness;
+        ctx.strokeStyle = tripleToColour(gemColour);
+        ctx.stroke(gemOuterPath);
+
+        // Draw wall
+        var path = new Path2D();
+
+        path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
+
+        ctx.lineWidth = scale * wallThickness;
+        ctx.strokeStyle = wallColour;
+        ctx.stroke(path);
+      }
+
+      function gameLoop() {
+        if (width !== window.innerWidth || height !== window.innerHeight) {
+          screenResize();
+        }
+
+        step();
+        draw();
+      }
+
+      if (isSupported) {
+        setInterval(gameLoop, 16);
+      } else {
+        // TODO: Make user aware that the game isn't available to them
+      }
     });
   }
 ]);
