@@ -64,6 +64,10 @@ controllers.controller('GameController', ['$scope',
         return 'rgb(' + (triple[0] | 0) + ',' + (triple[1] | 0) + ',' + (triple[2] | 0) + ')';
       }
 
+      function angleDifference(x, y) {
+        return Math.atan2(Math.sin(y - x), Math.cos(y - x));
+      }
+
       // Constants
       var bgColour = '#000000';
 
@@ -71,7 +75,7 @@ controllers.controller('GameController', ['$scope',
       var gemLineThickness = 1 / 750;
       var gemSizeInnerFactor = 0.6;
       var gemColour = [255, 255, 255];
-      var gemShadeFactor = 0.6;
+      var gemShadeFactor = 0.8;
       var gemShadedColour = gemColour.map(function(c) { return (c * gemShadeFactor) | 0});
 
       var wallDistance = 0.03;
@@ -98,7 +102,7 @@ controllers.controller('GameController', ['$scope',
         progress = Math.max(Math.min(1, progress), 0);
 
         if (progress == 1) {
-          return bgColourFunction[bgColourFunction.length - 1];
+          return tripleToColour(bgColourFunction[bgColourFunction.length - 1]);
         }
 
         var ix = Math.floor(progress * (bgColourFunction.length - 1));
@@ -116,6 +120,10 @@ controllers.controller('GameController', ['$scope',
       var dotMaxSpeed = 1 / 600;
       var dotSize = 1 / 400;
       var dotColour = '#ffffff';
+
+      var dotProgress = 0.02;
+
+      var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
 
       // Semi-constants for stuff that only changes sometimes (e.f=g. on screen resize)
       var width;
@@ -147,9 +155,21 @@ controllers.controller('GameController', ['$scope',
         for (var dotId in dots) {
           var dot = dots[dotId];
 
+          dot.previousDistance = dot.distance;
           dot.distance -= dot.speed;
+        }
 
-          if (dot.distance <= 0) {
+        for (var dotId in dots) {
+          var dot = dots[dotId];
+
+          if (dot.previousDistance + dotSize >= wallDistance - wallThickness / 2 && dot.distance - dotSize <= wallDistance + wallThickness / 2) {
+            if (Math.abs(angleDifference(wallAngle, dot.direction)) <= wallBBoxHalfWidth) {
+              var segmentIx = (dot.direction * bgSegments / (2 * Math.PI)) | 0;
+              bgProgress[segmentIx] += dotProgress;
+
+              delete dots[dot.id];
+            }
+          } else if (dot.distance <= 0) {
             delete dots[dot.id];
           }
         }
