@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var express = require('express');
+var favicon = require('serve-favicon');
 var file = require('file');
 var less = require('less');
 var reload = require('reload');
@@ -54,6 +55,7 @@ try {
       console.log('Opted out of hosting MLF');
     }
 
+    app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
     app.use(express.static(path.join(__dirname, 'public')));
 
     var httpsServer = https.createServer({
