@@ -115,7 +115,7 @@ controllers.controller('GameController', ['$scope',
         ]);
       }
 
-      var dotSpawnChance = 1 / 60;
+      var dotSpawnChance = 2 / 60;
       var dotMinSpeed = 1 / 600;
       var dotMaxSpeed = 1 / 600;
       var dotSize = 1 / 400;
