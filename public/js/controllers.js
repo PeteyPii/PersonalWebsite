@@ -95,7 +95,8 @@ controllers.controller('GameController', ['$scope',
         [0,   255, 255],
         [0,   0,   255],
         [255, 0,   255],
-        [255, 255, 255]
+        [234, 234, 234],
+        [128, 128, 128]
       ];
 
       function bgColourCalculation(progress) {
