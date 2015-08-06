@@ -122,7 +122,11 @@ controllers.controller('GameController', ['$scope',
       var dotSize = 1 / 400;
       var dotColour = '#ffffff';
 
+      var healthWidth = 0.04;
+      var healthYOffset = 0.02;
+
       var dotProgress = 0.02;
+      var dotDamage = 0.05;
 
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
 
@@ -149,6 +153,7 @@ controllers.controller('GameController', ['$scope',
       }
       var idCounter = 0;
       var dots = {};
+      var health = 1;
 
       function step() {
         wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
