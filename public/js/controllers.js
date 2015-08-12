@@ -278,7 +278,7 @@ controllers.controller('GameController', ['$scope',
         gemOuterPath.lineTo(midX, midY - scale * gemSize);
         gemOuterPath.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
         gemOuterPath.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
-        gemOuterPath.lineTo(midX + scale * gemSize + 1, midY);
+        gemOuterPath.lineTo(midX + scale * gemSize, midY);
 
         innerHealthBarResize();
         outerHealthBarResize();
@@ -307,8 +307,10 @@ controllers.controller('GameController', ['$scope',
         ctx.fill(gemInnerPath);
 
         ctx.lineWidth = scale * gemLineThickness;
+        ctx.lineCap = 'round';
         ctx.strokeStyle = tripleToColour(gemColour);
         ctx.stroke(gemOuterPath);
+        ctx.lineCap = 'butt';
 
         // Draw wall
         var path = new Path2D();
