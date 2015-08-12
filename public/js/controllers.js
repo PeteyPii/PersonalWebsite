@@ -61,7 +61,11 @@ controllers.controller('GameController', ['$scope',
 
       // Generic helper functions
       function tripleToColour(triple) {
-        return 'rgb(' + (triple[0] | 0) + ',' + (triple[1] | 0) + ',' + (triple[2] | 0) + ')';
+        return 'rgb(' + triple + ')';
+      }
+
+      function quadToColour(quad) {
+        return 'rgba(' + quad + ')';
       }
 
       function angleDifference(x, y) {
@@ -79,8 +83,10 @@ controllers.controller('GameController', ['$scope',
       var gemLineThickness = 1 / 750;
       var gemSizeInnerFactor = 0.6;
       var gemColour = [255, 255, 255];
-      var gemShadeFactor = 0.8;
-      var gemShadedColour = gemColour.map(function(c) { return (c * gemShadeFactor) | 0});
+      var gemShadeFactor = 0.5;
+      var gemShadedColour = gemColour.map(function(c) { return (c * gemShadeFactor) | 0; });
+      var gemShadeOpacity = 0.75;
+      gemShadedColour.push(gemShadeOpacity);
 
       var wallDistance = 0.03;
       var wallHalfWidth = 2 * Math.PI * 0.15;
@@ -114,9 +120,9 @@ controllers.controller('GameController', ['$scope',
         var frac = progress * (bgColourFunction.length - 1) - ix;
 
         return tripleToColour([
-          bgColourFunction[ix][0] * (1 - frac) + bgColourFunction[ix + 1][0] * frac,
-          bgColourFunction[ix][1] * (1 - frac) + bgColourFunction[ix + 1][1] * frac,
-          bgColourFunction[ix][2] * (1 - frac) + bgColourFunction[ix + 1][2] * frac,
+          (bgColourFunction[ix][0] * (1 - frac) + bgColourFunction[ix + 1][0] * frac) | 0,
+          (bgColourFunction[ix][1] * (1 - frac) + bgColourFunction[ix + 1][1] * frac) | 0,
+          (bgColourFunction[ix][2] * (1 - frac) + bgColourFunction[ix + 1][2] * frac) | 0,
         ]);
       }
 
@@ -234,7 +240,7 @@ controllers.controller('GameController', ['$scope',
         height = ctx.canvas.height = window.innerHeight;
         midX = width / 2;
         midY = height / 2;
-        scale = Math.sqrt(width*width + height*height);
+        scale = Math.sqrt(width * width + height * height);
 
         // Bg updates
         for (var i = 0; i < bgSegments; i++) {
@@ -297,7 +303,7 @@ controllers.controller('GameController', ['$scope',
         }
 
         // Draw gem
-        ctx.fillStyle = tripleToColour(gemShadedColour);
+        ctx.fillStyle = quadToColour(gemShadedColour);
         ctx.fill(gemInnerPath);
 
         ctx.lineWidth = scale * gemLineThickness;
