@@ -68,6 +68,10 @@ controllers.controller('GameController', ['$scope',
         return Math.atan2(Math.sin(y - x), Math.cos(y - x));
       }
 
+      function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
+      }
+
       // Constants
       var bgColour = '#000000';
 
@@ -100,7 +104,7 @@ controllers.controller('GameController', ['$scope',
       ];
 
       function bgColourCalculation(progress) {
-        progress = Math.max(Math.min(1, progress), 0);
+        progress = clamp(progress, 0, 1);
 
         if (progress == 1) {
           return tripleToColour(bgColourFunction[bgColourFunction.length - 1]);
@@ -122,8 +126,12 @@ controllers.controller('GameController', ['$scope',
       var dotSize = 1 / 400;
       var dotColour = '#ffffff';
 
-      var healthWidth = 0.04;
-      var healthYOffset = 0.02;
+      var healthWidth = 0.03;
+      var healthHeight = 1 / 400;
+      var healthYOffset = 1 / 58;
+      var healthFillColour = '#ffffff';
+      var healthOutlineColour = '#ffffff';
+      var healthOutlineThickness = 1 / 2000;
 
       var dotProgress = 0.02;
       var dotDamage = 0.05;
@@ -131,19 +139,21 @@ controllers.controller('GameController', ['$scope',
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
 
       // Semi-constants for stuff that only changes sometimes (e.f=g. on screen resize)
-      var width;
-      var height;
-      var midX;
-      var midY;
-      var scale;
+      var width    = 0;
+      var height   = 0;
+      var midX     = 0;
+      var midY     = 0;
+      var scale    = 0;
 
       var bgSegmentPaths = [];
       for (var i = 0; i < bgSegments; i++) {
         bgSegmentPaths.push(null);
       }
 
-      var gemInnerPath = null;
-      var gemOuterPath = null;
+      var gemInnerPath      = null;
+      var gemOuterPath      = null;
+      var healthFillPath    = null;
+      var healthTotalPath   = null;
 
       // Variable declarations
       var wallAngle;
@@ -154,6 +164,30 @@ controllers.controller('GameController', ['$scope',
       var idCounter = 0;
       var dots = {};
       var health = 1;
+
+      function innerHealthBarResize() {
+        healthFillPath = new Path2D();
+
+        healthFillPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthFillPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset + healthHeight / 2));
+        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset - healthHeight / 2));
+      }
+
+      function outerHealthBarResize() {
+        healthTotalPath = new Path2D();
+
+        healthTotalPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+      }
+
+      function setHealth(value) {
+        health = clamp(value, 0, 1);
+        innerHealthBarResize();
+      }
 
       function step() {
         wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
@@ -176,6 +210,8 @@ controllers.controller('GameController', ['$scope',
               delete dots[dot.id];
             }
           } else if (dot.distance <= 0) {
+            setHealth(health - dotDamage);
+
             delete dots[dot.id];
           }
         }
@@ -216,7 +252,6 @@ controllers.controller('GameController', ['$scope',
         gemInnerPath.lineTo(midX, midY + scale * gemSize);
         gemInnerPath.lineTo(midX - scale * gemSize, midY);
         gemInnerPath.lineTo(midX, midY - scale * gemSize);
-        gemInnerPath.lineTo(midX + scale * gemSize, midY);
 
         gemOuterPath = new Path2D();
 
@@ -226,7 +261,7 @@ controllers.controller('GameController', ['$scope',
         gemOuterPath.lineTo(midX, midY - scale * gemSize);
         gemOuterPath.lineTo(midX + scale * gemSize, midY);
 
-        gemOuterPath.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+        gemOuterPath.moveTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
         gemOuterPath.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
         gemOuterPath.lineTo(midX, midY + scale * gemSize);
         gemOuterPath.lineTo(midX, midY + scale * gemSize * gemSizeInnerFactor);
@@ -237,6 +272,10 @@ controllers.controller('GameController', ['$scope',
         gemOuterPath.lineTo(midX, midY - scale * gemSize);
         gemOuterPath.lineTo(midX, midY - scale * gemSize * gemSizeInnerFactor);
         gemOuterPath.lineTo(midX + scale * gemSize * gemSizeInnerFactor, midY);
+        gemOuterPath.lineTo(midX + scale * gemSize + 1, midY);
+
+        innerHealthBarResize();
+        outerHealthBarResize();
       }
 
       function draw() {
@@ -244,6 +283,17 @@ controllers.controller('GameController', ['$scope',
         for (var i = 0; i < bgSegments; i++) {
           ctx.fillStyle = bgColourCalculation(bgProgress[i]);
           ctx.fill(bgSegmentPaths[i]);
+        }
+
+        // Draw dots
+        for (var dotId in dots) {
+          var dot = dots[dotId];
+
+          path = new Path2D();
+          path.arc(midX + scale * dot.distance * Math.cos(dot.direction), midY + scale * dot.distance * Math.sin(dot.direction), scale * dotSize, 0, 2 * Math.PI);
+
+          ctx.fillStyle = dotColour;
+          ctx.fill(path);
         }
 
         // Draw gem
@@ -262,16 +312,13 @@ controllers.controller('GameController', ['$scope',
         ctx.strokeStyle = wallColour;
         ctx.stroke(path);
 
-        // Draw dots
-        for (var dotId in dots) {
-          var dot = dots[dotId];
+        // Draw health
+        ctx.fillStyle = healthFillColour;
+        ctx.fill(healthFillPath);
 
-          path = new Path2D();
-          path.arc(midX + scale * dot.distance * Math.cos(dot.direction), midY + scale * dot.distance * Math.sin(dot.direction), scale * dotSize, 0, 2 * Math.PI);
-
-          ctx.fillStyle = dotColour;
-          ctx.fill(path);
-        }
+        ctx.strokeStyle = healthOutlineColour;
+        ctx.lineWidth = scale * healthOutlineThickness;
+        ctx.stroke(healthTotalPath);
       }
 
       function gameLoop() {
