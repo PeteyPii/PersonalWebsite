@@ -70,7 +70,7 @@ try {
       });
     });
 
-    httpsServer.listen(443, function() {
+    httpsServer.listen(settings.server_https_port, function() {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
@@ -86,7 +86,7 @@ try {
     });
     redirectApp.use('/', app);
 
-    httpServer.listen(80);
+    httpServer.listen(settings.server_http_port);
 
   }).fail(function(err) {
     if (err.stack) {
