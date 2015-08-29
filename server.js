@@ -12,6 +12,7 @@ var Q = require('q');
 var _ = require('lodash');
 
 var mlf = require('./MyLoLFantasy/app.js');
+var settings = require('./settings.js');
 
 try {
   console.log('Rendering LESS files');
@@ -36,14 +37,11 @@ try {
 
   console.log('Starting server up');
 
-  var settings = {};
-  settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
-
   Q.Promise(function(resolve, reject, notify) {
-    if (settings.dont_host_mlf) {
-      resolve();
-    } else {
+    if (settings.host_mlf) {
       resolve(mlf.createApp(true));
+    } else {
+      resolve();
     }
   }).then(function(mlfApp) {
     var app = express();
