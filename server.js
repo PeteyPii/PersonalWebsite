@@ -7,7 +7,6 @@ var express = require('express');
 var favicon = require('serve-favicon');
 var file = require('file');
 var less = require('less');
-var reload = require('reload');
 var Q = require('q');
 var _ = require('lodash');
 
@@ -61,8 +60,6 @@ try {
       cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem'))
     }, app);
 
-    reload(httpsServer, app);
-
     app.get('*', function(req, res) {
       console.log(req.method + ' request at ' + req.url);
       res.sendFile('index.html', {
@@ -80,7 +77,6 @@ try {
     var redirectApp = express();
     var httpServer = http.createServer(redirectApp);
 
-    reload(httpServer, app);
     redirectApp.get('/MLF', function(req, res) {
       if (settings.redirect_default_port) {
         res.redirect('https://' + req.hostname + req.url);
