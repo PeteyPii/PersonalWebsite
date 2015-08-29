@@ -74,7 +74,7 @@ try {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
-      console.log('Server listening at http://%s:%s', host, port);
+      console.log('Server listening at https://%s:%s', host, port);
     });
 
     var redirectApp = express();
@@ -82,7 +82,11 @@ try {
 
     reload(httpServer, app);
     redirectApp.get('/MLF', function(req, res) {
-      res.redirect('https://' + req.hostname + req.url);
+      if (settings.redirect_default_port) {
+        res.redirect('https://' + req.hostname + req.url);
+      } else {
+        res.redirect('https://' + req.hostname + ':' + settings.server_https_port + req.url);
+      }
     });
     redirectApp.use('/', app);
 

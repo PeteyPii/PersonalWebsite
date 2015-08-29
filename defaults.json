@@ -1,5 +1,6 @@
 {
   "host_mlf": true,
   "server_http_port": 80,
-  "server_https_port": 443
+  "server_https_port": 443,
+  "redirect_default_ports": false
 }

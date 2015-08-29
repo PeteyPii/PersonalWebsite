@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('open', 'Task to open the app in the browser.', function() {
     console.log('Opening http://localhost in your browser');
-    open('http://localhost');
+    open('http://localhost:' + settings.server_http_port);
   });
 
   grunt.registerTask('wait', 'Task to wait forever in grunt.', function() {
