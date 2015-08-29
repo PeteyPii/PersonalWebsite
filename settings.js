@@ -23,6 +23,7 @@ function validateSettings(settings) {
     'host_mlf',
     'server_http_port',
     'server_https_port',
+    'redirect_default_port',
   ];
 
   function isValidPort(port) {
@@ -45,6 +46,9 @@ function validateSettings(settings) {
   }
   if (!isValidPort(settings.server_https_port)) {
     throw new Error('Server HTTPS port must be a valid port number');
+  }
+  if (!_.isBoolean(settings.redirect_default_port)) {
+    throw new Error('Redirection to default port must either be `true` or `false`');
   }
 }
 
