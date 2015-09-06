@@ -42,6 +42,8 @@ controllers.controller('GameController', ['$scope',
       $('body').addClass('game-mode');
       $('#game-container').show();
 
+      var prevCursorX;
+      var prevCursorY;
       var cursorX;
       var cursorY;
 
@@ -54,6 +56,26 @@ controllers.controller('GameController', ['$scope',
         cursorX = e.pageX;
         cursorY = e.pageY;
       }
+
+      var enterCode = 13;
+      var trackedKeys = {};
+      trackedKeys[enterCode] = true;
+
+      var prevKeysDown = {};
+      prevKeysDown[enterCode] = false;
+
+      var keysDown = {};
+      keysDown[enterCode] = false;
+
+      $(document).keydown(function(e) {
+        if (trackedKeys[e.which]) {
+          keysDown[e.which] = true;
+        }
+      }).keyup(function(e) {
+        if (trackedKeys[e.which]) {
+          keysDown[e.which] = false;
+        }
+      });
 
       var canvas = document.getElementById('game-canvas')
       var isSupported = !!canvas.getContext;
@@ -69,7 +91,7 @@ controllers.controller('GameController', ['$scope',
       }
 
       function fontValue(font, size, modifiers) {
-        return (modifiers || '') + (size | 0) + 'px ' + font;
+        return (modifiers ? modifiers + ' ' : '') + (size | 0) + 'px ' + font;
       }
 
       function angleDifference(x, y) {
@@ -81,6 +103,21 @@ controllers.controller('GameController', ['$scope',
       }
 
       // Constants
+      var titleState = 0;
+      var playState = 1;
+
+      var titleText = 'Mystery';
+      var titleTextY = 0.0;
+      var titleTextSize = 0.1;
+      var titleTextFont = 'Bitter';
+      var titleTextColour = '#ffffff';
+
+      var playText = 'Play Game';
+      var playTextY = 0.2;
+      var playTextSize = 0.05;
+      var playTextFont = 'Bitter';
+      var playTextColour = '#ffffff';
+
       var bgColour = '#000000';
 
       var gemSize = 0.01;
@@ -147,9 +184,7 @@ controllers.controller('GameController', ['$scope',
       var dotDamage = 0.05;
       var dotScore = 1;
 
-      // Text stuff
-      ctx.textBaseline = 'top';
-
+      var scoreText = 'Score: ';
       var scoreTextX = 0.00;
       var scoreTextY = 0.95;
       var scoreTextSize = 0.05;
@@ -157,6 +192,9 @@ controllers.controller('GameController', ['$scope',
       var scoreTextColour = '#ffffff';
 
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
+
+      var stateStep = [];
+      var stateDraw = [];
 
       // Semi-constants for stuff that only changes sometimes (e.g. on screen resize)
       var width    = 0;
@@ -175,10 +213,12 @@ controllers.controller('GameController', ['$scope',
       var healthFillPath    = null;
       var healthTotalPath   = null;
 
-      // Text stuff
-      var scoreTextLFontValue;
+      var titleTextFontValue;
+      var playTextFontValue;
+      var scoreTextFontValue;
 
       // Variable declarations
+      var gameState = titleState;
       var wallAngle;
       var bgProgress = [];
       for (var i = 0; i < bgSegments; i++) {
@@ -189,31 +229,35 @@ controllers.controller('GameController', ['$scope',
       var health = 1;
       var score = 0;
 
-      function innerHealthBarResize() {
-        healthFillPath = new Path2D();
-
-        healthFillPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
-        healthFillPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
-        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset + healthHeight / 2));
-        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset - healthHeight / 2));
-      }
-
-      function outerHealthBarResize() {
-        healthTotalPath = new Path2D();
-
-        healthTotalPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
-        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
-        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
-        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
-        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
-      }
-
       function setHealth(value) {
         health = clamp(value, 0, 1);
         innerHealthBarResize();
       }
 
-      function step() {
+      stateStep[titleState] = function() {
+        if (keysDown[enterCode] && !prevKeysDown[enterCode]) {
+          gameState = playState;
+        }
+      }
+
+      stateDraw[titleState] = function() {
+        ctx.fillStyle = bgColour;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.font = titleTextFontValue;
+        ctx.fillStyle = titleTextColour;
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillText(titleText, midX, height * titleTextY);
+
+        ctx.font = playTextFontValue;
+        ctx.fillStyle = playTextColour;
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillText(playText, midX, height * playTextY);
+      }
+
+      stateStep[playState] = function() {
         wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
         for (var dotId in dots) {
@@ -251,6 +295,58 @@ controllers.controller('GameController', ['$scope',
 
           dots[dot.id] = dot;
         }
+      }
+
+      stateDraw[playState] = function() {
+        // Draw bg
+        for (var i = 0; i < bgSegments; i++) {
+          ctx.fillStyle = bgColourCalculation(bgProgress[i]);
+          ctx.fill(bgSegmentPaths[i]);
+        }
+
+        // Draw dots
+        for (var dotId in dots) {
+          var dot = dots[dotId];
+
+          path = new Path2D();
+          path.arc(midX + scale * dot.distance * Math.cos(dot.direction), midY + scale * dot.distance * Math.sin(dot.direction), scale * dotSize, 0, 2 * Math.PI);
+
+          ctx.fillStyle = dotColour;
+          ctx.fill(path);
+        }
+
+        // Draw gem
+        ctx.fillStyle = quadToColour(gemShadedColour);
+        ctx.fill(gemInnerPath);
+
+        ctx.lineWidth = scale * gemLineThickness;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = tripleToColour(gemColour);
+        ctx.stroke(gemOuterPath);
+        ctx.lineCap = 'butt';
+
+        // Draw wall
+        var path = new Path2D();
+        path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
+
+        ctx.lineWidth = scale * wallThickness;
+        ctx.strokeStyle = wallColour;
+        ctx.stroke(path);
+
+        // Draw health
+        ctx.fillStyle = healthFillColour;
+        ctx.fill(healthFillPath);
+
+        ctx.strokeStyle = healthOutlineColour;
+        ctx.lineWidth = scale * healthOutlineThickness;
+        ctx.stroke(healthTotalPath);
+
+        // Draw text
+        ctx.font = scoreTextFontValue;
+        ctx.fillStyle = scoreTextColour;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(scoreText + score, width * scoreTextX, height * scoreTextY);
       }
 
       function screenResize() {
@@ -303,58 +399,42 @@ controllers.controller('GameController', ['$scope',
         outerHealthBarResize();
 
         // Text updates
+        titleTextFontValue = fontValue(titleTextFont, titleTextSize * height, 'bold');
+        playTextFontValue = fontValue(playTextFont, playTextSize * height);
         scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height);
       }
 
+      function innerHealthBarResize() {
+        healthFillPath = new Path2D();
+
+        healthFillPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthFillPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset + healthHeight / 2));
+        healthFillPath.lineTo(midX + scale * healthWidth * (health - 0.5), midY + scale * (healthYOffset - healthHeight / 2));
+      }
+
+      function outerHealthBarResize() {
+        healthTotalPath = new Path2D();
+
+        healthTotalPath.moveTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset + healthHeight / 2));
+        healthTotalPath.lineTo(midX + scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+        healthTotalPath.lineTo(midX - scale * healthWidth / 2, midY + scale * (healthYOffset - healthHeight / 2));
+      }
+
+      function step() {
+        stateStep[gameState]();
+
+        prevCursorX = cursorX;
+        prevCursorY = cursorY;
+
+        // Create an independent copy
+        prevKeysDown = $.extend({}, keysDown);
+      }
+
       function draw() {
-        // Draw bg
-        for (var i = 0; i < bgSegments; i++) {
-          ctx.fillStyle = bgColourCalculation(bgProgress[i]);
-          ctx.fill(bgSegmentPaths[i]);
-        }
-
-        // Draw dots
-        for (var dotId in dots) {
-          var dot = dots[dotId];
-
-          path = new Path2D();
-          path.arc(midX + scale * dot.distance * Math.cos(dot.direction), midY + scale * dot.distance * Math.sin(dot.direction), scale * dotSize, 0, 2 * Math.PI);
-
-          ctx.fillStyle = dotColour;
-          ctx.fill(path);
-        }
-
-        // Draw gem
-        ctx.fillStyle = quadToColour(gemShadedColour);
-        ctx.fill(gemInnerPath);
-
-        ctx.lineWidth = scale * gemLineThickness;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = tripleToColour(gemColour);
-        ctx.stroke(gemOuterPath);
-        ctx.lineCap = 'butt';
-
-        // Draw wall
-        var path = new Path2D();
-        path.arc(midX, midY, scale * wallDistance, wallAngle - wallHalfWidth, wallAngle + wallHalfWidth, false);
-
-        ctx.lineWidth = scale * wallThickness;
-        ctx.strokeStyle = wallColour;
-        ctx.stroke(path);
-
-        // Draw health
-        ctx.fillStyle = healthFillColour;
-        ctx.fill(healthFillPath);
-
-        ctx.strokeStyle = healthOutlineColour;
-        ctx.lineWidth = scale * healthOutlineThickness;
-        ctx.stroke(healthTotalPath);
-
-        // Draw text
-        ctx.font = scoreTextFontValue;
-        ctx.fillStyle = scoreTextColour;
-        ctx.textBaseline = 'top';
-        ctx.fillText('Score: ' + score, width * scoreTextX, height * scoreTextY);
+        stateDraw[gameState]();
       }
 
       function gameLoop() {
