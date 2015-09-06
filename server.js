@@ -10,10 +10,14 @@ var less = require('less');
 var Q = require('q');
 var _ = require('lodash');
 
-var mlf = require('./MyLoLFantasy/app.js');
 var settings = require('./settings.js');
 
 try {
+  var mlf;
+  if (settings.host_mlf) {
+    mlf = require('./MyLoLFantasy/app.js');
+  }
+
   console.log('Rendering LESS files');
 
   file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
