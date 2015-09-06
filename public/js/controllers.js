@@ -68,6 +68,10 @@ controllers.controller('GameController', ['$scope',
         return 'rgba(' + quad + ')';
       }
 
+      function fontValue(font, size, modifiers) {
+        return (modifiers || '') + (size | 0) + 'px ' + font;
+      }
+
       function angleDifference(x, y) {
         return Math.atan2(Math.sin(y - x), Math.cos(y - x));
       }
@@ -141,10 +145,20 @@ controllers.controller('GameController', ['$scope',
 
       var dotProgress = 0.02;
       var dotDamage = 0.05;
+      var dotScore = 1;
+
+      // Text stuff
+      ctx.textBaseline = 'top';
+
+      var scoreTextX = 0.00;
+      var scoreTextY = 0.95;
+      var scoreTextSize = 0.05;
+      var scoreTextFont = 'Bitter';
+      var scoreTextColour = '#ffffff';
 
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
 
-      // Semi-constants for stuff that only changes sometimes (e.f=g. on screen resize)
+      // Semi-constants for stuff that only changes sometimes (e.g. on screen resize)
       var width    = 0;
       var height   = 0;
       var midX     = 0;
@@ -161,6 +175,9 @@ controllers.controller('GameController', ['$scope',
       var healthFillPath    = null;
       var healthTotalPath   = null;
 
+      // Text stuff
+      var scoreTextLFontValue;
+
       // Variable declarations
       var wallAngle;
       var bgProgress = [];
@@ -170,6 +187,7 @@ controllers.controller('GameController', ['$scope',
       var idCounter = 0;
       var dots = {};
       var health = 1;
+      var score = 0;
 
       function innerHealthBarResize() {
         healthFillPath = new Path2D();
@@ -212,6 +230,7 @@ controllers.controller('GameController', ['$scope',
             if (Math.abs(angleDifference(wallAngle, dot.direction)) <= wallBBoxHalfWidth) {
               var segmentIx = (dot.direction * bgSegments / (2 * Math.PI)) | 0;
               bgProgress[segmentIx] += dotProgress;
+              score += dotScore;
 
               delete dots[dot.id];
             }
@@ -282,6 +301,9 @@ controllers.controller('GameController', ['$scope',
 
         innerHealthBarResize();
         outerHealthBarResize();
+
+        // Text updates
+        scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height);
       }
 
       function draw() {
@@ -327,6 +349,12 @@ controllers.controller('GameController', ['$scope',
         ctx.strokeStyle = healthOutlineColour;
         ctx.lineWidth = scale * healthOutlineThickness;
         ctx.stroke(healthTotalPath);
+
+        // Draw text
+        ctx.font = scoreTextFontValue;
+        ctx.fillStyle = scoreTextColour;
+        ctx.textBaseline = 'top';
+        ctx.fillText('Score: ' + score, width * scoreTextX, height * scoreTextY);
       }
 
       function gameLoop() {
