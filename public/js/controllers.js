@@ -109,13 +109,13 @@ controllers.controller('GameController', ['$scope',
       var titleText = 'Mystery';
       var titleTextY = 0.0;
       var titleTextSize = 0.1;
-      var titleTextFont = 'Bitter';
+      var titleTextFont = 'Oswald';
       var titleTextColour = '#ffffff';
 
       var playText = 'Play Game';
       var playTextY = 0.2;
       var playTextSize = 0.05;
-      var playTextFont = 'Bitter';
+      var playTextFont = 'Oswald';
       var playTextColour = '#ffffff';
 
       var bgColour = '#000000';
@@ -186,9 +186,9 @@ controllers.controller('GameController', ['$scope',
 
       var scoreText = 'Score: ';
       var scoreTextX = 0.00;
-      var scoreTextY = 0.95;
+      var scoreTextY = 1.00;
       var scoreTextSize = 0.05;
-      var scoreTextFont = 'Bitter';
+      var scoreTextFont = 'Oswald';
       var scoreTextColour = '#ffffff';
 
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
@@ -345,7 +345,7 @@ controllers.controller('GameController', ['$scope',
         ctx.font = scoreTextFontValue;
         ctx.fillStyle = scoreTextColour;
         ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
+        ctx.textBaseline = 'bottom';
         ctx.fillText(scoreText + score, width * scoreTextX, height * scoreTextY);
       }
 
@@ -399,9 +399,9 @@ controllers.controller('GameController', ['$scope',
         outerHealthBarResize();
 
         // Text updates
-        titleTextFontValue = fontValue(titleTextFont, titleTextSize * height, 'bold');
-        playTextFontValue = fontValue(playTextFont, playTextSize * height);
-        scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height);
+        titleTextFontValue = fontValue(titleTextFont, titleTextSize * height, 'bold small-caps');
+        playTextFontValue = fontValue(playTextFont, playTextSize * height, 'small-caps');
+        scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height, 'small-caps');
       }
 
       function innerHealthBarResize() {
