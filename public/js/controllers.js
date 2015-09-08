@@ -58,6 +58,8 @@ controllers.controller('GameController', ['$scope',
       }
 
       var enterCode = 13;
+      var shiftXCode = 88;
+
       var trackedKeys = {};
       trackedKeys[enterCode] = true;
 
@@ -74,6 +76,13 @@ controllers.controller('GameController', ['$scope',
       }).keyup(function(e) {
         if (trackedKeys[e.which]) {
           keysDown[e.which] = false;
+        }
+      }).keypress(function(e) {
+        if (e.which === shiftXCode) {
+          $('.main-site').show();
+          $('body').removeClass('game-mode');
+          $('#game-container').hide();
+          clearInterval(loopHandle);
         }
       });
 
@@ -446,8 +455,9 @@ controllers.controller('GameController', ['$scope',
         draw();
       }
 
+      var loopHandle;
       if (isSupported) {
-        setInterval(gameLoop, 16);
+        loopHandle = setInterval(gameLoop, 16);
       } else {
         // TODO: Make user aware that the game isn't available to them
       }
