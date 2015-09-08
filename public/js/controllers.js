@@ -42,6 +42,13 @@ controllers.controller('GameController', ['$scope',
       $('body').addClass('game-mode');
       $('#game-container').show();
 
+      function backToSite() {
+        $('.main-site').show();
+        $('body').removeClass('game-mode');
+        $('#game-container').hide();
+        clearInterval(loopHandle);
+      }
+
       var prevCursorX;
       var prevCursorY;
       var cursorX;
@@ -58,16 +65,32 @@ controllers.controller('GameController', ['$scope',
       }
 
       var enterCode = 13;
+      var leftCode = 37;
+      var upCode = 38;
+      var rightCode = 39;
+      var downCode = 40;
       var shiftXCode = 88;
 
       var trackedKeys = {};
-      trackedKeys[enterCode] = true;
+      trackedKeys[enterCode]  = true;
+      trackedKeys[leftCode]   = true;
+      trackedKeys[upCode]     = true;
+      trackedKeys[rightCode]  = true;
+      trackedKeys[downCode]   = true;
 
       var prevKeysDown = {};
-      prevKeysDown[enterCode] = false;
+      prevKeysDown[enterCode]   = false;
+      prevKeysDown[leftCode]    = false;
+      prevKeysDown[upCode]      = false;
+      prevKeysDown[rightCode]   = false;
+      prevKeysDown[downCode]    = false;
 
       var keysDown = {};
-      keysDown[enterCode] = false;
+      keysDown[enterCode]   = false;
+      keysDown[leftCode]    = false;
+      keysDown[upCode]      = false;
+      keysDown[rightCode]   = false;
+      keysDown[downCode]    = false;
 
       $(document).keydown(function(e) {
         if (trackedKeys[e.which]) {
@@ -79,10 +102,7 @@ controllers.controller('GameController', ['$scope',
         }
       }).keypress(function(e) {
         if (e.which === shiftXCode) {
-          $('.main-site').show();
-          $('body').removeClass('game-mode');
-          $('#game-container').hide();
-          clearInterval(loopHandle);
+          backToSite();
         }
       });
 
@@ -111,21 +131,39 @@ controllers.controller('GameController', ['$scope',
         return Math.max(min, Math.min(max, val));
       }
 
+      function pointInRect(px, py, rl, rt, rr, rb) {
+        return px >= rl && px <= rr && py >= rt && py <= rb;
+      }
+
       // Constants
-      var titleState = 0;
-      var playState = 1;
+      var titleStateId = 0;
+      var playStateId = 1;
+
+      var titleTextSize = 0.15;
+      var menuItemSize = 0.05;
+      var menuFont = 'Oswald';
+      var menuTextColour = '#ffffff';
 
       var titleText = 'Mystery';
-      var titleTextY = 0.0;
-      var titleTextSize = 0.1;
-      var titleTextFont = 'Oswald';
-      var titleTextColour = '#ffffff';
+      var titleTextY = 0.3;
 
       var playText = 'Play Game';
-      var playTextY = 0.2;
-      var playTextSize = 0.05;
-      var playTextFont = 'Oswald';
-      var playTextColour = '#ffffff';
+      var playTextY = 0.6;
+
+      var exitText = 'Exit';
+      var exitTextY = 0.675;
+
+      var itemSelected = -1;
+      var itemPlayId = 0;
+      var itemExitId = 1;
+      var itemCount = 2;
+
+      var itemSelectedMarkerSize = 0.02;
+      var itemSelectedMarkerXOffset = 0.13;
+      var itemSelectedMarkerSpeed = 0.005;
+      var itemSelectedMarkerColour = '#ffffff';
+
+      var menuItemActions = [];
 
       var bgColour = '#000000';
 
@@ -194,8 +232,8 @@ controllers.controller('GameController', ['$scope',
       var dotScore = 1;
 
       var scoreText = 'Score: ';
-      var scoreTextX = 0.00;
-      var scoreTextY = 1.00;
+      var scoreTextX = 0.005;
+      var scoreTextY = 0.995;
       var scoreTextSize = 0.05;
       var scoreTextFont = 'Oswald';
       var scoreTextColour = '#ffffff';
@@ -217,17 +255,25 @@ controllers.controller('GameController', ['$scope',
         bgSegmentPaths.push(null);
       }
 
+      var itemSelectedMarkerPath = null;
+
       var gemInnerPath      = null;
       var gemOuterPath      = null;
       var healthFillPath    = null;
       var healthTotalPath   = null;
 
       var titleTextFontValue;
-      var playTextFontValue;
+      var menuItemFontValue;
+      var playTextWidth;
+      var exitTextWidth;
+
       var scoreTextFontValue;
 
       // Variable declarations
-      var gameState = titleState;
+      var gameState = titleStateId;
+
+      var itemSelectedMarkerAngle = 0;
+
       var wallAngle;
       var bgProgress = [];
       for (var i = 0; i < bgSegments; i++) {
@@ -243,30 +289,96 @@ controllers.controller('GameController', ['$scope',
         innerHealthBarResize();
       }
 
-      stateStep[titleState] = function() {
-        if (keysDown[enterCode] && !prevKeysDown[enterCode]) {
-          gameState = playState;
-        }
+      menuItemActions[itemPlayId] = function() {
+        gameState = playStateId;
       }
 
-      stateDraw[titleState] = function() {
+      menuItemActions[itemExitId] = backToSite;
+
+      stateStep[titleStateId] = function() {
+        if (keysDown[enterCode] && !prevKeysDown[enterCode]) {
+          if (itemSelected === -1) {
+            menuItemActions[itemPlayId]();
+          } else {
+            menuItemActions[itemSelected]();
+          }
+        }
+
+        if (keysDown[downCode] && !prevKeysDown[downCode]) {
+          if (itemSelected === -1) {
+            itemSelected = itemPlayId;
+          } else {
+            itemSelected++;
+            if (itemSelected === itemCount) {
+              itemSelected = 0;
+            }
+          }
+        }
+
+        if (keysDown[upCode] && !prevKeysDown[upCode]) {
+          if (itemSelected === -1) {
+            itemSelected = itemPlayId;
+          } else {
+            itemSelected--;
+            if (itemSelected === -1) {
+              itemSelected = itemCount - 1;;
+            }
+          }
+        }
+
+        if (cursorX !== prevCursorX ||  cursorY !== prevCursorY) {
+          if (pointInRect(cursorX, cursorY, midX - playTextWidth / 2, height * playTextY, midX + playTextWidth / 2, height * (playTextY + menuItemSize))) {
+            itemSelected = itemPlayId;
+          } else if (pointInRect(cursorX, cursorY, midX - exitTextWidth / 2, height * exitTextY, midX + exitTextWidth / 2, height * (exitTextY + menuItemSize))) {
+            itemSelected = itemExitId;
+          }
+        }
+
+        itemSelectedMarkerAngle += itemSelectedMarkerSpeed;
+      }
+
+      stateDraw[titleStateId] = function() {
         ctx.fillStyle = bgColour;
         ctx.fillRect(0, 0, width, height);
 
-        ctx.font = titleTextFontValue;
-        ctx.fillStyle = titleTextColour;
-        ctx.textBaseline = 'top';
+        ctx.textBaseline = 'hanging';
         ctx.textAlign = 'center';
+        ctx.fillStyle = menuTextColour;
+
+        ctx.font = titleTextFontValue;
         ctx.fillText(titleText, midX, height * titleTextY);
 
-        ctx.font = playTextFontValue;
-        ctx.fillStyle = playTextColour;
-        ctx.textBaseline = 'top';
-        ctx.textAlign = 'center';
+        ctx.font = menuItemFontValue;
         ctx.fillText(playText, midX, height * playTextY);
+        ctx.fillText(exitText, midX, height * exitTextY);
+
+        if (itemSelected !== -1) {
+
+          var xOffset = itemSelectedMarkerXOffset * height;
+          var yOffset;
+          if (itemSelected === itemPlayId) {
+            yOffset = playTextY;
+          } else if (itemSelected === itemExitId) {
+            yOffset = exitTextY;
+          }
+
+          ctx.save();
+
+          ctx.fillStyle = itemSelectedMarkerColour;
+
+          ctx.translate(midX - xOffset, height * (yOffset + menuItemSize / 2));
+          ctx.rotate(itemSelectedMarkerAngle);
+          ctx.fill(itemSelectedMarkerPath);
+          ctx.rotate(-itemSelectedMarkerAngle);
+          ctx.translate(2 * xOffset, 0);
+          ctx.rotate(itemSelectedMarkerAngle);
+          ctx.fill(itemSelectedMarkerPath);
+
+          ctx.restore();
+        }
       }
 
-      stateStep[playState] = function() {
+      stateStep[playStateId] = function() {
         wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
         for (var dotId in dots) {
@@ -306,7 +418,7 @@ controllers.controller('GameController', ['$scope',
         }
       }
 
-      stateDraw[playState] = function() {
+      stateDraw[playStateId] = function() {
         // Draw bg
         for (var i = 0; i < bgSegments; i++) {
           ctx.fillStyle = bgColourCalculation(bgProgress[i]);
@@ -354,7 +466,7 @@ controllers.controller('GameController', ['$scope',
         ctx.font = scoreTextFontValue;
         ctx.fillStyle = scoreTextColour;
         ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
+        ctx.textBaseline = 'alphabetic';
         ctx.fillText(scoreText + score, width * scoreTextX, height * scoreTextY);
       }
 
@@ -408,9 +520,20 @@ controllers.controller('GameController', ['$scope',
         outerHealthBarResize();
 
         // Text updates
-        titleTextFontValue = fontValue(titleTextFont, titleTextSize * height, 'bold small-caps');
-        playTextFontValue = fontValue(playTextFont, playTextSize * height, 'small-caps');
+        titleTextFontValue = fontValue(menuFont, titleTextSize * height, 'bold small-caps');
+        menuItemFontValue = fontValue(menuFont, menuItemSize * height, 'small-caps');
         scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height, 'small-caps');
+
+        ctx.font = menuItemFontValue;
+        playTextWidth = ctx.measureText(playText).width;
+        exitTextWidth = ctx.measureText(exitText).width;
+
+        itemSelectedMarkerPath = new Path2D()
+
+        itemSelectedMarkerPath.moveTo(height * itemSelectedMarkerSize, 0);
+        itemSelectedMarkerPath.lineTo(0, height * itemSelectedMarkerSize);
+        itemSelectedMarkerPath.lineTo(-height * itemSelectedMarkerSize, 0);
+        itemSelectedMarkerPath.lineTo(0, -height * itemSelectedMarkerSize);
       }
 
       function innerHealthBarResize() {
