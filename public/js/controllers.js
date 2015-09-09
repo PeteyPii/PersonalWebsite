@@ -64,6 +64,10 @@ controllers.controller('GameController', ['$scope',
         cursorY = e.pageY;
       }
 
+      leftMBDown = false;
+      prevLeftMBDown = false;
+
+      var lmbCode = 1;
       var enterCode = 13;
       var leftCode = 37;
       var upCode = 38;
@@ -92,7 +96,15 @@ controllers.controller('GameController', ['$scope',
       keysDown[rightCode]   = false;
       keysDown[downCode]    = false;
 
-      $(document).keydown(function(e) {
+      $(document).mousedown(function(e) {
+        if (e.which === lmbCode) {
+          leftMBDown = true;
+        }
+      }).mouseup(function(e) {
+        if (e.which === lmbCode) {
+          leftMBDown = false;
+        }
+      }).keydown(function(e) {
         if (trackedKeys[e.which]) {
           keysDown[e.which] = true;
         }
@@ -160,7 +172,7 @@ controllers.controller('GameController', ['$scope',
 
       var itemSelectedMarkerSize = 0.02;
       var itemSelectedMarkerXOffset = 0.13;
-      var itemSelectedMarkerSpeed = 0.005;
+      var itemSelectedMarkerSpeed = 0.02;
       var itemSelectedMarkerColour = '#ffffff';
 
       var menuItemActions = [];
@@ -267,6 +279,9 @@ controllers.controller('GameController', ['$scope',
       var playTextWidth;
       var exitTextWidth;
 
+      var playItemBBox;
+      var exitItemBBox;
+
       var scoreTextFontValue;
 
       // Variable declarations
@@ -326,11 +341,22 @@ controllers.controller('GameController', ['$scope',
           }
         }
 
+        var inPlay = pointInRect(cursorX, cursorY, playItemBBox.left, playItemBBox.top, playItemBBox.right, playItemBBox.bottom);
+        var inExit = pointInRect(cursorX, cursorY, exitItemBBox.left, exitItemBBox.top, exitItemBBox.right, exitItemBBox.bottom);
+
         if (cursorX !== prevCursorX ||  cursorY !== prevCursorY) {
-          if (pointInRect(cursorX, cursorY, midX - playTextWidth / 2, height * playTextY, midX + playTextWidth / 2, height * (playTextY + menuItemSize))) {
+          if (inPlay) {
             itemSelected = itemPlayId;
-          } else if (pointInRect(cursorX, cursorY, midX - exitTextWidth / 2, height * exitTextY, midX + exitTextWidth / 2, height * (exitTextY + menuItemSize))) {
+          } else if (inExit) {
             itemSelected = itemExitId;
+          }
+        }
+
+        if (leftMBDown && !prevLeftMBDown) {
+          if (inPlay) {
+            menuItemActions[itemPlayId]();
+          } else if (inExit) {
+            menuItemActions[itemExitId]();
           }
         }
 
@@ -528,6 +554,20 @@ controllers.controller('GameController', ['$scope',
         playTextWidth = ctx.measureText(playText).width;
         exitTextWidth = ctx.measureText(exitText).width;
 
+        playItemBBox = {
+          left: midX - playTextWidth / 2,
+          top: height * playTextY,
+          right: midX + playTextWidth / 2,
+          bottom: height * (playTextY + menuItemSize)
+        };
+
+        exitItemBBox = {
+          left: midX - exitTextWidth / 2,
+          top: height * exitTextY,
+          right: midX + exitTextWidth / 2,
+          bottom: height * (exitTextY + menuItemSize)
+        };
+
         itemSelectedMarkerPath = new Path2D()
 
         itemSelectedMarkerPath.moveTo(height * itemSelectedMarkerSize, 0);
@@ -560,6 +600,7 @@ controllers.controller('GameController', ['$scope',
 
         prevCursorX = cursorX;
         prevCursorY = cursorY;
+        prevLeftMBDown = leftMBDown;
 
         // Create an independent copy
         prevKeysDown = $.extend({}, keysDown);
