@@ -252,6 +252,25 @@ controllers.controller('GameController', ['$scope',
 
       var wallBBoxHalfWidth = wallHalfWidth + dotSize / wallDistance;
 
+      var gameOverOverlayColour = 'rgba(0, 0, 0, 0.5)';
+
+      var gameOverTextFont = 'Oswald';
+      var gameOverTextColour = '#ffffff';
+      var gameOverNormalTextSize = 0.05;
+
+      var gameOverAnnounceText = 'Game Over!'
+      var gameOverBackText = 'Back to Menu';
+      var gameOverScoreText = 'You achieved a score of: ';
+      var gameOverHighScoreText = 'New High Score!';
+
+      var gameOverAnnounceSize = 0.15;
+      var gameOverAnnounceTextY = 0.2;
+      var gameOverScoreTextY = 0.65;
+      var gameOverHighScoreTextY = 0.75;
+
+      var gameOverBackTextX = 0.005;
+      var gameOverBackTextY = 0.995;
+
       var stateStep = [];
       var stateDraw = [];
 
@@ -276,13 +295,15 @@ controllers.controller('GameController', ['$scope',
 
       var titleTextFontValue;
       var menuItemFontValue;
-      var playTextWidth;
-      var exitTextWidth;
 
       var playItemBBox;
       var exitItemBBox;
 
       var scoreTextFontValue;
+
+      var gameOverAnnounceFontValue;
+      var gameOverNormalFontValue;
+      var gameOverBackBBox;
 
       // Variable declarations
       var gameState = titleStateId;
@@ -298,6 +319,7 @@ controllers.controller('GameController', ['$scope',
       var dots = {};
       var health = 1;
       var score = 0;
+      var gameOver = false;
 
       function setHealth(value) {
         health = clamp(value, 0, 1);
@@ -405,42 +427,54 @@ controllers.controller('GameController', ['$scope',
       }
 
       stateStep[playStateId] = function() {
-        wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
+        if (!gameOver) {
+          wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
-        for (var dotId in dots) {
-          var dot = dots[dotId];
+          for (var dotId in dots) {
+            var dot = dots[dotId];
 
-          dot.previousDistance = dot.distance;
-          dot.distance -= dot.speed;
-        }
+            dot.previousDistance = dot.distance;
+            dot.distance -= dot.speed;
+          }
 
-        for (var dotId in dots) {
-          var dot = dots[dotId];
+          for (var dotId in dots) {
+            var dot = dots[dotId];
 
-          if (dot.previousDistance + dotSize >= wallDistance - wallThickness / 2 && dot.distance - dotSize <= wallDistance + wallThickness / 2) {
-            if (Math.abs(angleDifference(wallAngle, dot.direction)) <= wallBBoxHalfWidth) {
-              var segmentIx = (dot.direction * bgSegments / (2 * Math.PI)) | 0;
-              bgProgress[segmentIx] += dotProgress;
-              score += dotScore;
+            if (dot.previousDistance + dotSize >= wallDistance - wallThickness / 2 && dot.distance - dotSize <= wallDistance + wallThickness / 2) {
+              if (Math.abs(angleDifference(wallAngle, dot.direction)) <= wallBBoxHalfWidth) {
+                var segmentIx = (dot.direction * bgSegments / (2 * Math.PI)) | 0;
+                bgProgress[segmentIx] += dotProgress;
+                score += dotScore;
+
+                delete dots[dot.id];
+              }
+            } else if (dot.distance <= 0) {
+              setHealth(health - dotDamage);
 
               delete dots[dot.id];
             }
-          } else if (dot.distance <= 0) {
-            setHealth(health - dotDamage);
-
-            delete dots[dot.id];
           }
-        }
 
-        if (Math.random() < dotSpawnChance) {
-          var dot = {};
+          if (Math.random() < dotSpawnChance) {
+            var dot = {};
 
-          dot.speed = Math.random() * (dotMaxSpeed - dotMinSpeed) + dotMinSpeed;
-          dot.direction = 2 * Math.PI * Math.random();
-          dot.id = idCounter++;
-          dot.distance = 1;
+            dot.speed = Math.random() * (dotMaxSpeed - dotMinSpeed) + dotMinSpeed;
+            dot.direction = 2 * Math.PI * Math.random();
+            dot.id = idCounter++;
+            dot.distance = 1;
 
-          dots[dot.id] = dot;
+            dots[dot.id] = dot;
+          }
+
+          if (health <= 0) {
+            gameOver = true;
+          }
+        } else {
+          if (leftMBDown && !prevLeftMBDown) {
+            if (pointInRect(cursorX, cursorY, gameOverBackBBox.left, gameOverBackBBox.top, gameOverBackBBox.right, gameOverBackBBox.bottom)) {
+              gameState = titleStateId;
+            }
+          }
         }
       }
 
@@ -488,12 +522,35 @@ controllers.controller('GameController', ['$scope',
         ctx.lineWidth = scale * healthOutlineThickness;
         ctx.stroke(healthTotalPath);
 
-        // Draw text
-        ctx.font = scoreTextFontValue;
-        ctx.fillStyle = scoreTextColour;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillText(scoreText + score, width * scoreTextX, height * scoreTextY);
+        if (!gameOver) {
+          // Draw score
+          ctx.font = scoreTextFontValue;
+          ctx.fillStyle = scoreTextColour;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillText(scoreText + score, width * scoreTextX, height * scoreTextY);
+        } else {
+          // Draw game over specific stuff
+          ctx.fillStyle = gameOverOverlayColour;
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'hanging';
+          ctx.fillStyle = gameOverTextColour;
+
+          ctx.font = gameOverAnnounceFontValue;
+          ctx.fillText(gameOverAnnounceText, midX, height * gameOverAnnounceTextY);
+
+          ctx.font = gameOverNormalFontValue;
+          ctx.fillText(gameOverScoreText + score, midX, height * gameOverScoreTextY);
+          if (true /* isHighScore */) {
+            ctx.fillText(gameOverHighScoreText, midX, height * gameOverHighScoreTextY);
+          }
+
+          ctx.textAlign = 'left'
+          ctx.textBaseline = 'alphabetic'
+          ctx.fillText(gameOverBackText, width * gameOverBackTextX, height * gameOverBackTextY);
+        }
       }
 
       function screenResize() {
@@ -550,9 +607,12 @@ controllers.controller('GameController', ['$scope',
         menuItemFontValue = fontValue(menuFont, menuItemSize * height, 'small-caps');
         scoreTextFontValue = fontValue(scoreTextFont, scoreTextSize * height, 'small-caps');
 
+        gameOverAnnounceFontValue = fontValue(gameOverTextFont, gameOverAnnounceSize * height, 'bold small-caps');
+        gameOverNormalFontValue = fontValue(gameOverTextFont, gameOverNormalTextSize * height, 'small-caps');
+
         ctx.font = menuItemFontValue;
-        playTextWidth = ctx.measureText(playText).width;
-        exitTextWidth = ctx.measureText(exitText).width;
+        var playTextWidth = ctx.measureText(playText).width;
+        var exitTextWidth = ctx.measureText(exitText).width;
 
         playItemBBox = {
           left: midX - playTextWidth / 2,
@@ -566,6 +626,16 @@ controllers.controller('GameController', ['$scope',
           top: height * exitTextY,
           right: midX + exitTextWidth / 2,
           bottom: height * (exitTextY + menuItemSize)
+        };
+
+        ctx.font = gameOverNormalFontValue;
+        var gameOverBackTextWidth = ctx.measureText(gameOverBackText).width;
+
+        gameOverBackBBox = {
+          left: gameOverBackTextX * width,
+          top: (gameOverBackTextY - gameOverNormalTextSize) * height,
+          right: gameOverBackTextX * width + gameOverBackTextWidth,
+          bottom: gameOverBackTextY * height,
         };
 
         itemSelectedMarkerPath = new Path2D()
