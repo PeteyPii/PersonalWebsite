@@ -12,6 +12,7 @@
     "q": "1.4.1",
     "serve-favicon": "2.3.0"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/PeteyPii/PersonalWebsite"
