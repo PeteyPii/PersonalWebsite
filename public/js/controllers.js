@@ -311,15 +311,27 @@ controllers.controller('GameController', ['$scope',
       var itemSelectedMarkerAngle = 0;
 
       var wallAngle;
-      var bgProgress = [];
-      for (var i = 0; i < bgSegments; i++) {
-        bgProgress.push(0);
+      var bgProgress;
+      var idCounter;
+      var dots;
+      var health;
+      var score;
+      var gameOver;
+
+      restartGame();
+
+      // Initializes all game variables to their initial values
+      function restartGame() {
+        bgProgress = [];
+        for (var i = 0; i < bgSegments; i++) {
+          bgProgress.push(0);
+        }
+        idCounter = 0;
+        dots = {};
+        health = 1;
+        score = 0;
+        gameOver = false;
       }
-      var idCounter = 0;
-      var dots = {};
-      var health = 1;
-      var score = 0;
-      var gameOver = false;
 
       function setHealth(value) {
         health = clamp(value, 0, 1);
@@ -472,6 +484,7 @@ controllers.controller('GameController', ['$scope',
         } else {
           if (leftMBDown && !prevLeftMBDown) {
             if (pointInRect(cursorX, cursorY, gameOverBackBBox.left, gameOverBackBBox.top, gameOverBackBBox.right, gameOverBackBBox.bottom)) {
+              restartGame();
               gameState = titleStateId;
             }
           }
