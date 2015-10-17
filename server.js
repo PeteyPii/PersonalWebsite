@@ -10,6 +10,7 @@ var less = require('less');
 var Q = require('q');
 var _ = require('lodash');
 
+var logger = require('./logger.js');
 var settings = require('./settings.js');
 
 try {
@@ -18,7 +19,7 @@ try {
     mlf = require('./MyLoLFantasy/app.js');
   }
 
-  console.log('Rendering LESS files');
+  logger.log('Rendering LESS files');
 
   file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
     for (var i = 0; i < files.length; i++) {
@@ -38,7 +39,7 @@ try {
     }
   });
 
-  console.log('Starting server up');
+  logger.log('Starting server up');
 
   Q.Promise(function(resolve, reject, notify) {
     if (settings.host_mlf) {
@@ -51,9 +52,9 @@ try {
 
     if (mlfApp) {
       app.use('/MLF', mlfApp);
-      console.log('Hosting MLF');
+      logger.log('Hosting MLF');
     } else {
-      console.log('Opted out of hosting MLF');
+      logger.log('Opted out of hosting MLF');
     }
 
     app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
@@ -65,7 +66,7 @@ try {
     }, app);
 
     app.get('*', function(req, res) {
-      console.log(req.method + ' request at ' + req.url);
+      logger.log(req.method + ' request at ' + req.url);
       res.sendFile('index.html', {
         root: __dirname + '/'
       });
@@ -75,7 +76,7 @@ try {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
-      console.log('Server listening at https://%s:%s', host, port);
+      logger.log('Server listening at https://' + host + ':' + port);
     });
 
     var redirectApp = express();
@@ -94,16 +95,16 @@ try {
 
   }).fail(function(err) {
     if (err.stack) {
-      console.error(err.stack);
+      logger.error(err.stack);
     } else {
-      console.error('Error: ' + err);
+      logger.error('Error: ' + err);
     }
   }).done();
 } catch (err) {
   if (err.stack) {
-    console.error(err.stack);
+    logger.error(err.stack);
   } else {
-    console.error('Error: ' + err);
+    logger.error('Error: ' + err);
   }
 }
 
