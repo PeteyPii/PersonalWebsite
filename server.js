@@ -3,6 +3,7 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 
+var compression = require('compression');
 var express = require('express');
 var favicon = require('serve-favicon');
 var file = require('file');
@@ -57,6 +58,7 @@ try {
       logger.log('Opted out of hosting MLF');
     }
 
+    app.use(compression());
     app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
     app.use(express.static(path.join(__dirname, 'public')));
 
