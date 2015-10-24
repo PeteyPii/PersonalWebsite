@@ -191,6 +191,7 @@ controllers.controller('GameController', ['$scope',
       var titleStateId = 0;
       var playStateId = 1;
       var highScoresStateId = 2;
+      var instructionsStateId = 3;
 
       var titleTextSize = 0.25;
       var menuItemSize = 0.05;
@@ -203,17 +204,21 @@ controllers.controller('GameController', ['$scope',
       var playText = 'Play Game';
       var playTextY = 0.6;
 
+      var instructionsText = 'Instructions';
+      var instructionsTextY = 0.675;
+
       var highScoresText = 'High Scores';
-      var highScoresTextY = 0.675;
+      var highScoresTextY = 0.75;
 
       var exitText = 'Exit';
-      var exitTextY = 0.75;
+      var exitTextY = 0.825;
 
       var itemSelected = -1;
       var itemPlayId = 0;
-      var itemHighScoresId = 1;
-      var itemExitId = 2;
-      var itemCount = 3;
+      var itemInstructionsId = 1;
+      var itemHighScoresId = 2;
+      var itemExitId = 3;
+      var itemCount = 4;
 
       var itemSelectedMarkerSize = 0.02;
       var itemSelectedMarkerXOffset = 0.13;
@@ -335,6 +340,26 @@ controllers.controller('GameController', ['$scope',
       var highScoresBackTextX = 0.005;
       var highScoresBackTextY = 0.995;
 
+      var instructionsFont = 'Oswald';
+      var instructionsTextColour = '#ffffff';
+      var instructionsNormalSize = 0.05;
+
+      var instructionsTitleText = 'Instructions';
+      var instructionsHowToPlayList = [
+        'Protect your crystal at the center of the screen from',
+        'incoming meteorites. You earn points by blocking',
+        'meteorites with a mystical paddle controlled by',
+        'moving your mouse or touching the screen. If your',
+        'crystal takes too many hits, you lose!',
+      ];
+      var instructionsBackText = 'Back To Menu';
+
+      var instructionsTitleSize = 0.15;
+      var instructionsTitleY = 0.2;
+      var instructionsHowToPlayY = 0.45;
+      var instructionsBackTextX = 0.005;
+      var instructionsBackTextY = 0.995;
+
       // Semi-constants for stuff that only changes sometimes (e.g. on screen resize)
       var width    = 0;
       var height   = 0;
@@ -358,6 +383,7 @@ controllers.controller('GameController', ['$scope',
       var menuItemFontValue;
 
       var playItemBBox;
+      var instructionsItemBBox;
       var highScoresItemBBox;
       var exitItemBBox;
 
@@ -373,6 +399,10 @@ controllers.controller('GameController', ['$scope',
       var highScoresTitleFontValue;
       var highScoresNormalFontValue;
       var highScoresBackBBox;
+
+      var instructionsTitleFontValue;
+      var instructionsNormalFontValue;
+      var instructionsBackBBox;
 
       // Variable declarations
       var gameState = titleStateId;
@@ -410,6 +440,10 @@ controllers.controller('GameController', ['$scope',
 
       menuItemActions[itemPlayId] = function() {
         gameState = playStateId;
+      }
+
+      menuItemActions[itemInstructionsId] = function() {
+        gameState = instructionsStateId;
       }
 
       menuItemActions[itemHighScoresId] = function() {
@@ -450,12 +484,15 @@ controllers.controller('GameController', ['$scope',
         }
 
         var inPlay = pointInRect(cursorX, cursorY, playItemBBox.left, playItemBBox.top, playItemBBox.right, playItemBBox.bottom);
+        var inInstructions = pointInRect(cursorX, cursorY, instructionsItemBBox.left, instructionsItemBBox.top, instructionsItemBBox.right, instructionsItemBBox.bottom);
         var inHighScores = pointInRect(cursorX, cursorY, highScoresItemBBox.left, highScoresItemBBox.top, highScoresItemBBox.right, highScoresItemBBox.bottom);
         var inExit = pointInRect(cursorX, cursorY, exitItemBBox.left, exitItemBBox.top, exitItemBBox.right, exitItemBBox.bottom);
 
         if (cursorX !== prevCursorX ||  cursorY !== prevCursorY) {
           if (inPlay) {
             itemSelected = itemPlayId;
+          } else if (inInstructions) {
+            itemSelected = itemInstructionsId;
           } else if (inHighScores) {
             itemSelected = itemHighScoresId;
           } else if (inExit) {
@@ -466,6 +503,8 @@ controllers.controller('GameController', ['$scope',
         if (leftMBDown && !prevLeftMBDown) {
           if (inPlay) {
             menuItemActions[itemPlayId]();
+          } else if (inInstructions) {
+            menuItemActions[itemInstructionsId]();
           } else if (inHighScores) {
             menuItemActions[itemHighScoresId]();
           } else if (inExit) {
@@ -489,6 +528,7 @@ controllers.controller('GameController', ['$scope',
 
         ctx.font = menuItemFontValue;
         ctx.fillText(playText, midX, height * playTextY);
+        ctx.fillText(instructionsText, midX, height * instructionsTextY);
         ctx.fillText(highScoresText, midX, height * highScoresTextY);
         ctx.fillText(exitText, midX, height * exitTextY);
 
@@ -497,6 +537,8 @@ controllers.controller('GameController', ['$scope',
           var yOffset;
           if (itemSelected === itemPlayId) {
             yOffset = playTextY;
+          } else if (itemSelected === itemInstructionsId) {
+            yOffset = instructionsTextY;
           } else if (itemSelected === itemHighScoresId) {
             yOffset = highScoresTextY;
           } else if (itemSelected === itemExitId) {
@@ -688,6 +730,35 @@ controllers.controller('GameController', ['$scope',
         ctx.fillText(highScoresBackText, width * highScoresBackTextX, height * highScoresBackTextY);
       }
 
+      stateStep[instructionsStateId] = function() {
+        if (leftMBDown && !prevLeftMBDown) {
+          if (pointInRect(cursorX, cursorY, instructionsBackBBox.left, instructionsBackBBox.top, instructionsBackBBox.right, instructionsBackBBox.bottom)) {
+            gameState = titleStateId;
+          }
+        }
+      }
+
+      stateDraw[instructionsStateId] = function() {
+        ctx.fillStyle = bgColour;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.textBaseline = 'hanging';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = instructionsTextColour;
+
+        ctx.font = instructionsTitleFontValue;
+        ctx.fillText(instructionsTitleText, midX, height * instructionsTitleY);
+
+        ctx.font = instructionsNormalFontValue;
+        for(var i = 0; i < instructionsHowToPlayList.length; i++) {
+          ctx.fillText(instructionsHowToPlayList[i], midX, height * (instructionsHowToPlayY + instructionsNormalSize * i));
+        }
+
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(instructionsBackText, width * instructionsBackTextX, height * instructionsBackTextY);
+      }
+
       function screenResize() {
         // Update certain semi-constants after the screen size changes
         width  = ctx.canvas.width  = window.innerWidth;
@@ -748,8 +819,12 @@ controllers.controller('GameController', ['$scope',
         highScoresTitleFontValue = fontValue(highScoresFont, highScoresTitleSize * height, 'bold small-caps');
         highScoresNormalFontValue = fontValue(highScoresFont, highScoresNormalSize * height, 'small-caps');
 
+        instructionsTitleFontValue = fontValue(instructionsFont, instructionsTitleSize * height, 'bold small-caps');
+        instructionsNormalFontValue = fontValue(instructionsFont, instructionsNormalSize * height, 'small-caps');
+
         ctx.font = menuItemFontValue;
         var playTextWidth = ctx.measureText(playText).width;
+        var instructionsTextWidth = ctx.measureText(instructionsText).width;
         var highScoresTextWidth = ctx.measureText(highScoresText).width;
         var exitTextWidth = ctx.measureText(exitText).width;
 
@@ -758,6 +833,13 @@ controllers.controller('GameController', ['$scope',
           top: height * playTextY,
           right: midX + playTextWidth / 2,
           bottom: height * (playTextY + menuItemSize)
+        };
+
+        instructionsItemBBox = {
+          left: midX - instructionsTextWidth / 2,
+          top: height * instructionsTextY,
+          right: midX + instructionsTextWidth / 2,
+          bottom: height * (instructionsTextY + menuItemSize)
         };
 
         highScoresItemBBox = {
@@ -784,7 +866,7 @@ controllers.controller('GameController', ['$scope',
           bottom: gameOverBackTextY * height,
         };
 
-        ctx.font = gameOverNormalFontValue;
+        ctx.font = highScoresNormalFontValue;
         var highScoresBackTextWidth = ctx.measureText(highScoresBackText).width;
 
         highScoresBackBBox = {
@@ -792,6 +874,16 @@ controllers.controller('GameController', ['$scope',
           top: (highScoresBackTextY - highScoresNormalSize) * height,
           right: highScoresBackTextX * width + highScoresBackTextWidth,
           bottom: highScoresBackTextY * height,
+        };
+
+        ctx.font = instructionsNormalFontValue;
+        var instructionsBackTextWidth = ctx.measureText(instructionsBackText).width;
+
+        instructionsBackBBox = {
+          left: instructionsBackTextX * width,
+          top: (instructionsBackTextY - instructionsNormalSize) * height,
+          right: instructionsBackTextX * width + instructionsBackTextWidth,
+          bottom: instructionsBackTextY * height,
         };
 
         itemSelectedMarkerPath = new Path2D()
