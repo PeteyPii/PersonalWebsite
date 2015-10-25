@@ -60,20 +60,11 @@ controllers.controller('GameController', ['$scope',
       var cursorX;
       var cursorY;
 
-      document.onmousemove = function(e) {
-        cursorX = e.pageX;
-        cursorY = e.pageY;
-      }
-
-      document.onmouseenter = function(e) {
-        cursorX = e.pageX;
-        cursorY = e.pageY;
-      }
-
       leftMBDown = false;
       prevLeftMBDown = false;
 
       var lmbCode = 1;
+      var rmbCode = 3;
       var enterCode = 13;
       var leftCode = 37;
       var upCode = 38;
@@ -103,10 +94,14 @@ controllers.controller('GameController', ['$scope',
       keysDown[downCode]    = false;
 
       $(document).mousedown(function(e) {
+        e.preventDefault();
+
         if (e.which === lmbCode) {
           leftMBDown = true;
         }
       }).mouseup(function(e) {
+        e.preventDefault();
+
         if (e.which === lmbCode) {
           leftMBDown = false;
         }
@@ -121,6 +116,31 @@ controllers.controller('GameController', ['$scope',
       }).keypress(function(e) {
         if (e.which === shiftXCode) {
           backToSite();
+        }
+      }).mousemove(function(e) {
+        cursorX = e.pageX;
+        cursorY = e.pageY;
+      }).mouseenter(function(e) {
+        cursorX = e.pageX;
+        cursorY = e.pageY;
+      }).on('touchstart', function(e) {
+        e.preventDefault();
+
+        var changedTouches = e.originalEvent.changedTouches;
+        cursorX = changedTouches[changedTouches.length - 1].pageX;
+        cursorY = changedTouches[changedTouches.length - 1].pageY;
+        leftMBDown = true;
+      }).on('touchmove', function(e) {
+        e.preventDefault();
+
+        var changedTouches = e.originalEvent.changedTouches;
+        cursorX = changedTouches[changedTouches.length - 1].pageX;
+        cursorY = changedTouches[changedTouches.length - 1].pageY;
+      }).on('touchend', function(e) {
+        e.preventDefault();
+
+        if (e.originalEvent.touches.length === 0) {
+          leftMBDown = false;
         }
       });
 
