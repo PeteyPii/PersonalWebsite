@@ -55,6 +55,11 @@ controllers.controller('GameController', ['$scope',
         clearInterval(loopHandle);
       }
 
+      // Stop right-clicking from bringing the context menu up on the canvas
+      $('#game-container').on('contextmenu', 'canvas', function(e) {
+        return false;
+      });
+
       var prevCursorX;
       var prevCursorY;
       var cursorX;
