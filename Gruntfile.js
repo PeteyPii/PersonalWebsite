@@ -11,15 +11,7 @@ var settings = require('./settings.js');
 module.exports = function(grunt) {
   grunt.initConfig({});
 
-  grunt.registerTask('serve', 'Task to run the website in development.', function(build) {
-    if (!build) {
-      throw new Error('Need to set build');
-    }
-
-    if (build.toLowerCase() !== 'develop') {
-      throw new Error('Not implemented');
-    }
-
+  grunt.registerTask('serve', 'Task to run the website in development.', function() {
     var done = this.async();
 
     var supervisorCommand = 'supervisor';
@@ -57,6 +49,6 @@ module.exports = function(grunt) {
     this.async();
   });
 
-  grunt.registerTask('default', ['serve:develop', 'open', 'wait']);
-  grunt.registerTask('open', ['serve:develop', 'open_localhost', 'wait']);
+  grunt.registerTask('default', ['serve', 'wait']);
+  grunt.registerTask('open', ['serve', 'open_localhost', 'wait']);
 };
