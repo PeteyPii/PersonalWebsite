@@ -531,7 +531,7 @@ controllers.controller('GameController', ['$scope',
       var itemCount = 4;
 
       var itemSelectedMarkerSize = 0.02;
-      var itemSelectedMarkerXOffset = 0.13;
+      var itemSelectedMarkerXOffset = 0.145;
       var itemSelectedMarkerSpeed = 0.02;
       var itemSelectedMarkerColour = '#ffffff';
 
