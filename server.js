@@ -69,6 +69,7 @@ try {
 
     app.get('*', function(req, res) {
       logger.log(req.method + ' request at ' + req.url);
+      res.header('Cache-Control', 'private, max-age=0');
       res.sendFile('index.html', {
         root: __dirname + '/'
       });
