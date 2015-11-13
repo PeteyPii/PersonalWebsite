@@ -11,6 +11,7 @@
     "lodash": "3.10.0",
     "open": "0.0.5",
     "q": "1.4.1",
+    "request": "2.65.0",
     "serve-favicon": "2.3.0"
   },
   "license": "MIT",
