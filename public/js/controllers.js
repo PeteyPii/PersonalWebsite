@@ -54,8 +54,7 @@ controllers.controller('GameController', ['$scope',
         return;
       }
 
-
-      var canvas = document.getElementById('play-game-canvas')
+      var canvas = document.getElementById('play-game-canvas');
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
 
