@@ -2,5 +2,6 @@
   "host_mlf": true,
   "server_http_port": 80,
   "server_https_port": 443,
+  "cache_life": 86400000,
   "redirect_default_port": false
 }

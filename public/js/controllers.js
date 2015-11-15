@@ -7,10 +7,15 @@ controllers.controller('HomeController', ['$scope',
   }
 ]);
 
-controllers.controller('ProjectsController', ['$scope',
-  function ($scope) {
+controllers.controller('ProjectsController', ['$scope', '$http',
+  function ($scope, $http) {
     $('.navbar-nav>li').removeClass('active');
     $('.navbar-nav>li#nav-projects').addClass('active');
+
+    $scope.problemsSolved = '75+';
+    $http.get('/api/Euler').success(function(data) {
+      $scope.problemsSolved = data.problemsSolved;
+    });
   }
 ]);
 

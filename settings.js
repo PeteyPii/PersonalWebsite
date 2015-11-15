@@ -26,6 +26,7 @@ function validateSettings(settings) {
     'server_http_port',
     'server_https_port',
     'redirect_default_port',
+    'cache_life',
   ];
 
   function isValidPort(port) {
@@ -51,6 +52,9 @@ function validateSettings(settings) {
   }
   if (!_.isBoolean(settings.redirect_default_port)) {
     throw new Error('Redirection to default port must either be `true` or `false`');
+  }
+  if (!_.isNumber(settings.cache_life) || settings.cache_life < 0) {
+    throw new Error('Cache life should be a non-negative number');
   }
 }
 
