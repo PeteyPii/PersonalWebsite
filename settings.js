@@ -27,6 +27,8 @@ function validateSettings(settings) {
     'server_https_port',
     'redirect_default_port',
     'cache_life',
+    'summoner_name',
+    'lol_api_key',
   ];
 
   function isValidPort(port) {
@@ -55,6 +57,12 @@ function validateSettings(settings) {
   }
   if (!_.isNumber(settings.cache_life) || settings.cache_life < 0) {
     throw new Error('Cache life should be a non-negative number');
+  }
+  if (!_.isString(settings.summoner_name)) {
+    throw new Error('Summoner name should be a string');
+  }
+  if (!_.isString(settings.lol_api_key)) {
+    throw new Error('LoL API key should be a string');
   }
 }
 
