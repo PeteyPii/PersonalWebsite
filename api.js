@@ -48,7 +48,7 @@ function updateCache(value, callback) {
         lol.summonerId = summonerId;
 
         var hadErr = false;
-        var successes = 2;
+        var successes = 3;
 
         request.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/ranked?api_key=' + settings.lol_api_key, function(err, resp, body) {
           if (hadErr) {
@@ -121,6 +121,40 @@ function updateCache(value, callback) {
                 lol.aramTurretKills = statSummary.aggregatedStats.totalTurretsKilled;
                 break;
             }
+          }
+
+          successes -= 1;
+          if (successes === 0) {
+            cache.lol = lol;
+            lastUpdates[value] = (new Date()).getTime();
+            callback(null);
+          }
+        });
+
+        request.get('https://na.api.pvp.net/api/lol/na/v2.5/league/by-summoner/' + summonerId + '/entry?api_key=' + settings.lol_api_key, function(err, resp, body) {
+          if (hadErr) {
+            return;
+          }
+
+          if (err) {
+            hadErr = true;
+            callback(err);
+            return;
+          }
+
+          var rankData = JSON.parse(body)[summonerId];
+          var soloQData;
+          for (var i = 0; i < rankData.length;  i++) {
+            if (rankData[i].queue == 'RANKED_SOLO_5x5') {
+              soloQData = rankData[i];
+              break;
+            }
+          }
+
+          if (soloQData) {
+            lol.soloQueueTier = soloQData.tier;
+            lol.soloQueueLeaguePoints = soloQData.entries[0].leaguePoints;
+            lol.soloQueueDivision = soloQData.entries[0].division;
           }
 
           successes -= 1;
