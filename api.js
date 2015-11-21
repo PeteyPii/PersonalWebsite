@@ -2,6 +2,7 @@ var express = require('express');
 var _ = require('lodash');
 var request = require('request');
 
+var logger = require('./logger.js');
 var settings = require('./settings.js');
 
 var api = express.Router();
@@ -186,6 +187,12 @@ function getCached(value, callback) {
     callback(null, cache[value]);
   }
 }
+
+api.use(function logRequests(req, res, next) {
+  logger.log(req.method + ' request for API at ' + req.url);
+
+  next();
+});
 
 api.get('/Euler', function(req, res) {
   getCached('euler', function(err, data) {
