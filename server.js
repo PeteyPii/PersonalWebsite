@@ -14,6 +14,7 @@ var _ = require('lodash');
 var api = require('./api.js');
 var logger = require('./logger.js');
 var settings = require('./settings.js');
+var teamtrisApp = require('./Teamtris/lib/app.js');
 
 try {
   var mlf;
@@ -69,6 +70,8 @@ try {
       cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem'))
     }, app);
 
+    app.use('/Teamtris', teamtrisApp(httpsServer));
+
     app.get('*', function(req, res) {
       logger.log(req.method + ' request at ' + req.url);
       res.header('Cache-Control', 'private, max-age=0');
@@ -87,13 +90,16 @@ try {
     var redirectApp = express();
     var httpServer = http.createServer(redirectApp);
 
-    redirectApp.get('/MLF', function(req, res) {
+    function httpsRedirectHandler(req, res) {
       if (settings.redirect_default_port) {
         res.redirect('https://' + req.hostname + req.url);
       } else {
         res.redirect('https://' + req.hostname + ':' + settings.server_https_port + req.url);
       }
-    });
+    }
+
+    redirectApp.get('/MLF', httpsRedirectHandler);
+    redirectApp.get('/Teamtris', httpsRedirectHandler);
     redirectApp.use('/', app);
 
     httpServer.listen(settings.server_http_port);
