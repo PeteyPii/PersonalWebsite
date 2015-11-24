@@ -1,3 +1,6 @@
 [submodule "MyLoLFantasy"]
 	path = MyLoLFantasy
 	url = git@github.com:PeteyPii/MyLoLFantasy.git
+[submodule "Teamtris"]
+	path = Teamtris
+	url = git@github.com:PeteyPii/Teamtris.git
