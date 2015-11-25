@@ -38,10 +38,16 @@ app.config(['$routeProvider', '$locationProvider',
     $locationProvider.html5Mode(true);
   }]);
 
-app.run(['$location', '$rootScope', function($location, $rootScope) {
+app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $window) {
   $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
     // Have to check for $$route presence because it's missing for bad URL requests.
     $rootScope.title = current.$$route ? current.$$route.title : '';
+  });
+
+  $rootScope.$on('$viewContentLoaded', function() {
+    if ($window.ga) {
+      $window.ga('send', 'pageview', $location.path());
+    }
   });
 }]);
 
