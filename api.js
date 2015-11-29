@@ -1,4 +1,5 @@
 var express = require('express');
+var git = require('git-rev');
 var _ = require('lodash');
 var request = require('request');
 
@@ -213,6 +214,14 @@ api.get('/LoL', function(req, res) {
     } else {
       res.send(data);
     }
+  });
+});
+
+api.get('/status', function(req, res) {
+  git.long(function(sha) {
+    res.send({
+      sha: sha,
+    });
   });
 });
 
