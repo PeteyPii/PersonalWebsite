@@ -89,6 +89,11 @@ controllers.controller('GameController', ['$scope',
   function ($scope) {
     var isPlayGameBtnVisible = false;
     var loopHandle = null;
+
+    $('#play-game-canvas').on('contextmenu', function(e) {
+      return false;
+    });
+
     function gameTabBtnClickHandler() {
       $('#game-tab-btn').blur();
       $('#game-tab-btn').off();
@@ -391,7 +396,7 @@ controllers.controller('GameController', ['$scope',
       }
 
       // Stop right-clicking from bringing the context menu up on the canvas
-      $('#game-container').on('contextmenu', 'canvas', function(e) {
+      $('#game-canvas').on('contextmenu', function(e) {
         return false;
       });
 
@@ -433,19 +438,7 @@ controllers.controller('GameController', ['$scope',
       keysDown[rightCode]   = false;
       keysDown[downCode]    = false;
 
-      $(document).mousedown(function(e) {
-        e.preventDefault();
-
-        if (e.which === lmbCode) {
-          leftMBDown = true;
-        }
-      }).mouseup(function(e) {
-        e.preventDefault();
-
-        if (e.which === lmbCode) {
-          leftMBDown = false;
-        }
-      }).keydown(function(e) {
+      $(document).keydown(function(e) {
         if (trackedKeys[e.which]) {
           keysDown[e.which] = true;
         }
@@ -456,6 +449,20 @@ controllers.controller('GameController', ['$scope',
       }).keypress(function(e) {
         if (e.which === shiftXCode) {
           backToSite();
+        }
+      });
+
+      $('#game-canvas').mousedown(function(e) {
+        e.preventDefault();
+
+        if (e.which === lmbCode) {
+          leftMBDown = true;
+        }
+      }).mouseup(function(e) {
+        e.preventDefault();
+
+        if (e.which === lmbCode) {
+          leftMBDown = false;
         }
       }).mousemove(function(e) {
         cursorX = e.pageX;
@@ -484,7 +491,7 @@ controllers.controller('GameController', ['$scope',
         }
       });
 
-      var canvas = document.getElementById('game-canvas')
+      var canvas = document.getElementById('game-canvas');
       var isSupported = !!canvas.getContext;
       var ctx = canvas.getContext('2d');
 
