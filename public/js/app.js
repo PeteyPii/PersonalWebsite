@@ -49,6 +49,14 @@ app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $
       $window.ga('send', 'pageview', $location.path());
     }
   });
+
+  $rootScope.activeNavLinks = {};
+  $rootScope.navLinkClick = function navLinkClick(itemClicked) {
+    for (var item in $rootScope.activeNavLinks) {
+      $rootScope.activeNavLinks[item] = false;
+    }
+    $rootScope.activeNavLinks[itemClicked] = true;
+  };
 }]);
 
 $(document).ready(function() {
