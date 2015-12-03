@@ -189,12 +189,6 @@ function getCached(value, callback) {
   }
 }
 
-api.use(function logRequests(req, res, next) {
-  logger.log(req.method + ' request for API at ' + req.url);
-
-  next();
-});
-
 api.get('/Euler', function(req, res) {
   getCached('euler', function(err, data) {
     if (err) {

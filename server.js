@@ -53,6 +53,12 @@ try {
   }).then(function(mlfApp) {
     var app = express();
 
+    // Log all requests to the server
+    app.use(function logRequests(req, res, next) {
+      logger.logRequest(req);
+      next();
+    });
+
     if (mlfApp) {
       app.use('/MLF', mlfApp);
       logger.log('Hosting MLF');
@@ -73,7 +79,6 @@ try {
     app.use('/Teamtris', teamtrisApp(httpsServer));
 
     app.get('*', function(req, res) {
-      logger.log(req.method + ' request at ' + req.url);
       res.header('Cache-Control', 'private, max-age=0');
       res.sendFile('index.html', {
         root: __dirname + '/'
