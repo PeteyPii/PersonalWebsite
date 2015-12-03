@@ -1,0 +1,19 @@
+<div data-ng-controller="PlayGameController">
+  <div class="play-game-btn-container">
+    <button id="play-game-btn" tabindex="-1">
+      <canvas width="0" height="0" id="play-game-canvas"></canvas>
+    </button>
+    <span id="oswald-loader">.</span>
+  </div>
+
+  <div class="play-game-tab">
+    <div class="play-game-tab__bar"></div>
+    <svg class="play-game-tab__btn-side" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M100 0 L 0 0 Q 35 0, 50 50 Q 65 100, 100 100"/>
+    </svg>
+    <button id="play-game-tab-btn" class="play-game-tab__btn" tabindex="-1" data-ng-click="tabBtnClick()"><i class="navbar-icon fa fa-bars fa-2x"></i></button>
+    <svg class="play-game-tab__btn-side" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0 100 Q 35 100, 50 50 Q 65 0, 100 0 L 0 0"/>
+    </svg>
+  </div>
+</div>

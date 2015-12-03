@@ -51,7 +51,7 @@ app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $
   });
 
   $rootScope.activeNavLinks = {};
-  $rootScope.navLinkClick = function navLinkClick(itemClicked) {
+  $rootScope.navLinkClick = function(itemClicked) {
     for (var item in $rootScope.activeNavLinks) {
       $rootScope.activeNavLinks[item] = false;
     }

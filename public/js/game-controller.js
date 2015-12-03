@@ -1,293 +1,50 @@
-controllers.controller('GameController', ['$scope',
+controllers.controller('PlayGameController', ['$scope',
   function ($scope) {
-    var isPlayGameBtnVisible = false;
-    var loopHandle = null;
+    $scope.isPlayGameBtnVisible = false;
+    $scope.isAnimating = false;
+    $scope.playGameButton = new PlayGameButton(document.getElementById('play-game-canvas'), {
+      boxSize: 10,
+      boxSpacing: 2,
+      colourChangeChance: 0.10,
+      colourChangePeriod: 100,
+    });
+
+    $scope.tabBtnClick = function() {
+      $('#play-game-tab-btn').blur();
+
+      if ($scope.isAnimating) {
+        return;
+      }
+
+      $scope.isAnimating = true;
+
+      if ($scope.isPlayGameBtnVisible) {
+        $scope.isPlayGameBtnVisible = false;
+        $('.play-game-btn-container').slideUp({
+          complete: function() {
+            $scope.isAnimating = false;
+            $scope.playGameButton.stopDrawing();
+          }
+        });
+      } else {
+        $scope.isPlayGameBtnVisible = true;
+        $scope.playGameButton.beginDrawing();
+        $('.play-game-btn-container').slideDown({
+          complete: function() {
+            $scope.isAnimating = false;
+          }
+        });
+      }
+    }
 
     $('#play-game-canvas').on('contextmenu', function(e) {
       return false;
     });
+  }
+]);
 
-    function gameTabBtnClickHandler() {
-      $('#game-tab-btn').blur();
-      $('#game-tab-btn').off();
-
-      if (isPlayGameBtnVisible) {
-        isPlayGameBtnVisible = false;
-        $('.play-game-container').slideUp({
-          complete: function() {
-            clearInterval(loopHandle);
-            loopHandle = null;
-            $('#game-tab-btn').click(gameTabBtnClickHandler);
-          }
-        });
-        return;
-      }
-
-      var canvas = document.getElementById('play-game-canvas');
-      var isSupported = !!canvas.getContext;
-      var ctx = canvas.getContext('2d');
-
-      function shuffleArray(array) {
-        for (var i = array.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
-        }
-      }
-
-      var letterP = [
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 4, y: 1 },
-        { x: 4, y: 2 },
-        { x: 4, y: 3 },
-        { x: 4, y: 4 },
-        { x: 3, y: 4 },
-        { x: 2, y: 4 },
-        { x: 1, y: 4 },
-      ];
-
-      var letterL = [
-        { x: 0, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 1, y: 8 },
-        { x: 2, y: 8 },
-        { x: 3, y: 8 },
-        { x: 4, y: 8 },
-      ];
-
-      var letterA = [
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 1, y: 4 },
-        { x: 2, y: 4 },
-        { x: 3, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 4, y: 0 },
-        { x: 4, y: 1 },
-        { x: 4, y: 2 },
-        { x: 4, y: 3 },
-        { x: 4, y: 4 },
-        { x: 4, y: 5 },
-        { x: 4, y: 6 },
-        { x: 4, y: 7 },
-        { x: 4, y: 8 },
-      ];
-
-      var letterY = [
-        { x: 0, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 4, y: 0 },
-        { x: 4, y: 1 },
-        { x: 4, y: 2 },
-        { x: 4, y: 3 },
-        { x: 4, y: 4 },
-        { x: 1, y: 4 },
-        { x: 3, y: 4 },
-        { x: 2, y: 4 },
-        { x: 2, y: 5 },
-        { x: 2, y: 6 },
-        { x: 2, y: 7 },
-        { x: 2, y: 8 },
-      ];
-
-      var letterG = [
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 4, y: 1 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 1, y: 8 },
-        { x: 2, y: 8 },
-        { x: 3, y: 8 },
-        { x: 4, y: 8 },
-        { x: 4, y: 7 },
-        { x: 4, y: 6 },
-        { x: 4, y: 5 },
-        { x: 4, y: 4 },
-        { x: 3, y: 4 },
-      ];
-
-      var letterM = [
-        { x: 1, y: 1 },
-        { x: 2, y: 2 },
-        { x: 3, y: 1 },
-        { x: 0, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 4, y: 0 },
-        { x: 4, y: 1 },
-        { x: 4, y: 2 },
-        { x: 4, y: 3 },
-        { x: 4, y: 4 },
-        { x: 4, y: 5 },
-        { x: 4, y: 6 },
-        { x: 4, y: 7 },
-        { x: 4, y: 8 },
-      ];
-
-      var letterE = [
-        { x: 0, y: 0 },
-        { x: 1, y: 0 },
-        { x: 2, y: 0 },
-        { x: 3, y: 0 },
-        { x: 4, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-        { x: 0, y: 3 },
-        { x: 0, y: 4 },
-        { x: 1, y: 4 },
-        { x: 2, y: 4 },
-        { x: 0, y: 5 },
-        { x: 0, y: 6 },
-        { x: 0, y: 7 },
-        { x: 0, y: 8 },
-        { x: 1, y: 8 },
-        { x: 2, y: 8 },
-        { x: 3, y: 8 },
-        { x: 4, y: 8 },
-      ];
-
-      function addToBoxes(boxes, letter, offsetX, offsetY) {
-        for (var i = 0; i < letter.length; i++) {
-          boxes.push({
-            x: letter[i].x + offsetX,
-            y: letter[i].y + offsetY,
-          });
-        }
-      }
-
-      var boxes = [];
-      addToBoxes(boxes, letterP, 0, 0);
-      addToBoxes(boxes, letterL, 6, 0);
-      addToBoxes(boxes, letterA, 12, 0);
-      addToBoxes(boxes, letterY, 18, 0);
-      addToBoxes(boxes, letterG, 0, 10);
-      addToBoxes(boxes, letterA, 6, 10);
-      addToBoxes(boxes, letterM, 12, 10);
-      addToBoxes(boxes, letterE, 18, 10);
-
-      var boxSize = 10;
-      var boxSpacing = 2;
-      var colourChangeChance = 0.10;
-      var colourChangePeriod = 100;
-
-      var maxX = 0;
-      var maxY = 0;
-      for(var i = 0; i < boxes.length; i++) {
-        if(boxes[i].x > maxX) {
-          maxX = boxes[i].x;
-        }
-        if(boxes[i].y > maxY) {
-          maxY = boxes[i].y;
-        }
-      }
-
-      ctx.canvas.width = maxX * (boxSize + boxSpacing) + boxSize;
-      ctx.canvas.height = maxY * (boxSize + boxSpacing) + boxSize;
-
-      var hexChars = '0123456789ABCDEF'.split('');
-      function getRandomColor() {
-        var choices = [0, 1, 2];
-        shuffleArray(choices);
-        var colour = '#';
-        for (var i = 0; i < 3; i++) {
-          switch (choices[i]) {
-            case 0:
-              colour += '50';
-              break;
-            case 1:
-              colour += 'FF';
-              break;
-            case 2:
-              colour += hexChars[Math.floor(Math.random() * 16)] + hexChars[Math.floor(Math.random() * 16)];
-              break;
-          }
-        }
-
-        return colour;
-      }
-
-      if (isSupported) {
-        if (!loopHandle) {
-          for (var i = 0; i < boxes.length; i++) {
-            var left = boxes[i].x * (boxSize + boxSpacing);
-            var top = boxes[i].y * (boxSize + boxSpacing);
-            ctx.fillStyle = getRandomColor();
-            ctx.fillRect(left, top, boxSize, boxSize);
-          }
-
-          loopHandle = setInterval(function() {
-            for (var i = 0; i < boxes.length; i++) {
-              if (Math.random() < colourChangeChance) {
-                var left = boxes[i].x * (boxSize + boxSpacing);
-                var top = boxes[i].y * (boxSize + boxSpacing);
-                ctx.fillStyle = getRandomColor();
-                ctx.fillRect(left, top, boxSize, boxSize);
-              }
-            }
-          }, colourChangePeriod);
-        }
-
-        $('.play-game-container').slideDown({
-          complete: function() {
-            $('#game-tab-btn').click(gameTabBtnClickHandler);
-          }
-        });
-        isPlayGameBtnVisible = true;
-      } else {
-        // TODO: Make user aware that the game isn't available to them
-      }
-    }
-
-    $('#game-tab-btn').click(gameTabBtnClickHandler);
-
+controllers.controller('GameController', ['$scope',
+  function ($scope) {
     $('#play-game-btn').click(function() {
       $(this).blur();
       Array.prototype.sortNormal = function() {
@@ -299,12 +56,12 @@ controllers.controller('GameController', ['$scope',
       $('.main-site').hide();
       document.body.scrollTop = 0; // pull the page back up to the top
       $('body').addClass('game-mode');
-      $('#game-container').show();
+      $('.game-container').show();
 
       function backToSite() {
         $('.main-site').show();
         $('body').removeClass('game-mode');
-        $('#game-container').hide();
+        $('.game-container').hide();
         clearInterval(loopHandle);
       }
 

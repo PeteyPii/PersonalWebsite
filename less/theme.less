@@ -360,14 +360,14 @@ hr {
 }
 
 /* Game */
-@game-tab-height: 31em / 12;
-@game-tab-side-width: 1em;
+@play-game-tab-height: 31em / 12;
+@play-game-tab-side-width: 1em;
 
-#game-container {
+.game-container {
   display: none;
 }
 
-body.game-mode {
+.game-mode {
   overflow: hidden;
 }
 
@@ -376,23 +376,23 @@ body.game-mode {
   height: 100vh;
 }
 
-.game-tab {
+.play-game-tab {
   text-align: center;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.game-tab__bar {
+.play-game-tab__bar {
   width: 100%;
   height: 15px;
   background-color: @dark-theme-colour;
 }
 
-.game-tab__btn {
+.play-game-tab__btn {
   background-color: @dark-theme-colour;
   color: @white-font-colour;
-  height: @game-tab-height;
+  height: @play-game-tab-height;
   vertical-align: top;
   border: none;
 
@@ -405,16 +405,16 @@ body.game-mode {
   }
 }
 
-.game-tab__btn-side {
-  height: @game-tab-height;
-  width: @game-tab-side-width;
+.play-game-tab__btn-side {
+  height: @play-game-tab-height;
+  width: @play-game-tab-side-width;
 
   path {
     fill: @dark-theme-colour;
   }
 }
 
-.play-game-container {
+.play-game-btn-container {
   text-align: center;
   display: none;
   background-color: black;
