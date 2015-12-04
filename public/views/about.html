@@ -72,17 +72,17 @@
     </div>
     <div class="lol-stats-container__stats">
       <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" src="{{ aramTakedownsMedal() }}"/>
+        <img class="lol-stats-data-point__medal" ng-src="{{ aramTakedownsMedal() }}"/>
         <div class="lol-stats-data-point__title"><strong>Takedowns</strong></div>
         <div class="lol-stats-data-point__value"><strong>{{ lol.aramKills + lol.aramAssists }}</strong></div>
       </div>
       <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" src="{{ aramWinsMedal() }}"/>
+        <img class="lol-stats-data-point__medal" ng-src="{{ aramWinsMedal() }}"/>
         <div class="lol-stats-data-point__title"><strong>Wins</strong></div>
         <div class="lol-stats-data-point__value"><strong>{{ lol.aramWins }}</strong></div>
       </div>
       <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" src="{{ aramTowersMedal() }}"/>
+        <img class="lol-stats-data-point__medal" ng-src="{{ aramTowersMedal() }}"/>
         <div class="lol-stats-data-point__title"><strong>Towers Destroyed</strong></div>
         <div class="lol-stats-data-point__value"><strong>{{ lol.aramTurretKills }}</strong></div>
       </div>
