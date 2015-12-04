@@ -1,4 +1,12 @@
 function PlayGameButton(canvas, settings) {
+  this.canvas = canvas;
+  this.ctx = this.canvas.getContext('2d');
+  this.isSupported = !!this.ctx;
+
+  if (!this.isSupported) {
+    return;
+  }
+
   this.boxes = [];
 
   this.addToBoxes(PlayGameButton.letterShapes.P, 0, 0);
@@ -10,10 +18,6 @@ function PlayGameButton(canvas, settings) {
   this.addToBoxes(PlayGameButton.letterShapes.A, 6, 10);
   this.addToBoxes(PlayGameButton.letterShapes.M, 12, 10);
   this.addToBoxes(PlayGameButton.letterShapes.E, 18, 10);
-
-  this.canvas = canvas;
-  this.ctx = this.canvas.getContext('2d');
-  this.isSupported = !!this.ctx;
 
   this.boxSize = settings.boxSize;
   this.boxSpacing = settings.boxSpacing;
