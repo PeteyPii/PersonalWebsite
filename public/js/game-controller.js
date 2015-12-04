@@ -9,6 +9,10 @@ controllers.controller('PlayGameController', ['$scope',
       colourChangePeriod: 100,
     });
 
+    $scope.$on('$destroy', function() {
+      $scope.playGameButton.stopDrawing();
+    });
+
     $scope.tabBtnClick = function() {
       $('#play-game-tab-btn').blur();
 
