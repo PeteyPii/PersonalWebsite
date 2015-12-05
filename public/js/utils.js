@@ -14,13 +14,25 @@ Utils.shuffleArray = function(array) {
   }
 }
 
+/**
+ * Sorts an array of numbers in place as expected rather than lexicographically.
+ * array: An array to be sorted in place.
+ * returns: Nothing.
+ */
+Utils.prototype.sort = function(array) {
+  array.sort(function(a, b) {
+    return a - b;
+  });
+}
+
+
 Utils.hexChars = '0123456789ABCDEF'.split('');
 Utils.niceColourTop = 'FF';
 Utils.niceColourBottom = '50';
 
 /**
  * Returns a random nice looking colour in the form of a hex string.
- * returns: String of colour in hex format (e.g. '#CCAAFF')
+ * returns: String of colour in hex format (e.g. '#CCAAFF').
  */
 Utils.getNiceRandomColour = function() {
   var choices = [0, 1, 2];
