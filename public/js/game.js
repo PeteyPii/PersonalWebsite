@@ -50,7 +50,6 @@ Game.prototype.beginGame = function() {
   keysDown[downCode]    = false;
 
   $(document).keydown(function(e) {
-    console.log('haha');
     if (trackedKeys[e.which]) {
       keysDown[e.which] = true;
     }
@@ -70,7 +69,6 @@ Game.prototype.beginGame = function() {
     if (e.which === lmbCode) {
       leftMBDown = true;
     }
-    console.log('haha');
   }).mouseup(function(e) {
     e.preventDefault();
 
