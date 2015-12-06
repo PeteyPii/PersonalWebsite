@@ -17,6 +17,11 @@ cache.addUpdateHandler('euler', function(callback) {
       return;
     }
 
+    if (resp.statusCode < 200 || resp.statusCode >= 400) {
+      callback(new Error('Response returned with status code: ' + resp.statusCode));
+      return;
+    }
+
     var stats = body.split(',');
     var value = {
       problemsSolved: stats[3],
@@ -30,6 +35,11 @@ cache.addUpdateHandler('lol', function(callback) {
   request.get('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + settings.summoner_name + '?api_key=' + settings.lol_api_key, function(err, resp, body) {
     if (err) {
       callback(err)
+      return;
+    }
+
+    if (resp.statusCode < 200 || resp.statusCode >= 400) {
+      callback(new Error('Response returned with status code: ' + resp.statusCode));
       return;
     }
 
@@ -48,6 +58,12 @@ cache.addUpdateHandler('lol', function(callback) {
       if (err) {
         hadErr = true;
         callback(err);
+        return;
+      }
+
+      if (resp.statusCode < 200 || resp.statusCode >= 400) {
+        hadErr = true;
+        callback(new Error('Response returned with status code: ' + resp.statusCode));
         return;
       }
 
@@ -78,6 +94,12 @@ cache.addUpdateHandler('lol', function(callback) {
       if (err) {
         hadErr = true;
         callback(err);
+        return;
+      }
+
+      if (resp.statusCode < 200 || resp.statusCode >= 400) {
+        hadErr = true;
+        callback(new Error('Response returned with status code: ' + resp.statusCode));
         return;
       }
 
@@ -125,6 +147,12 @@ cache.addUpdateHandler('lol', function(callback) {
       if (err) {
         hadErr = true;
         callback(err);
+        return;
+      }
+
+      if (resp.statusCode < 200 || resp.statusCode >= 400) {
+        hadErr = true;
+        callback(new Error('Response returned with status code: ' + resp.statusCode));
         return;
       }
 

@@ -12,6 +12,8 @@ controllers.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $scope.problemsSolved = '75+';
     $http.get('/api/Euler').success(function(data) {
       $scope.problemsSolved = data.problemsSolved;
+    }).error(function() {
+      // Sliently fail since we have a default value which is sufficient.
     });
   }
 ]);
@@ -70,6 +72,8 @@ controllers.controller('AboutController', ['$scope', '$rootScope', '$http',
       $scope.aramTakedownsMedal = aramTakedownsMedal;
       $scope.aramWinsMedal = aramWinsMedal;
       $scope.aramTowersMedal = aramTowersMedal;
+    }).error(function() {
+      // TODO: Handle this
     });
   }
 ])
