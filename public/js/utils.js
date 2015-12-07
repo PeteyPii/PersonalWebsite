@@ -19,7 +19,7 @@ Utils.shuffleArray = function(array) {
  * array: An array to be sorted in place.
  * returns: Nothing.
  */
-Utils.prototype.sort = function(array) {
+Utils.sort = function(array) {
   array.sort(function(a, b) {
     return a - b;
   });
