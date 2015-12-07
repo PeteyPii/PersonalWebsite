@@ -69,6 +69,13 @@ hr {
 .light-img-frame {
   padding: 5px;
   background-color: @white-font-colour;
+  width: 100%;
+}
+
+.side-by-side {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }
 
 /* Bootstrap */
@@ -202,14 +209,6 @@ hr {
       color: #4B82B3;
     }
   }
-  img {
-    width: 100%;
-  }
-}
-
-.jumbotron--home {
-  margin-bottom: 0;
-  padding-bottom: 33px;
 }
 
 /* Footer */
@@ -228,12 +227,9 @@ hr {
 }
 
 /* Home page */
-.home-content {
-  @media(min-width: @sm-min-width) {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
+.jumbotron--home {
+  margin-bottom: 0;
+  padding-bottom: 33px;
 }
 
 /* Projects page */
@@ -292,6 +288,10 @@ hr {
 }
 
 /* About Me page */
+.about-content__header {
+  margin: 10px 0;
+}
+
 @stats-bg-colour: @dark-theme-colour;
 @stats-bg-colour-inactive: @medium-theme-colour;
 @stats-bg-colour-selected: @light-theme-colour;
