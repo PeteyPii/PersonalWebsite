@@ -79,34 +79,5 @@
     </div>
   </div>
   <h1 class="about-content__header">League of Legends Stats</h1>
-  <div class="lol-stats-container">
-    <div class="lol-stats-container__tabs">
-      <div class="lol-stats-tab">
-        <button id="lol-stats-ranked-btn" class="lol-stats-tab__btn" tabindex="-1">Ranked</button>
-      </div>
-      <div class="lol-stats-tab">
-        <button id="lol-stats-normals-btn" class="lol-stats-tab__btn" tabindex="-1">Normals</button>
-      </div>
-      <div class="lol-stats-tab lol-stats-tab--selected">
-        <button id="lol-stats-aram-btn" class="lol-stats-tab__btn" tabindex="-1">ARAM</button>
-      </div>
-    </div>
-    <div class="lol-stats-container__stats">
-      <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" data-ng-src="{{ aramTakedownsMedal() }}"/>
-        <div class="lol-stats-data-point__title"><strong>Takedowns</strong></div>
-        <div class="lol-stats-data-point__value"><strong>{{ lol.aramKills + lol.aramAssists }}</strong></div>
-      </div>
-      <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" data-ng-src="{{ aramWinsMedal() }}"/>
-        <div class="lol-stats-data-point__title"><strong>Wins</strong></div>
-        <div class="lol-stats-data-point__value"><strong>{{ lol.aramWins }}</strong></div>
-      </div>
-      <div class="lol-stats-data-point">
-        <img class="lol-stats-data-point__medal" data-ng-src="{{ aramTowersMedal() }}"/>
-        <div class="lol-stats-data-point__title"><strong>Towers Destroyed</strong></div>
-        <div class="lol-stats-data-point__value"><strong>{{ lol.aramTurretKills }}</strong></div>
-      </div>
-    </div>
-  </div>
+  <div data-pw-lol-stats data-stats="lolStats" data-is-loading="lolStatsLoading"></div>
 </div>
