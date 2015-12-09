@@ -28,6 +28,20 @@
 @projects-languages-font-size: 16px;
 @projects-dates-font-size: @projects-languages-font-size;
 
+@about-me-title-font-size: 24px;
+@about-me-paragraph-font-size: 16px;
+
+@lol-stats-button-font-size: 20px;
+@lol-stats-title-font-size: 16px;
+@lol-stats-value-font-size: 20px;
+@lol-stats-bg-colour: @dark-theme-colour;
+@lol-stats-bg-colour-inactive: @medium-theme-colour;
+@lol-stats-bg-colour-selected: @light-theme-colour;
+@lol-stats-bg-colour-hovered: @lighter-theme-colour;
+
+@play-game-tab-height: 31em / 12;
+@play-game-tab-side-width: 1em;
+
 @font-face {
   font-family: Bitter;
   src: url('../fonts/Bitter-Regular.ttf');
@@ -72,10 +86,18 @@ hr {
   width: 100%;
 }
 
-.side-by-side {
+.side-by-side-xs {
   display: flex;
   align-items: center;
   flex-direction: row;
+}
+
+@media(min-width: @sm-min-width) {
+  .side-by-side-sm {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
 }
 
 /* Bootstrap */
@@ -288,14 +310,20 @@ hr {
 }
 
 /* About Me page */
-.about-content__header {
-  margin: 10px 0;
+.about-me-content {
+  font-size: @about-me-paragraph-font-size;
 }
 
-@stats-bg-colour: @dark-theme-colour;
-@stats-bg-colour-inactive: @medium-theme-colour;
-@stats-bg-colour-selected: @light-theme-colour;
-@stats-bg-colour-hovered: @lighter-theme-colour;
+.about-me-content__header {
+  margin: 10px 0;
+  font-weight: bold;
+  font-size: @about-me-title-font-size;
+  text-decoration: underline;
+}
+
+.about-me-content__img {
+  margin: 15px 0;
+}
 
 .lol-stats-container {
   display: flex;
@@ -314,15 +342,15 @@ hr {
   text-align: center;
   display: flex;
   justify-content: center;
-  background-color: @stats-bg-colour-inactive;
+  background-color: @lol-stats-bg-colour-inactive;
 
   &:hover {
-    background-color: @stats-bg-colour-hovered;
+    background-color: @lol-stats-bg-colour-hovered;
   }
 }
 
 .lol-stats-tab--selected {
-  background-color: @stats-bg-colour-selected;
+  background-color: @lol-stats-bg-colour-selected;
 }
 
 .lol-stats-tab__btn {
@@ -330,16 +358,13 @@ hr {
   background: none;
   width: 100%;
   outline-width: 0;
-  font-size: 1.25em;
+  font-size: @lol-stats-button-font-size;
   font-weight: bold;
 }
 
 .lol-stats-container__stats {
   flex: 5;
-  background-color: @stats-bg-colour;
-}
-
-.lol-stats-container__stats {
+  background-color: @lol-stats-bg-colour;
   display: flex;
 }
 
@@ -353,16 +378,14 @@ hr {
 }
 
 .lol-stats-data-point__title {
+  font-size: @lol-stats-title-font-size;
 }
 
 .lol-stats-data-point__value {
-  font-size: 1.25em;
+  font-size: @lol-stats-value-font-size;
 }
 
 /* Game */
-@play-game-tab-height: 31em / 12;
-@play-game-tab-side-width: 1em;
-
 .game-container {
   display: none;
 }
