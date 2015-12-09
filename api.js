@@ -44,7 +44,7 @@ cache.addUpdateHandler('lol', function(callback) {
     }
 
     var summonerData = JSON.parse(body);
-    var summonerId = summonerData[settings.summoner_name.toLowerCase()].id;
+    var summonerId = summonerData[settings.summoner_name.toLowerCase().replace(/\W+/g, '')].id;
     lol.summonerId = summonerId;
 
     var hadErr = false;

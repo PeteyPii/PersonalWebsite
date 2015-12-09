@@ -1,16 +1,53 @@
 <div class="lol-stats-container">
   <div class="lol-stats-container__tabs">
-    <div class="lol-stats-tab">
-      <button id="lol-stats-ranked-btn" class="lol-stats-tab__btn" tabindex="-1">Ranked</button>
+    <div class="lol-stats-tab" data-ng-class="{ 'lol-stats-tab--selected': selected == 'ranked' }">
+      <button id="lol-stats-ranked-btn" class="lol-stats-tab__btn" tabindex="-1" data-ng-click="rankedClick()">Ranked</button>
     </div>
-    <div class="lol-stats-tab">
-      <button id="lol-stats-normals-btn" class="lol-stats-tab__btn" tabindex="-1">Normals</button>
+    <div class="lol-stats-tab" data-ng-class="{ 'lol-stats-tab--selected': selected == 'normals' }">
+      <button id="lol-stats-normals-btn" class="lol-stats-tab__btn" tabindex="-1" data-ng-click="normalsClick()">Classic</button>
     </div>
-    <div class="lol-stats-tab lol-stats-tab--selected">
-      <button id="lol-stats-aram-btn" class="lol-stats-tab__btn" tabindex="-1">ARAM</button>
+    <div class="lol-stats-tab" data-ng-class="{ 'lol-stats-tab--selected': selected == 'aram' }">
+      <button id="lol-stats-aram-btn" class="lol-stats-tab__btn" tabindex="-1" data-ng-click="aramClick()">ARAM</button>
     </div>
   </div>
-  <div class="lol-stats-container__stats">
+
+  <div class="lol-stats-container__stats" data-ng-show="selected == 'ranked'">
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ soloQueueTakedownsMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>Takedowns</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.soloQueueKills + stats.soloQueueAssists }}</strong></div>
+    </div>
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ soloQueueRankMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>{{ soloQueueRank() }}</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.soloQueueLeaguePoints }} LP</strong></div>
+    </div>
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ soloQueueWinsMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>Wins/Losses</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.soloQueueWins }} - {{ stats.soloQueueLosses }}</strong></div>
+    </div>
+  </div>
+
+  <div class="lol-stats-container__stats" data-ng-show="selected == 'normals'">
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ normalTakedownsMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>Takedowns</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.normalKills + stats.normalAssists }}</strong></div>
+    </div>
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ normalWinsMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>Wins</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.normalWins }}</strong></div>
+    </div>
+    <div class="lol-stats-data-point">
+      <img class="lol-stats-data-point__medal" data-ng-src="{{ normalCreepScoreMedal() }}"/>
+      <div class="lol-stats-data-point__title"><strong>Creep Score</strong></div>
+      <div class="lol-stats-data-point__value"><strong>{{ stats.normalCreepScore }}</strong></div>
+    </div>
+  </div>
+
+  <div class="lol-stats-container__stats" data-ng-show="selected == 'aram'">
     <div class="lol-stats-data-point">
       <img class="lol-stats-data-point__medal" data-ng-src="{{ aramTakedownsMedal() }}"/>
       <div class="lol-stats-data-point__title"><strong>Takedowns</strong></div>
