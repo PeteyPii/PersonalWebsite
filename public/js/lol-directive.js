@@ -91,43 +91,63 @@ app.directive('pwLolStats', function() {
       };
 
       scope.soloQueueRank = function() {
-        return prettifiedTier[scope.stats.soloQueueTier] + ' ' + scope.stats.soloQueueDivision;
+        if (!scope.isLoading) {
+          return prettifiedTier[scope.stats.soloQueueTier] + ' ' + scope.stats.soloQueueDivision;
+        }
       }
 
       scope.soloQueueTakedownsMedal = function() {
-        return Medal.medalImage(scope.stats.soloQueueKills + scope.stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.soloQueueKills + scope.stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
+        }
       }
 
       scope.soloQueueRankMedal = function() {
-        return Medal.medalRankImage(scope.stats.soloQueueTier, scope.stats.soloQueueDivision);
+        if (!scope.isLoading) {
+          return Medal.medalRankImage(scope.stats.soloQueueTier, scope.stats.soloQueueDivision);
+        }
       }
 
       scope.soloQueueWinsMedal = function() {
-        return Medal.medalImage(scope.stats.soloQueueWins, Medal.soloQueueWinsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.soloQueueWins, Medal.soloQueueWinsBreakpoints);
+        }
       }
 
       scope.normalTakedownsMedal = function() {
-        return Medal.medalImage(scope.stats.normalKills + scope.stats.normalAssists, Medal.normalTakedownsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.normalKills + scope.stats.normalAssists, Medal.normalTakedownsBreakpoints);
+        }
       }
 
       scope.normalWinsMedal = function() {
-        return Medal.medalImage(scope.stats.normalWins, Medal.normalWinsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.normalWins, Medal.normalWinsBreakpoints);
+        }
       }
 
       scope.normalCreepScoreMedal = function() {
-        return Medal.medalImage(scope.stats.normalCreepScore, Medal.normalCreepScoreBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.normalCreepScore, Medal.normalCreepScoreBreakpoints);
+        }
       }
 
       scope.aramTakedownsMedal = function() {
-        return Medal.medalImage(scope.stats.aramKills + scope.stats.aramAssists, Medal.aramTakedownsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.aramKills + scope.stats.aramAssists, Medal.aramTakedownsBreakpoints);
+        }
       }
 
       scope.aramWinsMedal = function() {
-        return Medal.medalImage(scope.stats.aramWins, Medal.aramWinsBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.aramWins, Medal.aramWinsBreakpoints);
+        }
       }
 
       scope.aramTowersMedal = function() {
-        return Medal.medalImage(scope.stats.aramTurretKills, Medal.aramTowersBreakpoints);
+        if (!scope.isLoading) {
+          return Medal.medalImage(scope.stats.aramTurretKills, Medal.aramTowersBreakpoints);
+        }
       }
 
       scope.$watch('stats', function(value) {
