@@ -1,6 +1,7 @@
 var express = require('express');
 var git = require('git-rev');
 var _ = require('lodash');
+var Q = require('Q');
 var request = require('request');
 
 var Cache = require('./cache.js');
@@ -32,40 +33,25 @@ cache.addUpdateHandler('euler', function(callback) {
 });
 cache.addUpdateHandler('lol', function(callback) {
   var lol = {};
-  request.get('https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + settings.summoner_name + '?api_key=' + settings.lol_api_key, function(err, resp, body) {
-    if (err) {
-      callback(err)
-      return;
-    }
 
+  function assertGoodResponse(resp) {
     if (resp.statusCode < 200 || resp.statusCode >= 400) {
-      callback(new Error('Response returned with status code: ' + resp.statusCode));
-      return;
+      throw new Error('Response returned with status code: ' + resp.statusCode);
     }
+  }
+
+  var url = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + settings.summoner_name + '?api_key=' + settings.lol_api_key;
+  Q.ninvoke(request, 'get', url).spread(function(resp, body) {
+    assertGoodResponse(resp);
 
     var summonerData = JSON.parse(body);
     var summonerId = summonerData[settings.summoner_name.toLowerCase().replace(/\W+/g, '')].id;
+    lol.summonerName = settings.summoner_name;
     lol.summonerId = summonerId;
 
-    var hadErr = false;
-    var successes = 3;
-
-    request.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/ranked?api_key=' + settings.lol_api_key, function(err, resp, body) {
-      if (hadErr) {
-        return;
-      }
-
-      if (err) {
-        hadErr = true;
-        callback(err);
-        return;
-      }
-
-      if (resp.statusCode < 200 || resp.statusCode >= 400) {
-        hadErr = true;
-        callback(new Error('Response returned with status code: ' + resp.statusCode));
-        return;
-      }
+    url = 'https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/ranked?api_key=' + settings.lol_api_key;
+    var rankedPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
+      assertGoodResponse(resp);
 
       var rankedData = JSON.parse(body);
       var allStats;
@@ -79,29 +65,11 @@ cache.addUpdateHandler('lol', function(callback) {
       lol.rankedAssists = allStats.totalAssists;
       lol.rankedKills = allStats.totalChampionKills;
       lol.rankedCreepScore = allStats.totalMinionKills + allStats.totalNeutralMinionsKilled;
-
-      successes -= 1;
-      if (successes === 0) {
-        callback(null, lol);
-      }
     });
 
-    request.get('https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/summary?api_key=' + settings.lol_api_key, function(err, resp, body) {
-      if (hadErr) {
-        return;
-      }
-
-      if (err) {
-        hadErr = true;
-        callback(err);
-        return;
-      }
-
-      if (resp.statusCode < 200 || resp.statusCode >= 400) {
-        hadErr = true;
-        callback(new Error('Response returned with status code: ' + resp.statusCode));
-        return;
-      }
+    url = 'https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/summary?api_key=' + settings.lol_api_key;
+    var summaryPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
+      assertGoodResponse(resp);
 
       var summaryData = JSON.parse(body);
       for (var i = 0; i < summaryData.playerStatSummaries.length; i++) {
@@ -132,29 +100,11 @@ cache.addUpdateHandler('lol', function(callback) {
             break;
         }
       }
-
-      successes -= 1;
-      if (successes === 0) {
-        callback(null, lol);
-      }
     });
 
-    request.get('https://na.api.pvp.net/api/lol/na/v2.5/league/by-summoner/' + summonerId + '/entry?api_key=' + settings.lol_api_key, function(err, resp, body) {
-      if (hadErr) {
-        return;
-      }
-
-      if (err) {
-        hadErr = true;
-        callback(err);
-        return;
-      }
-
-      if (resp.statusCode < 200 || resp.statusCode >= 400) {
-        hadErr = true;
-        callback(new Error('Response returned with status code: ' + resp.statusCode));
-        return;
-      }
+    url ='https://na.api.pvp.net/api/lol/na/v2.5/league/by-summoner/' + summonerId + '/entry?api_key=' + settings.lol_api_key;
+    var soloQPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
+      assertGoodResponse(resp);
 
       var rankData = JSON.parse(body)[summonerId];
       var soloQData;
@@ -170,13 +120,14 @@ cache.addUpdateHandler('lol', function(callback) {
         lol.soloQueueLeaguePoints = soloQData.entries[0].leaguePoints;
         lol.soloQueueDivision = soloQData.entries[0].division;
       }
-
-      successes -= 1;
-      if (successes === 0) {
-        callback(null, lol);
-      }
     });
-  });
+
+    return Q.all([rankedPromise, summaryPromise, soloQPromise]);
+  }).then(function() {
+    callback(null, lol);
+  }).fail(function(reason) {
+    callback(reason);
+  }).done();
 });
 
 api.get('/Euler', function(req, res) {
