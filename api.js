@@ -44,10 +44,11 @@ cache.addUpdateHandler('lol', function(callback) {
   Q.ninvoke(request, 'get', url).spread(function(resp, body) {
     assertGoodResponse(resp);
 
-    var summonerData = JSON.parse(body);
-    var summonerId = summonerData[settings.summoner_name.toLowerCase().replace(/\W+/g, '')].id;
+    var summonerData = JSON.parse(body)[settings.summoner_name.toLowerCase().replace(/\W+/g, '')];
+    var summonerId = summonerData.id;
     lol.summonerName = settings.summoner_name;
     lol.summonerId = summonerId;
+    lol.profileIconId = summonerData.profileIconId;
 
     url = 'https://na.api.pvp.net/api/lol/na/v1.3/stats/by-summoner/' + summonerId + '/ranked?api_key=' + settings.lol_api_key;
     var rankedPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
@@ -102,7 +103,7 @@ cache.addUpdateHandler('lol', function(callback) {
       }
     });
 
-    url ='https://na.api.pvp.net/api/lol/na/v2.5/league/by-summoner/' + summonerId + '/entry?api_key=' + settings.lol_api_key;
+    url = 'https://na.api.pvp.net/api/lol/na/v2.5/league/by-summoner/' + summonerId + '/entry?api_key=' + settings.lol_api_key;
     var soloQPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
       assertGoodResponse(resp);
 
@@ -122,7 +123,15 @@ cache.addUpdateHandler('lol', function(callback) {
       }
     });
 
-    return Q.all([rankedPromise, summaryPromise, soloQPromise]);
+    url = 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/versions?api_key=' + settings.lol_api_key;
+    var versionPromise = Q.ninvoke(request, 'get', url).spread(function(resp, body) {
+      assertGoodResponse(resp);
+
+      var versionData = JSON.parse(body);
+      lol.version = versionData[0];
+    });
+
+    return Q.all([rankedPromise, summaryPromise, soloQPromise, versionPromise]);
   }).then(function() {
     callback(null, lol);
   }).fail(function(reason) {
