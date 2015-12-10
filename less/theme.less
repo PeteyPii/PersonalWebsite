@@ -8,6 +8,7 @@
 
 @black-font-colour: #111;
 @dark-font-colour: #444;
+@light-grey-font-colour: #AAA;
 @white-font-colour: #EEE;
 @grey-bg-colour: #CCC;
 
@@ -360,11 +361,45 @@ hr {
   outline-width: 0;
   font-size: @lol-stats-button-font-size;
   font-weight: bold;
+
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-button-font-size * 0.8;
+  }
 }
 
-.lol-stats-container__stats {
+.lol-stats-container__info {
   flex: 5;
   background-color: @lol-stats-bg-colour;
+}
+
+.lol-stats-summoner {
+  margin: 10px 10px 10px 10px;
+  height: 50px;
+  padding: 5px;
+  background-color: @lol-stats-bg-colour-selected * 0.8;
+}
+
+.lol-stats-summoner__name {
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+.lol-stats-summoner__id {
+  // Can't figure out how I want to show this nicely
+  display: none;
+
+  font-size: 20px;
+  color: @light-grey-font-colour;
+  margin-left: 10px;
+}
+
+.lol-stats-summoner__icon {
+  height: 100%;
+  float: left;
+  margin-right: 10px;
+}
+
+.lol-stats-stats {
   display: flex;
 }
 

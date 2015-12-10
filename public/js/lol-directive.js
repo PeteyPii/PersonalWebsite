@@ -74,6 +74,12 @@ app.directive('pwLolStats', function() {
         scope.selected = 'aram';
       }
 
+      scope.summonerIcon = function() {
+        if (!scope.isLoading) {
+          return '//ddragon.leagueoflegends.com/cdn/5.8.1/img/profileicon/' + scope.stats.profileIconId + '.png';
+        }
+      }
+
       var prettifiedTier = {
         'BRONZE': 'Bronze',
         'SILVER': 'Silver',
