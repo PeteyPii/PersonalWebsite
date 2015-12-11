@@ -150,12 +150,20 @@ app.directive('pwLolStats', function() {
         }
       }
 
-      scope.$watch('stats', function(value) {
+      function update() {
         if (scope.isLoading) {
           scope.loading = true;
         } else {
           scope.loading = false;
         }
+      }
+
+      scope.$watch('stats', function(value) {
+        update();
+      });
+
+      scope.$watch('isLoading', function(value) {
+        update();
       });
     },
   };
