@@ -24,18 +24,9 @@ controllers.controller('ResumeController', ['$scope', '$rootScope',
   }
 ]);
 
-controllers.controller('AboutController', ['$scope', '$rootScope', '$http',
-  function ($scope, $rootScope, $http) {
+controllers.controller('AboutController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
     $rootScope.activeNavLinks.aboutMe = true;
-
-    $scope.lolStats = {};
-    $scope.lolStatsLoading = true;
-    $http.get('/api/LoL').success(function(data) {
-      $scope.lolStats = data;
-      $scope.lolStatsLoading = false;
-    }).error(function() {
-      // TODO: Handle this
-    });
   }
 ])
 

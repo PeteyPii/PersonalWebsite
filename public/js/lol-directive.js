@@ -51,16 +51,21 @@ Medal.divisionlessTiers = {
   'CHALLENGER': true,
 };
 
-app.directive('pwLolStats', function() {
+app.directive('pwLolStats', ['$http', function($http) {
   return {
     restrict: 'A', // attribute name only
     templateUrl: '/partials/lol-stats.html',
-    scope: {
-      stats: '=',
-      isLoading: '=',
-    },
     link: function(scope, element) {
       scope.selected = 'ranked';
+
+      scope.stats = {};
+      scope.loading = true;
+      $http.get('/api/LoL').success(function(data) {
+        scope.stats = data;
+        scope.loading = false;
+      }).error(function() {
+        // TODO: Handle this
+      });
 
       scope.rankedClick = function() {
         scope.selected = 'ranked';
@@ -149,22 +154,6 @@ app.directive('pwLolStats', function() {
           return Medal.medalImage(scope.stats.aramTurretKills, Medal.aramTowersBreakpoints);
         }
       }
-
-      function update() {
-        if (scope.isLoading) {
-          scope.loading = true;
-        } else {
-          scope.loading = false;
-        }
-      }
-
-      scope.$watch('stats', function(value) {
-        update();
-      });
-
-      scope.$watch('isLoading', function(value) {
-        update();
-      });
     },
   };
-});
+}]);
