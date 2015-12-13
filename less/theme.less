@@ -35,10 +35,12 @@
 @lol-stats-button-font-size: 20px;
 @lol-stats-title-font-size: 16px;
 @lol-stats-value-font-size: 20px;
+@lol-stats-summoner-name-font-size: 30px;
 @lol-stats-bg-colour: @dark-theme-colour;
 @lol-stats-bg-colour-inactive: @medium-theme-colour;
 @lol-stats-bg-colour-selected: @light-theme-colour;
 @lol-stats-bg-colour-hovered: @lighter-theme-colour;
+@lol-stats-bg-colour-accent: @lol-stats-bg-colour-selected * 0.8;
 
 @play-game-tab-height: 31em / 12;
 @play-game-tab-side-width: 1em;
@@ -313,6 +315,7 @@ hr {
 /* About Me page */
 .about-me-content {
   font-size: @about-me-paragraph-font-size;
+  text-align: justify;
 }
 
 .about-me-content__header {
@@ -376,12 +379,11 @@ hr {
   margin: 10px 10px 10px 10px;
   height: 50px;
   padding: 5px;
-  background-color: @lol-stats-bg-colour-selected * 0.8;
+  background-color: @lol-stats-bg-colour-accent;
 }
 
 .lol-stats-summoner__name {
-  font-size: 30px;
-  text-decoration: underline;
+  font-size: @lol-stats-summoner-name-font-size;
 }
 
 .lol-stats-summoner__id {
@@ -424,12 +426,13 @@ hr {
   flex: 5;
   background-color: @lol-stats-bg-colour;
   height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lol-stats-loading {
-  line-height: 300px;
   text-align: center;
-  vertical-align: middle;
   margin: 0;
 }
 

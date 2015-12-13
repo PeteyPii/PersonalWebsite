@@ -80,7 +80,7 @@ app.directive('pwLolStats', ['$http', function($http) {
       }
 
       scope.summonerIcon = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return '//ddragon.leagueoflegends.com/cdn/5.8.1/img/profileicon/' + scope.stats.profileIconId + '.png';
         }
       }
@@ -96,61 +96,61 @@ app.directive('pwLolStats', ['$http', function($http) {
       };
 
       scope.soloQueueRank = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return prettifiedTier[scope.stats.soloQueueTier] + ' ' + scope.stats.soloQueueDivision;
         }
       }
 
       scope.soloQueueTakedownsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.soloQueueKills + scope.stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
         }
       }
 
       scope.soloQueueRankMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalRankImage(scope.stats.soloQueueTier, scope.stats.soloQueueDivision);
         }
       }
 
       scope.soloQueueWinsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.soloQueueWins, Medal.soloQueueWinsBreakpoints);
         }
       }
 
       scope.normalTakedownsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.normalKills + scope.stats.normalAssists, Medal.normalTakedownsBreakpoints);
         }
       }
 
       scope.normalWinsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.normalWins, Medal.normalWinsBreakpoints);
         }
       }
 
       scope.normalCreepScoreMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.normalCreepScore, Medal.normalCreepScoreBreakpoints);
         }
       }
 
       scope.aramTakedownsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.aramKills + scope.stats.aramAssists, Medal.aramTakedownsBreakpoints);
         }
       }
 
       scope.aramWinsMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.aramWins, Medal.aramWinsBreakpoints);
         }
       }
 
       scope.aramTowersMedal = function() {
-        if (!scope.isLoading) {
+        if (!scope.loading) {
           return Medal.medalImage(scope.stats.aramTurretKills, Medal.aramTowersBreakpoints);
         }
       }
