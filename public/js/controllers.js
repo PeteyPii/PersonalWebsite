@@ -1,12 +1,12 @@
 app.controller('HomeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
-    $rootScope.activeNavLinks.home = true;
+    $rootScope.setActiveNavLink('home');
   }
 ]);
 
 app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
   function ($scope, $rootScope, $http) {
-    $rootScope.activeNavLinks.projects = true;
+    $rootScope.setActiveNavLink('projects');
     $scope.problemsSolved = '75+';
     $http.get('/api/Euler').success(function(data) {
       $scope.problemsSolved = data.problemsSolved;
@@ -18,17 +18,18 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
 
 app.controller('ResumeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
-    $rootScope.activeNavLinks.resume = true;
+    $rootScope.setActiveNavLink('resume');
   }
 ]);
 
 app.controller('AboutMeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
-    $rootScope.activeNavLinks.aboutMe = true;
+    $rootScope.setActiveNavLink('aboutMe');
   }
-])
+]);
 
-app.controller('MissingPageController', ['$scope',
-  function ($scope) {
+app.controller('MissingPageController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
+    $rootScope.setActiveNavLink('none');
   }
 ]);

@@ -38,23 +38,24 @@ app.config(['$routeProvider', '$locationProvider',
   }]);
 
 app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $window) {
-  $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+  $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     // Have to check for $$route presence because it's missing for bad URL requests.
     $rootScope.title = current.$$route ? current.$$route.title : '';
   });
 
   $rootScope.$on('$viewContentLoaded', function() {
+    // This isn't in $routeChangeSuccess since that event gets fired multiple times for redirects.
     if ($window.ga) {
       $window.ga('send', 'pageview', $location.path());
     }
   });
 
   $rootScope.activeNavLinks = {};
-  $rootScope.navLinkClick = function(itemClicked) {
+  $rootScope.setActiveNavLink = function(activeItem) {
     for (var item in $rootScope.activeNavLinks) {
       $rootScope.activeNavLinks[item] = false;
     }
-    $rootScope.activeNavLinks[itemClicked] = true;
+    $rootScope.activeNavLinks[activeItem] = true;
   };
 }]);
 
