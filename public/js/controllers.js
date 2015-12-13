@@ -22,7 +22,7 @@ app.controller('ResumeController', ['$scope', '$rootScope',
   }
 ]);
 
-app.controller('AboutController', ['$scope', '$rootScope',
+app.controller('AboutMeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.activeNavLinks.aboutMe = true;
   }

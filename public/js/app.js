@@ -24,8 +24,8 @@ app.config(['$routeProvider', '$locationProvider',
       title: 'Resume'
     }).
     when('/AboutMe', {
-      templateUrl: 'views/about.html',
-      controller: 'AboutController',
+      templateUrl: 'views/about-me.html',
+      controller: 'AboutMeController',
       title: 'About Me'
     }).
     otherwise({
