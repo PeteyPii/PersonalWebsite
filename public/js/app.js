@@ -1,6 +1,5 @@
-var app = angular.module('app', [
+var app = angular.module('pwApp', [
   'ngRoute',
-  'controllers'
 ]);
 
 app.config(['$routeProvider', '$locationProvider',

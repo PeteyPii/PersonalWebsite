@@ -1,12 +1,10 @@
-var controllers = angular.module('controllers', []);
-
-controllers.controller('HomeController', ['$scope', '$rootScope',
+app.controller('HomeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.activeNavLinks.home = true;
   }
 ]);
 
-controllers.controller('ProjectsController', ['$scope', '$rootScope', '$http',
+app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
   function ($scope, $rootScope, $http) {
     $rootScope.activeNavLinks.projects = true;
     $scope.problemsSolved = '75+';
@@ -18,19 +16,19 @@ controllers.controller('ProjectsController', ['$scope', '$rootScope', '$http',
   }
 ]);
 
-controllers.controller('ResumeController', ['$scope', '$rootScope',
+app.controller('ResumeController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.activeNavLinks.resume = true;
   }
 ]);
 
-controllers.controller('AboutController', ['$scope', '$rootScope',
+app.controller('AboutController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.activeNavLinks.aboutMe = true;
   }
 ])
 
-controllers.controller('MissingPageController', ['$scope',
+app.controller('MissingPageController', ['$scope',
   function ($scope) {
   }
 ]);

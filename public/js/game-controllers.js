@@ -1,4 +1,4 @@
-controllers.controller('PlayGameController', ['$scope',
+app.controller('PlayGameController', ['$scope',
   function ($scope) {
     $scope.isPlayGameBtnVisible = false;
     $scope.isAnimating = false;
@@ -48,7 +48,7 @@ controllers.controller('PlayGameController', ['$scope',
   }
 ]);
 
-controllers.controller('GameController', ['$scope',
+app.controller('GameController', ['$scope',
   function ($scope) {
     $scope.game = new Game();
 
