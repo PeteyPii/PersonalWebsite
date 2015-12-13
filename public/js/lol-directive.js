@@ -55,16 +55,19 @@ app.directive('pwLolStats', ['$http', function($http) {
   return {
     restrict: 'A', // attribute name only
     templateUrl: '/partials/lol-stats.html',
+    scope: {},
     link: function(scope, element) {
       scope.selected = 'ranked';
 
       scope.stats = {};
       scope.loading = true;
+      scope.error = false;
       $http.get('/api/LoL').success(function(data) {
         scope.stats = data;
         scope.loading = false;
       }).error(function() {
-        // TODO: Handle this
+        scope.error = true;
+        scope.loading = false;
       });
 
       scope.rankedClick = function() {

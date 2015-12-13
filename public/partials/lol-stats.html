@@ -12,10 +12,14 @@
   </div>
 
   <div class="lol-stats-container__loading" data-ng-show="loading">
-    <h2 class="lol-stats-loading"><i class="fa fa-spinner fa-spin"></i> Loading...</h2>
+    <h2 class="lol-stats-message"><i class="fa fa-spinner fa-spin"></i> Loading...</h2>
   </div>
 
-  <div class="lol-stats-container__info" data-ng-show="!loading">
+  <div class="lol-stats-container__error" data-ng-show="error">
+    <h2 class="lol-stats-message">An error occurred. Try refreshing the page. <i class="fa fa-frown-o"></i></h2>
+  </div>
+
+  <div class="lol-stats-container__info" data-ng-show="!loading &amp;&amp; !error">
     <div class="lol-stats-summoner">
       <img class="lol-stats-summoner__icon" data-ng-src="{{ summonerIcon() }}" alt="My summoner icon.">
       <span class="lol-stats-summoner__name">{{ stats.summonerName }}</span> <span class="lol-stats-summoner__id">(ID #{{ stats.summonerId }})</span>
