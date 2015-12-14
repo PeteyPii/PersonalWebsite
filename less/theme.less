@@ -8,6 +8,7 @@
 
 @black-font-colour: #111;
 @dark-font-colour: #444;
+@light-grey-font-colour: #AAA;
 @white-font-colour: #EEE;
 @grey-bg-colour: #CCC;
 
@@ -23,10 +24,28 @@
 @navbar-icon-size: 40px;
 @navbar-icon-horizontal-padding: 10px;
 
-@projects-title-font-size: 24px;
+@footer-font-size: 14px;
+
+@content-heading-font-size: 24px;
+@content-paragraph-font-size: 16px;
+
+@projects-title-font-size: @content-heading-font-size;
 @projects-link-size: @projects-title-font-size;
 @projects-languages-font-size: 16px;
 @projects-dates-font-size: @projects-languages-font-size;
+
+@lol-stats-button-font-size: 20px;
+@lol-stats-title-font-size: 16px;
+@lol-stats-value-font-size: 20px;
+@lol-stats-summoner-name-font-size: 30px;
+@lol-stats-bg-colour: @dark-theme-colour;
+@lol-stats-bg-colour-inactive: @medium-theme-colour;
+@lol-stats-bg-colour-selected: @light-theme-colour;
+@lol-stats-bg-colour-hovered: @lighter-theme-colour;
+@lol-stats-bg-colour-accent: @lol-stats-bg-colour-selected * 0.8;
+
+@play-game-tab-height: 31em / 12;
+@play-game-tab-side-width: 1em;
 
 @font-face {
   font-family: Bitter;
@@ -62,13 +81,47 @@ body, html {
   padding: 0;
 }
 
-img {
-  padding: 5px;
-  background-color: @white-font-colour;
+h1 {
+  font-size: @content-heading-font-size;
+}
+
+p {
+  font-size: @content-paragraph-font-size;
 }
 
 hr {
   border-top: 1px solid @black-font-colour;
+}
+
+.light-img-frame {
+  padding: 5px;
+  background-color: @white-font-colour;
+  width: 100%;
+}
+
+.side-by-side-xs {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+@media(min-width: @sm-min-width) {
+  .side-by-side-sm {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.content-heading {
+  font-weight: bold;
+  font-size: @content-heading-font-size;
+  text-decoration: underline;
+}
+
+.content-heading--v-even {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 /* Bootstrap */
@@ -184,6 +237,7 @@ hr {
 .jumbotron {
   background-color: @dark-theme-colour;
   color: @white-font-colour;
+  margin-bottom: 15px;
 
   h1 {
     margin-top: 0;
@@ -202,41 +256,45 @@ hr {
       color: #4B82B3;
     }
   }
-  img {
-    width: 100%;
+}
+
+/* Footer */
+.footer__contact,
+.footer__github,
+.footer__legal {
+  font-size: @footer-font-size;
+  @media(max-width: @sm-max-width) {
+    margin-bottom: 5px;;
+    text-align: center;
   }
 }
 
+.footer__github {
+  @media(min-width: @md-min-width) {
+    text-align: center;
+  }
+}
+
+.footer__legal {
+  @media(min-width: @md-min-width) {
+    text-align: right;
+  }
+  @media(max-width: @sm-max-width) {
+    margin-bottom: 10px;
+  }
+}
+
+/* Home page */
 .jumbotron--home {
   margin-bottom: 0;
   padding-bottom: 33px;
 }
 
-/* Footer */
-.footer {
-  .contact {
-    @media(max-width: @xs-max-width) {
-      margin-bottom: 0;
-    }
-  }
-
-  .license {
-    @media(min-width: @sm-min-width) {
-      text-align: right;
-    }
-  }
-}
-
-/* Home page */
-.home-content {
-  @media(min-width: @sm-min-width) {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-}
-
 /* Projects page */
+.jumbotron--projects {
+  margin-bottom: 30px;
+}
+
 .projects-list {
   & > ul {
     list-style-type: none;
@@ -291,15 +349,130 @@ hr {
   }
 }
 
-/* Game */
-@game-tab-height: 31em / 12;
-@game-tab-side-width: 1em;
+/* About Me page */
+.about-me-content {
+  text-align: justify;
+}
 
-#game-container {
+.about-me-content__img {
+  margin: 15px 0;
+}
+
+.lol-stats-container {
+  display: flex;
+  flex-direction: row;
+  color: @white-font-colour;
+}
+
+.lol-stats-container__tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lol-stats-tab {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background-color: @lol-stats-bg-colour-inactive;
+
+  &:hover {
+    background-color: @lol-stats-bg-colour-hovered;
+  }
+}
+
+.lol-stats-tab--selected {
+  background-color: @lol-stats-bg-colour-selected;
+}
+
+.lol-stats-tab__btn {
+  border: none;
+  background: none;
+  width: 100%;
+  outline-width: 0;
+  font-size: @lol-stats-button-font-size;
+  font-weight: bold;
+
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-button-font-size * 0.8;
+  }
+}
+
+.lol-stats-container__info {
+  flex: 5;
+  background-color: @lol-stats-bg-colour;
+}
+
+.lol-stats-summoner {
+  margin: 10px 10px 10px 10px;
+  height: 50px;
+  padding: 5px;
+  background-color: @lol-stats-bg-colour-accent;
+}
+
+.lol-stats-summoner__name {
+  font-size: @lol-stats-summoner-name-font-size;
+}
+
+.lol-stats-summoner__id {
+  // Can't figure out how I want to show this nicely
+  display: none;
+
+  font-size: 20px;
+  color: @light-grey-font-colour;
+  margin-left: 10px;
+}
+
+.lol-stats-summoner__icon {
+  height: 100%;
+  float: left;
+  margin-right: 10px;
+}
+
+.lol-stats-stats {
+  display: flex;
+}
+
+.lol-stats-data-point {
+  flex: 1;
+  text-align: center;
+}
+
+.lol-stats-data-point__medal {
+  width: 66%;
+}
+
+.lol-stats-data-point__title {
+  font-size: @lol-stats-title-font-size;
+}
+
+.lol-stats-data-point__value {
+  font-size: @lol-stats-value-font-size;
+}
+
+.lol-stats-container__loading,
+.lol-stats-container__error,
+ {
+  flex: 5;
+  background-color: @lol-stats-bg-colour;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lol-stats-message {
+  text-align: center;
+  margin: 0;
+}
+
+/* Game */
+.game-container {
   display: none;
 }
 
-body.game-mode {
+.game-mode {
   overflow: hidden;
 }
 
@@ -308,23 +481,23 @@ body.game-mode {
   height: 100vh;
 }
 
-.game-tab {
+.play-game-tab {
   text-align: center;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.game-tab__bar {
+.play-game-tab__bar {
   width: 100%;
   height: 15px;
   background-color: @dark-theme-colour;
 }
 
-.game-tab__button {
+.play-game-tab__btn {
   background-color: @dark-theme-colour;
   color: @white-font-colour;
-  height: @game-tab-height;
+  height: @play-game-tab-height;
   vertical-align: top;
   border: none;
 
@@ -337,16 +510,16 @@ body.game-mode {
   }
 }
 
-.game-tab__button-side {
-  height: @game-tab-height;
-  width: @game-tab-side-width;
+.play-game-tab__btn-side {
+  height: @play-game-tab-height;
+  width: @play-game-tab-side-width;
 
   path {
     fill: @dark-theme-colour;
   }
 }
 
-.play-game-container {
+.play-game-btn-container {
   text-align: center;
   display: none;
   background-color: black;

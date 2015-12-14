@@ -1,9 +1,9 @@
 <div class="main-site">
   <div class="jumbotron jumbotron--home">
     <div class="container">
-      <div class="row home-content">
+      <div class="row side-by-side-sm">
         <div class="col-md-3 col-sm-6 hidden-xs">
-          <img src="/assets/jace.jpg" alt="Jace from MTG. An avatar I like to use."></img>
+          <img class="light-img-frame" src="/imgs/jace.jpg" title="Jace from MTG. An avatar I like to use." alt="Jace from MTG. An avatar I like to use."/>
         </div>
         <div class="col-md-8 col-md-push-1 col-sm-6 col-xs-12">
           <div>
@@ -15,25 +15,7 @@
     </div>
   </div>
 
-  <div class="play-game-container">
-    <button id="play-game-btn" tabindex="-1">
-      <canvas width="0" height="0" id="play-game-canvas"></canvas>
-    </button>
-    <span id="oswald-loader">.</span>
-  </div>
-
-  <div class="game-tab">
-    <div class="game-tab__bar"></div>
-    <svg class="game-tab__button-side" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M100 0 L 0 0 Q 35 0, 50 50 Q 65 100, 100 100"/>
-    </svg>
-    <button id="game-tab-btn" class="game-tab__button" tabindex="-1"><i class="navbar-icon fa fa-bars fa-2x"></i></button>
-    <svg class="game-tab__button-side" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 100 Q 35 100, 50 50 Q 65 0, 100 0 L 0 0"/>
-    </svg>
-  </div>
+  <div data-ng-include data-src="'/partials/play-game.html'"></div>
 </div>
 
-<div id="game-container">
-  <div data-ng-include data-src="'partials/game.html'"></div>
-</div>
+<div data-ng-include data-src="'/partials/game.html'"></div>

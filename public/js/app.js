@@ -1,54 +1,55 @@
-var app = angular.module('app', [
+var app = angular.module('pwApp', [
   'ngRoute',
-  'controllers'
 ]);
 
 app.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
-    $routeProvider.
-    when('/Home', {
-      templateUrl: 'views/home.html',
+    $routeProvider.when('/Home', {
+      templateUrl: '/views/home.html',
       controller: 'HomeController',
-      title: 'Home'
-    }).
-    when('/', {
+    }).when('/', {
       redirectTo: '/Home'
-    }).
-    when('/Projects', {
-      templateUrl: 'views/projects.html',
+    }).when('/Projects', {
+      templateUrl: '/views/projects.html',
       controller: 'ProjectsController',
-      title: 'Projects'
-    }).
-    when('/Resume', {
-      templateUrl: 'views/resume.html',
+    }).when('/Resume', {
+      templateUrl: '/views/resume.html',
       controller: 'ResumeController',
-      title: 'Resume'
-    }).
-    when('/AboutMe', {
-      templateUrl: 'views/about.html',
+    }).when('/AboutMe', {
+      templateUrl: '/views/about-me.html',
+      controller: 'AboutMeController',
+    }).when('/About', {
+      templateUrl: '/views/about.html',
       controller: 'AboutController',
-      title: 'About Me'
-    }).
-    otherwise({
-      templateUrl: 'views/404.html',
+    }).when('/Licenses', {
+      templateUrl: '/views/licenses.html',
+      controller: 'LicensesController',
+    }).when('/PrivacyPolicy', {
+      templateUrl: '/views/privacy.html',
+      controller: 'PrivacyPolicyController',
+    }).otherwise({
+      templateUrl: '/views/404.html',
       controller: 'MissingPageController',
-      title: 'Page Does Not Exist'
     });
 
     $locationProvider.html5Mode(true);
   }]);
 
 app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $window) {
-  $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-    // Have to check for $$route presence because it's missing for bad URL requests.
-    $rootScope.title = current.$$route ? current.$$route.title : '';
-  });
-
   $rootScope.$on('$viewContentLoaded', function() {
+    // This isn't in $routeChangeSuccess since that event gets fired multiple times for redirects.
     if ($window.ga) {
       $window.ga('send', 'pageview', $location.path());
     }
   });
+
+  $rootScope.activeNavLinks = {};
+  $rootScope.setActiveNavLink = function(activeItem) {
+    for (var item in $rootScope.activeNavLinks) {
+      $rootScope.activeNavLinks[item] = false;
+    }
+    $rootScope.activeNavLinks[activeItem] = true;
+  };
 }]);
 
 $(document).ready(function() {
