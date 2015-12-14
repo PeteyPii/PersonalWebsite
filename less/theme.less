@@ -259,21 +259,28 @@ hr {
 }
 
 /* Footer */
-.footer {
+.footer__contact,
+.footer__github,
+.footer__legal {
   font-size: @footer-font-size;
+  @media(max-width: @sm-max-width) {
+    margin-bottom: 5px;;
+    text-align: center;
+  }
 }
 
-.footer__contact {
-  font-size: @footer-font-size;
-  @media(max-width: @xs-max-width) {
-    margin-bottom: 0;
+.footer__github {
+  @media(min-width: @md-min-width) {
+    text-align: center;
   }
 }
 
 .footer__legal {
-  font-size: @footer-font-size;
-  @media(min-width: @sm-min-width) {
+  @media(min-width: @md-min-width) {
     text-align: right;
+  }
+  @media(max-width: @sm-max-width) {
+    margin-bottom: 10px;
   }
 }
 
