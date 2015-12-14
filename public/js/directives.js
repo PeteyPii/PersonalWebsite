@@ -9,3 +9,15 @@ app.directive('ngAlt', function() {
     },
   };
 });
+
+app.directive('pwNoFocus', function() {
+  return {
+    restrict: 'A',
+    scope: {},
+    link: function(scope, element) {
+      element.bind('click', function(event) {
+        element.blur();
+      });
+    },
+  };
+});
