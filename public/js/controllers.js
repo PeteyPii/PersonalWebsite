@@ -14,7 +14,7 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $http.get('/api/Euler').success(function(data) {
       $scope.problemsSolved = data.problemsSolved;
     }).error(function() {
-      // Sliently fail since we have a default value which is sufficient.
+      // Silently fail since we have a default value which is sufficient.
     });
   }
 ]);
@@ -44,6 +44,13 @@ app.controller('LicensesController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.setActiveNavLink('none');
     $rootScope.title = 'Licenses';
+  }
+]);
+
+app.controller('PrivacyPolicyController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
+    $rootScope.setActiveNavLink('none');
+    $rootScope.title = 'Privacy Policy';
   }
 ]);
 

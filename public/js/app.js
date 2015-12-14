@@ -24,6 +24,9 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/Licenses', {
       templateUrl: '/views/licenses.html',
       controller: 'LicensesController',
+    }).when('/PrivacyPolicy', {
+      templateUrl: '/views/privacy.html',
+      controller: 'PrivacyPolicyController',
     }).otherwise({
       templateUrl: '/views/404.html',
       controller: 'MissingPageController',
