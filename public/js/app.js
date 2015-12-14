@@ -21,6 +21,9 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/About', {
       templateUrl: '/views/about.html',
       controller: 'AboutController',
+    }).when('/Licenses', {
+      templateUrl: '/views/licenses.html',
+      controller: 'LicensesController',
     }).otherwise({
       templateUrl: '/views/404.html',
       controller: 'MissingPageController',

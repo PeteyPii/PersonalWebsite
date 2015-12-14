@@ -40,6 +40,13 @@ app.controller('AboutController', ['$scope', '$rootScope',
   }
 ]);
 
+app.controller('LicensesController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
+    $rootScope.setActiveNavLink('none');
+    $rootScope.title = 'Licenses';
+  }
+]);
+
 app.controller('MissingPageController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.setActiveNavLink('none');
