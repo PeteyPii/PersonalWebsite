@@ -24,13 +24,15 @@
 @navbar-icon-size: 40px;
 @navbar-icon-horizontal-padding: 10px;
 
-@projects-title-font-size: 24px;
+@footer-font-size: 14px;
+
+@content-heading-font-size: 24px;
+@content-paragraph-font-size: 16px;
+
+@projects-title-font-size: @content-heading-font-size;
 @projects-link-size: @projects-title-font-size;
 @projects-languages-font-size: 16px;
 @projects-dates-font-size: @projects-languages-font-size;
-
-@about-me-title-font-size: 24px;
-@about-me-paragraph-font-size: 16px;
 
 @lol-stats-button-font-size: 20px;
 @lol-stats-title-font-size: 16px;
@@ -79,6 +81,14 @@ body, html {
   padding: 0;
 }
 
+h1 {
+  font-size: @content-heading-font-size;
+}
+
+p {
+  font-size: @content-paragraph-font-size;
+}
+
 hr {
   border-top: 1px solid @black-font-colour;
 }
@@ -101,6 +111,17 @@ hr {
     align-items: center;
     flex-direction: row;
   }
+}
+
+.content-heading {
+  font-weight: bold;
+  font-size: @content-heading-font-size;
+  text-decoration: underline;
+}
+
+.content-heading--v-even {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 /* Bootstrap */
@@ -216,6 +237,7 @@ hr {
 .jumbotron {
   background-color: @dark-theme-colour;
   color: @white-font-colour;
+  margin-bottom: 15px;
 
   h1 {
     margin-top: 0;
@@ -238,16 +260,20 @@ hr {
 
 /* Footer */
 .footer {
-  .contact {
-    @media(max-width: @xs-max-width) {
-      margin-bottom: 0;
-    }
-  }
+  font-size: @footer-font-size;
+}
 
-  .license {
-    @media(min-width: @sm-min-width) {
-      text-align: right;
-    }
+.footer__contact {
+  font-size: @footer-font-size;
+  @media(max-width: @xs-max-width) {
+    margin-bottom: 0;
+  }
+}
+
+.footer__legal {
+  font-size: @footer-font-size;
+  @media(min-width: @sm-min-width) {
+    text-align: right;
   }
 }
 
@@ -258,6 +284,10 @@ hr {
 }
 
 /* Projects page */
+.jumbotron--projects {
+  margin-bottom: 30px;
+}
+
 .projects-list {
   & > ul {
     list-style-type: none;
@@ -314,15 +344,7 @@ hr {
 
 /* About Me page */
 .about-me-content {
-  font-size: @about-me-paragraph-font-size;
   text-align: justify;
-}
-
-.about-me-content__header {
-  margin: 10px 0;
-  font-weight: bold;
-  font-size: @about-me-title-font-size;
-  text-decoration: underline;
 }
 
 .about-me-content__img {

@@ -33,6 +33,13 @@ app.controller('AboutMeController', ['$scope', '$rootScope',
   }
 ]);
 
+app.controller('AboutController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
+    $rootScope.setActiveNavLink('none');
+    $rootScope.title = 'About';
+  }
+]);
+
 app.controller('MissingPageController', ['$scope', '$rootScope',
   function ($scope, $rootScope) {
     $rootScope.setActiveNavLink('none');
