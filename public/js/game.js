@@ -4,12 +4,10 @@ function Game() {
 }
 
 Game.prototype.beginGame = function() {
-  $('.main-site').hide();
-  document.body.scrollTop = 0; // pull the page back up to the top
-  $('body').addClass('game-mode');
-  $('.game-container').show();
-
   this.gameRunning = true;
+
+  $('.main-site').hide();
+  $('body').addClass('game-mode');
 
   var prevCursorX;
   var prevCursorY;
@@ -922,14 +920,17 @@ Game.prototype.beginGame = function() {
 }
 
 Game.prototype.endGame = function() {
-  $('.main-site').show();
-  $('body').removeClass('game-mode');
-  $('.game-container').hide();
+  if (this.gameRunning) {
+    $(document).off('keydown keyup keypress');
+    $('#game-canvas').off('mousedown mouseup mousemove mouseenter touchstart touchmove touchend');
 
-  $(document).off('keydown keyup keypress');
-  $('#game-canvas').off('mousedown mouseup mousemove mouseenter touchstart touchmove touchend');
+    clearInterval(this.loopHandle);
+    this.loopHandle = null;
+    this.gameRunning = false;
 
-  clearInterval(this.loopHandle);
-  this.loopHandle = null;
-  this.gameRunning = false;
+    $('body').removeClass('game-mode');
+    $('.main-site').show();
+
+    window.history.back();
+  }
 }

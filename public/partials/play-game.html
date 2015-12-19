@@ -1,9 +1,8 @@
 <div data-ng-controller="PlayGameController">
   <div class="play-game-btn-container">
-    <button id="play-game-btn" tabindex="-1">
+    <button class="play-game-btn" data-ng-click="playBtnClick()">
       <canvas width="0" height="0" id="play-game-canvas"></canvas>
     </button>
-    <span id="oswald-loader">.</span>
   </div>
 
   <div class="play-game-tab" data-ng-show="playGameButton.isSupported">

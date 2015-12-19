@@ -1,5 +1,5 @@
-app.controller('PlayGameController', ['$scope',
-  function ($scope) {
+app.controller('PlayGameController', ['$scope', '$location',
+  function ($scope, $location) {
     $scope.isPlayGameBtnVisible = false;
     $scope.isAnimating = false;
     $scope.playGameButton = new PlayGameButton(document.getElementById('play-game-canvas'), {
@@ -39,7 +39,11 @@ app.controller('PlayGameController', ['$scope',
           }
         });
       }
-    }
+    };
+
+    $scope.playBtnClick = function() {
+      $location.path('/Meteorite');
+    };
 
     // Stop right-clicking from bringing the context menu up on the canvas
     $('#play-game-canvas').on('contextmenu', function(e) {
@@ -48,14 +52,13 @@ app.controller('PlayGameController', ['$scope',
   }
 ]);
 
-app.controller('GameController', ['$scope',
-  function ($scope) {
-    $scope.game = new Game();
+app.controller('GameController', ['$scope', '$rootScope',
+  function ($scope, $rootScope) {
+    $rootScope.setActiveNavLink('none');
+    $rootScope.title = 'Meteorite';
 
-    $('#play-game-btn').click(function() {
-      $(this).blur();
-      $scope.game.beginGame();
-    });
+    $scope.game = new Game();
+    $scope.game.beginGame();
 
     $scope.$on('$destroy', function() {
       $scope.game.endGame();

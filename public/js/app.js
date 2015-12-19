@@ -21,6 +21,9 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/About', {
       templateUrl: '/views/about.html',
       controller: 'AboutController',
+    }).when('/Meteorite', {
+      templateUrl: '/views/game.html',
+      controller: 'GameController',
     }).when('/Licenses', {
       templateUrl: '/views/licenses.html',
       controller: 'LicensesController',
