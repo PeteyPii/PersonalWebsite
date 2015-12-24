@@ -61,7 +61,7 @@ app.controller('GameController', ['$scope', '$rootScope',
     $scope.game.beginGame();
 
     $scope.$on('$destroy', function() {
-      $scope.game.endGame();
+      $scope.game.endGame(false);
     });
 
     // Stop right-clicking from bringing the context menu up on the canvas

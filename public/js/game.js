@@ -57,7 +57,7 @@ Game.prototype.beginGame = function() {
     }
   }).keypress(function(e) {
     if (e.which === shiftXCode) {
-      this.endGame();
+      this.endGame(true);
     }
   }.bind(this));
 
@@ -426,7 +426,7 @@ Game.prototype.beginGame = function() {
     gameState = highScoresStateId;
   }
 
-  menuItemActions[itemExitId] = this.endGame.bind(this);
+  menuItemActions[itemExitId] = this.endGame.bind(this, true);
 
   stateStep[titleStateId] = function() {
     if (keysDown[enterCode] && !prevKeysDown[enterCode]) {
@@ -919,7 +919,7 @@ Game.prototype.beginGame = function() {
   }
 }
 
-Game.prototype.endGame = function() {
+Game.prototype.endGame = function(goBack) {
   if (this.gameRunning) {
     $(document).off('keydown keyup keypress');
     $('#game-canvas').off('mousedown mouseup mousemove mouseenter touchstart touchmove touchend');
@@ -931,6 +931,10 @@ Game.prototype.endGame = function() {
     $('body').removeClass('game-mode');
     $('.main-site').show();
 
-    window.history.back();
+    // Sometimes we don't want to go back when we're stopping the game such as when we hit back in
+    // the browser. Other times, from within the game usually, we do want to go back.
+    if (goBack) {
+      window.history.back();
+    }
   }
 }
