@@ -4,12 +4,10 @@ function Game() {
 }
 
 Game.prototype.beginGame = function() {
-  $('.main-site').hide();
-  document.body.scrollTop = 0; // pull the page back up to the top
-  $('body').addClass('game-mode');
-  $('.game-container').show();
-
   this.gameRunning = true;
+
+  $('.main-site').hide();
+  $('body').addClass('game-mode');
 
   var prevCursorX;
   var prevCursorY;
@@ -59,7 +57,7 @@ Game.prototype.beginGame = function() {
     }
   }).keypress(function(e) {
     if (e.which === shiftXCode) {
-      this.endGame();
+      this.endGame(true);
     }
   }.bind(this));
 
@@ -428,7 +426,7 @@ Game.prototype.beginGame = function() {
     gameState = highScoresStateId;
   }
 
-  menuItemActions[itemExitId] = this.endGame.bind(this);
+  menuItemActions[itemExitId] = this.endGame.bind(this, true);
 
   stateStep[titleStateId] = function() {
     if (keysDown[enterCode] && !prevKeysDown[enterCode]) {
@@ -921,15 +919,22 @@ Game.prototype.beginGame = function() {
   }
 }
 
-Game.prototype.endGame = function() {
-  $('.main-site').show();
-  $('body').removeClass('game-mode');
-  $('.game-container').hide();
+Game.prototype.endGame = function(goBack) {
+  if (this.gameRunning) {
+    $(document).off('keydown keyup keypress');
+    $('#game-canvas').off('mousedown mouseup mousemove mouseenter touchstart touchmove touchend');
 
-  $(document).off('keydown keyup keypress');
-  $('#game-canvas').off('mousedown mouseup mousemove mouseenter touchstart touchmove touchend');
+    clearInterval(this.loopHandle);
+    this.loopHandle = null;
+    this.gameRunning = false;
 
-  clearInterval(this.loopHandle);
-  this.loopHandle = null;
-  this.gameRunning = false;
+    $('body').removeClass('game-mode');
+    $('.main-site').show();
+
+    // Sometimes we don't want to go back when we're stopping the game such as when we hit back in
+    // the browser. Other times, from within the game usually, we do want to go back.
+    if (goBack) {
+      window.history.back();
+    }
+  }
 }

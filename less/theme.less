@@ -290,6 +290,64 @@ hr {
   padding-bottom: 33px;
 }
 
+.play-game-tab {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.play-game-tab__bar {
+  width: 100%;
+  height: 15px;
+  background-color: @dark-theme-colour;
+}
+
+.play-game-tab__btn {
+  background-color: @dark-theme-colour;
+  color: @white-font-colour;
+  height: @play-game-tab-height;
+  vertical-align: top;
+  border: none;
+
+  &:hover {
+    color: @washed-theme-colour;
+  }
+
+  &:focus {
+    outline-width: 0;
+  }
+}
+
+.play-game-tab__btn-side {
+  height: @play-game-tab-height;
+  width: @play-game-tab-side-width;
+
+  path {
+    fill: @dark-theme-colour;
+  }
+}
+
+.play-game-btn-container {
+  text-align: center;
+  display: none;
+  background-color: black;
+}
+
+.play-game-btn {
+  padding: 30px;
+  margin: 15px;
+  background: transparent;
+  outline-width: 0;
+  border: none;
+  background-color: #222;
+
+  &:hover,
+  &:focus {
+    background-color: #333;
+  }
+}
+
 /* Projects page */
 .jumbotron--projects {
   margin-bottom: 30px;
@@ -469,7 +527,11 @@ hr {
 
 /* Game */
 .game-container {
-  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .game-mode {
@@ -477,65 +539,8 @@ hr {
 }
 
 #game-canvas {
-  width: 100vw;
-  height: 100vh;
-}
-
-.play-game-tab {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.play-game-tab__bar {
   width: 100%;
-  height: 15px;
-  background-color: @dark-theme-colour;
-}
-
-.play-game-tab__btn {
-  background-color: @dark-theme-colour;
-  color: @white-font-colour;
-  height: @play-game-tab-height;
-  vertical-align: top;
-  border: none;
-
-  &:hover {
-    color: @washed-theme-colour;
-  }
-
-  &:focus {
-    outline-width: 0;
-  }
-}
-
-.play-game-tab__btn-side {
-  height: @play-game-tab-height;
-  width: @play-game-tab-side-width;
-
-  path {
-    fill: @dark-theme-colour;
-  }
-}
-
-.play-game-btn-container {
-  text-align: center;
-  display: none;
-  background-color: black;
-}
-
-#play-game-btn {
-  padding: 30px;
-  margin: 15px;
-  background: transparent;
-  outline-width: 0;
-  border: none;
-  background-color: #222;
-
-  &:hover {
-    background-color: #333;
-  }
+  height: 100%;
 }
 
 #oswald-loader {
