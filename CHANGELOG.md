@@ -1,4 +1,14 @@
 # Changelog
+## v2.1.1
+- Put all third party libraries on site
+- School term is now 3A on homepage
+- Meteorite moved to its own separate page
+- Link to Meteorite from projects page
+- No longer say jQuery is used
+- Updated resume for newest coop season
+- Updated Teamtris to v0.1.1
+- Optimized caricature image
+
 ## v2.1.0
 - Completed about me page
 - Added Teamtris
