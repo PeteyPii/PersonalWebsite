@@ -1,4 +1,10 @@
 # Changelog
+## v2.1.2
+- Updated to Teamtris to v0.1.2 (for bug fixes)
+- Fixed LoL summoner name display issues in mobile
+- Improved logging for failed API requests
+- Added Rocket League to the list of games I play
+
 ## v2.1.1
 - Put all third party libraries on site
 - School term is now 3A on homepage
