@@ -19,7 +19,7 @@ cache.addUpdateHandler('euler', function(callback) {
     }
 
     if (resp.statusCode < 200 || resp.statusCode >= 400) {
-      callback(new Error('Response returned with status code: ' + resp.statusCode));
+      callback(new Error('Request to ' + resp.request.href + ' responded with status code: ' + resp.statusCode));
       return;
     }
 
@@ -36,7 +36,7 @@ cache.addUpdateHandler('lol', function(callback) {
 
   function assertGoodResponse(resp) {
     if (resp.statusCode < 200 || resp.statusCode >= 400) {
-      throw new Error('Response returned with status code: ' + resp.statusCode);
+      throw new Error('Request to ' + resp.request.href + ' responded with status code: ' + resp.statusCode);
     }
   }
 
@@ -135,6 +135,7 @@ cache.addUpdateHandler('lol', function(callback) {
   }).then(function() {
     callback(null, lol);
   }).fail(function(reason) {
+    logger.error(reason);
     callback(reason);
   }).done();
 });

@@ -37,7 +37,6 @@
 @lol-stats-button-font-size: 20px;
 @lol-stats-title-font-size: 16px;
 @lol-stats-value-font-size: 20px;
-@lol-stats-summoner-name-font-size: 30px;
 @lol-stats-bg-colour: @dark-theme-colour;
 @lol-stats-bg-colour-inactive: @medium-theme-colour;
 @lol-stats-bg-colour-selected: @light-theme-colour;
@@ -462,15 +461,28 @@ hr {
   background-color: @lol-stats-bg-colour;
 }
 
+@lol-stats-summoner-height: 50px;
+@lol-stats-summoner-padding: 5px;
+@lol-stats-summoner-mobile-scale: 0.6;
+
 .lol-stats-summoner {
-  margin: 10px 10px 10px 10px;
-  height: 50px;
-  padding: 5px;
+  margin: 10px;
+  height: @lol-stats-summoner-height;
+  padding: @lol-stats-summoner-padding;
   background-color: @lol-stats-bg-colour-accent;
+
+  @media(max-width: @xs-max-width) {
+    height: @lol-stats-summoner-height * @lol-stats-summoner-mobile-scale;
+  }
 }
 
 .lol-stats-summoner__name {
-  font-size: @lol-stats-summoner-name-font-size;
+  font-size: @lol-stats-summoner-height - 2 * @lol-stats-summoner-padding;
+  line-height: @lol-stats-summoner-height - 2 * @lol-stats-summoner-padding;
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-summoner-height * @lol-stats-summoner-mobile-scale - 2 * @lol-stats-summoner-padding;
+    line-height: @lol-stats-summoner-height * @lol-stats-summoner-mobile-scale - 2 * @lol-stats-summoner-padding;
+  }
 }
 
 .lol-stats-summoner__id {
