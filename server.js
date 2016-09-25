@@ -71,12 +71,9 @@ try {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use('/api', api);
 
-    var httpsServer = https.createServer({
-      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem'))
-    }, app);
+    var httpServer = http.createServer(app);
 
-    app.use('/Teamtris', teamtrisApp(httpsServer));
+    app.use('/Teamtris', teamtrisApp(httpServer));
 
     app.get('*', function(req, res) {
       res.header('Cache-Control', 'private, max-age=0');
@@ -85,30 +82,12 @@ try {
       });
     });
 
-    httpsServer.listen(settings.server_https_port, function() {
-      var host = httpsServer.address().address;
-      var port = httpsServer.address().port;
+    httpServer.listen(settings.port, function() {
+      var host = httpServer.address().address;
+      var port = httpServer.address().port;
 
-      logger.log('Server listening at https://' + host + ':' + port);
+      logger.log('Server listening at http://' + host + ':' + port);
     });
-
-    var redirectApp = express();
-    var httpServer = http.createServer(redirectApp);
-
-    function httpsRedirectHandler(req, res) {
-      if (settings.redirect_default_port) {
-        res.redirect('https://' + req.hostname + req.url);
-      } else {
-        res.redirect('https://' + req.hostname + ':' + settings.server_https_port + req.url);
-      }
-    }
-
-    redirectApp.get('/MLF', httpsRedirectHandler);
-    redirectApp.get('/Teamtris', httpsRedirectHandler);
-    redirectApp.use('/', app);
-
-    httpServer.listen(settings.server_http_port);
-
   }).fail(function(err) {
     if (err.stack) {
       logger.error(err.stack);

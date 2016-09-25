@@ -23,9 +23,7 @@ try {
 function validateSettings(settings) {
   var requiredSettings = [
     'host_mlf',
-    'server_http_port',
-    'server_https_port',
-    'redirect_default_port',
+    'port',
     'cache_life',
     'summoner_name',
     'lol_api_key',
@@ -46,14 +44,8 @@ function validateSettings(settings) {
   if (!_.isBoolean(settings.host_mlf)) {
     throw new Error('Host MLF must either be `true` or `false`');
   }
-  if (!isValidPort(settings.server_http_port)) {
-    throw new Error('Server HTTP port must be a valid port number');
-  }
-  if (!isValidPort(settings.server_https_port)) {
-    throw new Error('Server HTTPS port must be a valid port number');
-  }
-  if (!_.isBoolean(settings.redirect_default_port)) {
-    throw new Error('Redirection to default port must either be `true` or `false`');
+  if (!isValidPort(settings.port)) {
+    throw new Error('Server port must be a valid port number');
   }
   if (!_.isNumber(settings.cache_life) || settings.cache_life < 0) {
     throw new Error('Cache life should be a non-negative number');
