@@ -8,7 +8,6 @@ var express = require('express');
 var favicon = require('serve-favicon');
 var file = require('file');
 var less = require('less');
-var Q = require('q');
 var _ = require('lodash');
 
 var api = require('./api.js');
@@ -49,10 +48,10 @@ try {
   app.use(compression());
   app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
   app.use(express.static(path.join(__dirname, 'public')));
+
+  app.set('trust proxy', 'loopback');
+
   app.use('/api', api);
-
-  var httpServer = http.createServer(app);
-
   app.get('*', function(req, res) {
     res.header('Cache-Control', 'private, max-age=0');
     res.sendFile('index.html', {
@@ -60,6 +59,7 @@ try {
     });
   });
 
+  var httpServer = http.createServer(app);
   httpServer.listen(settings.port, function() {
     var host = httpServer.address().address;
     var port = httpServer.address().port;
