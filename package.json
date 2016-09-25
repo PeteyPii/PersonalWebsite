@@ -1,6 +1,6 @@
 {
   "name": "patrick-wrobel-ca",
-  "version": "v2.1.2",
+  "version": "v2.2.0",
   "description": "My personal website for patrickwrobel.ca",
   "dependencies": {
     "compression": "1.6.0",
