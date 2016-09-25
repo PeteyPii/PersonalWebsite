@@ -22,7 +22,6 @@ try {
 
 function validateSettings(settings) {
   var requiredSettings = [
-    'host_mlf',
     'port',
     'cache_life',
     'summoner_name',
@@ -41,9 +40,6 @@ function validateSettings(settings) {
     }
   }
 
-  if (!_.isBoolean(settings.host_mlf)) {
-    throw new Error('Host MLF must either be `true` or `false`');
-  }
   if (!isValidPort(settings.port)) {
     throw new Error('Server port must be a valid port number');
   }

@@ -1,5 +1,4 @@
 {
-  "host_mlf": true,
   "port": 80,
   "cache_life": 86400000
 }
