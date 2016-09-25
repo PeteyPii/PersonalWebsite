@@ -1,4 +1,10 @@
 # Changelog
+## v2.2.0
+- Removed HTTPS handling from site
+- Removed direct dependencies on MLF and Teamtris
+- Updated academic term to 3B
+- Updated resume for 3B
+
 ## v2.1.2
 - Updated to Teamtris to v0.1.2 (for bug fixes)
 - Fixed LoL summoner name display issues in mobile

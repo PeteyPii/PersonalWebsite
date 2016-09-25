@@ -8,20 +8,13 @@ var express = require('express');
 var favicon = require('serve-favicon');
 var file = require('file');
 var less = require('less');
-var Q = require('q');
 var _ = require('lodash');
 
 var api = require('./api.js');
 var logger = require('./logger.js');
 var settings = require('./settings.js');
-var teamtrisApp = require('./Teamtris/lib/app.js');
 
 try {
-  var mlf;
-  if (settings.host_mlf) {
-    mlf = require('./MyLoLFantasy/app.js');
-  }
-
   logger.log('Rendering LESS files');
 
   file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
@@ -44,78 +37,35 @@ try {
 
   logger.log('Starting server up');
 
-  Q.Promise(function(resolve, reject, notify) {
-    if (settings.host_mlf) {
-      resolve(mlf.createApp(true));
-    } else {
-      resolve();
-    }
-  }).then(function(mlfApp) {
-    var app = express();
+  var app = express();
 
-    // Log all requests to the server
-    app.use(function logRequests(req, res, next) {
-      logger.logRequest(req);
-      next();
+  // Log all requests to the server
+  app.use(function logRequests(req, res, next) {
+    logger.logRequest(req);
+    next();
+  });
+
+  app.use(compression());
+  app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  app.set('trust proxy', 'loopback');
+
+  app.use('/api', api);
+  app.get('*', function(req, res) {
+    res.header('Cache-Control', 'private, max-age=0');
+    res.sendFile('index.html', {
+      root: __dirname + '/'
     });
+  });
 
-    if (mlfApp) {
-      app.use('/MLF', mlfApp);
-      logger.log('Hosting MLF');
-    } else {
-      logger.log('Opted out of hosting MLF');
-    }
+  var httpServer = http.createServer(app);
+  httpServer.listen(settings.port, function() {
+    var host = httpServer.address().address;
+    var port = httpServer.address().port;
 
-    app.use(compression());
-    app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use('/api', api);
-
-    var httpsServer = https.createServer({
-      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem'))
-    }, app);
-
-    app.use('/Teamtris', teamtrisApp(httpsServer));
-
-    app.get('*', function(req, res) {
-      res.header('Cache-Control', 'private, max-age=0');
-      res.sendFile('index.html', {
-        root: __dirname + '/'
-      });
-    });
-
-    httpsServer.listen(settings.server_https_port, function() {
-      var host = httpsServer.address().address;
-      var port = httpsServer.address().port;
-
-      logger.log('Server listening at https://' + host + ':' + port);
-    });
-
-    var redirectApp = express();
-    var httpServer = http.createServer(redirectApp);
-
-    function httpsRedirectHandler(req, res) {
-      if (settings.redirect_default_port) {
-        res.redirect('https://' + req.hostname + req.url);
-      } else {
-        res.redirect('https://' + req.hostname + ':' + settings.server_https_port + req.url);
-      }
-    }
-
-    redirectApp.get('/MLF', httpsRedirectHandler);
-    redirectApp.get('/Teamtris', httpsRedirectHandler);
-    redirectApp.use('/', app);
-
-    httpServer.listen(settings.server_http_port);
-
-  }).fail(function(err) {
-    if (err.stack) {
-      logger.error(err.stack);
-    } else {
-      logger.error('Error: ' + err);
-    }
-  }).done();
+    logger.log('Server listening at http://' + host + ':' + port);
+  });
 } catch (err) {
   if (err.stack) {
     logger.error(err.stack);
