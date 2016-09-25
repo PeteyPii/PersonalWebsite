@@ -1,4 +1,7 @@
 # Changelog
+## v2.2.2
+- Fixed bug with jQuery script name on Unix systems
+
 ## v2.2.1
 - Fixed bug with package name on Unix systems
 
