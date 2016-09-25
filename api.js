@@ -1,7 +1,7 @@
 var express = require('express');
 var git = require('git-rev');
 var _ = require('lodash');
-var Q = require('Q');
+var Q = require('q');
 var request = require('request');
 
 var Cache = require('./cache.js');

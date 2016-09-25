@@ -1,4 +1,7 @@
 # Changelog
+## v2.2.1
+- Fixed bug with package name on Unix systems
+
 ## v2.2.0
 - Removed HTTPS handling from site
 - Removed direct dependencies on MLF and Teamtris
