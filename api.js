@@ -7,6 +7,7 @@ var request = require('request');
 var Cache = require('./cache.js');
 var logger = require('./logger.js');
 var settings = require('./settings.js');
+var version = require('./package.json').version;
 
 var api = express.Router();
 
@@ -166,6 +167,7 @@ api.get('/status', function(req, res) {
   git.long(function(sha) {
     res.send({
       sha: sha,
+      version: version,
     });
   });
 });
