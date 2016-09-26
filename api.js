@@ -140,7 +140,7 @@ cache.addUpdateHandler('lol', function(callback) {
   }).done();
 });
 
-api.get('/Euler', function(req, res) {
+api.get('/euler', function(req, res) {
   cache.get('euler', function(err, data) {
     if (err) {
       res.status(500);
@@ -151,7 +151,7 @@ api.get('/Euler', function(req, res) {
   });
 });
 
-api.get('/LoL', function(req, res) {
+api.get('/lol', function(req, res) {
   cache.get('lol', function(err, data) {
     if (err) {
       res.status(500);

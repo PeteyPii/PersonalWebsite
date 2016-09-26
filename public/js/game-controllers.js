@@ -42,7 +42,7 @@ app.controller('PlayGameController', ['$scope', '$location',
     };
 
     $scope.playBtnClick = function() {
-      $location.path('/Meteorite');
+      $location.path('/meteorite');
     };
 
     // Stop right-clicking from bringing the context menu up on the canvas

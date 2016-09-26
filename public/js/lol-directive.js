@@ -97,7 +97,7 @@ app.directive('pwLolStats', ['$http', function($http) {
       $scope.stats = {};
       $scope.loading = true;
       $scope.error = false;
-      $http.get('/api/LoL').success(function(data) {
+      $http.get('/api/lol').success(function(data) {
         var stats = data;
         $scope.stats = stats;
 
