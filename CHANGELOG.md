@@ -1,4 +1,9 @@
 # Changelog
+## v2.2.3
+- Changed URLs to be lowercase
+- Updated Node.js dependencies
+- Added site version to api/status response
+
 ## v2.2.2
 - Fixed bug with jQuery script name on Unix systems
 

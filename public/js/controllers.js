@@ -11,7 +11,7 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $rootScope.title = 'Projects';
 
     $scope.problemsSolved = '75+';
-    $http.get('/api/Euler').success(function(data) {
+    $http.get('/api/euler').success(function(data) {
       $scope.problemsSolved = data.problemsSolved;
     }).error(function() {
       // Silently fail since we have a default value which is sufficient.

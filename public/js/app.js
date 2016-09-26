@@ -4,32 +4,40 @@ var app = angular.module('pwApp', [
 
 app.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
-    $routeProvider.when('/Home', {
+    $routeProvider.when('/home', {
       templateUrl: '/views/home.html',
       controller: 'HomeController',
+      caseInsensitiveMatch: true,
     }).when('/', {
-      redirectTo: '/Home'
-    }).when('/Projects', {
+      redirectTo: '/home'
+    }).when('/projects', {
       templateUrl: '/views/projects.html',
       controller: 'ProjectsController',
-    }).when('/Resume', {
+      caseInsensitiveMatch: true,
+    }).when('/resume', {
       templateUrl: '/views/resume.html',
       controller: 'ResumeController',
-    }).when('/AboutMe', {
+      caseInsensitiveMatch: true,
+    }).when('/about-me', {
       templateUrl: '/views/about-me.html',
       controller: 'AboutMeController',
-    }).when('/About', {
+      caseInsensitiveMatch: true,
+    }).when('/about', {
       templateUrl: '/views/about.html',
       controller: 'AboutController',
-    }).when('/Meteorite', {
+      caseInsensitiveMatch: true,
+    }).when('/meteorite', {
       templateUrl: '/views/game.html',
       controller: 'GameController',
-    }).when('/Licenses', {
+      caseInsensitiveMatch: true,
+    }).when('/licenses', {
       templateUrl: '/views/licenses.html',
       controller: 'LicensesController',
-    }).when('/PrivacyPolicy', {
+      caseInsensitiveMatch: true,
+    }).when('/privacy-policy', {
       templateUrl: '/views/privacy.html',
       controller: 'PrivacyPolicyController',
+      caseInsensitiveMatch: true,
     }).otherwise({
       templateUrl: '/views/404.html',
       controller: 'MissingPageController',
