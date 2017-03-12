@@ -10,7 +10,7 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $rootScope.setActiveNavLink('projects');
     $rootScope.title = 'Projects';
 
-    $scope.problemsSolved = '75+';
+    $scope.problemsSolved = '90+';
     $http.get('/api/euler').success(function(data) {
       $scope.problemsSolved = data.problemsSolved;
     }).error(function() {
