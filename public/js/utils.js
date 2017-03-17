@@ -1,4 +1,4 @@
-function Utils() {};
+function Utils() {}
 
 /**
  * Shuffles an array uniformly in place. Each element of the array is equally likely to end up at any index.
@@ -12,7 +12,7 @@ Utils.shuffleArray = function(array) {
     array[i] = array[j];
     array[j] = temp;
   }
-}
+};
 
 /**
  * Sorts an array of numbers in place as expected rather than lexicographically.
@@ -23,8 +23,7 @@ Utils.sort = function(array) {
   array.sort(function(a, b) {
     return a - b;
   });
-}
-
+};
 
 Utils.hexChars = '0123456789ABCDEF'.split('');
 Utils.niceColourTop = 'FF';
@@ -53,4 +52,4 @@ Utils.getNiceRandomColour = function() {
   }
 
   return colour;
-}
+};

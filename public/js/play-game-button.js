@@ -52,14 +52,14 @@ PlayGameButton.prototype.beginDrawing = function() {
 
     this.updateHandle = setInterval(this.update.bind(this), this.colourChangePeriod);
   }
-}
+};
 
 PlayGameButton.prototype.stopDrawing = function() {
   if (this.updateHandle !== null) {
     clearInterval(this.updateHandle);
     this.updateHandle = null;
   }
-}
+};
 
 PlayGameButton.prototype.update = function() {
   for (var i = 0; i < this.boxes.length; i++) {
@@ -70,7 +70,7 @@ PlayGameButton.prototype.update = function() {
       this.ctx.fillRect(left, top, this.boxSize, this.boxSize);
     }
   }
-}
+};
 
 PlayGameButton.prototype.addToBoxes = function(letter, offsetX, offsetY) {
   for (var i = 0; i < letter.length; i++) {
