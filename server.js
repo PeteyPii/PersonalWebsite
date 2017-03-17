@@ -1,40 +1,15 @@
 var http = require('http');
-var https = require('https');
-var fs = require('fs');
 var path = require('path');
 
 var compression = require('compression');
 var express = require('express');
 var favicon = require('serve-favicon');
-var file = require('file');
-var less = require('less');
-var _ = require('lodash');
 
-var api = require('./api.js');
-var logger = require('./logger.js');
-var settings = require('./settings.js');
+var api = require('./lib/api.js');
+var logger = require('./lib/logger.js');
+var settings = require('./lib/settings.js');
 
 try {
-  logger.log('Rendering LESS files');
-
-  file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
-    for (var i = 0; i < files.length; i++) {
-      var filePath = path.join(dirPath, files[i]);
-      less.render(fs.readFileSync(filePath).toString('utf8'), {
-        paths: [path.join(__dirname, 'less')],
-        filename: filePath,
-        compress: false
-      }, function(err, output) {
-        if (err) {
-          throw err;
-        }
-
-        var outFileName = path.join(__dirname, 'public/css', path.basename(files[i], '.less') + '.css');
-        fs.writeFileSync(outFileName, output.css);
-      });
-    }
-  });
-
   logger.log('Starting server up');
 
   var app = express();
@@ -53,8 +28,8 @@ try {
 
   app.use('/api', api);
   app.get('*', function(req, res) {
-    res.header('Cache-Control', 'private, max-age=0');
-    res.sendFile('index.html', {
+    res.header('Cache-Control', 'private, max-age=0');  // private because of cookies in subpages and from GA
+    res.sendFile('public/index.html', {
       root: __dirname + '/'
     });
   });

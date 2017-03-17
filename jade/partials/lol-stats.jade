@@ -1,0 +1,63 @@
+.lol-stats-container
+  .lol-stats-container__tabs(data-ng-init="selected = 'ranked'")
+    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'ranked' }")
+      button#lol-stats-ranked-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'ranked'") Ranked
+    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'normals' }")
+      button#lol-stats-normals-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'normals'") Classic
+    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'aram' }")
+      button#lol-stats-aram-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'aram'") ARAM
+
+  .lol-stats-container__loading(data-ng-show='loading')
+    h2.lol-stats-message #[i.fa.fa-spinner.fa-spin] Loading...
+
+  .lol-stats-container__error(data-ng-show='error')
+    h2.lol-stats-message An error occurred. Try refreshing the page.
+      i.fa.fa-frown-o
+
+  .lol-stats-container__info(data-ng-show='!loading && !error')
+    .lol-stats-summoner
+      .lol-stats-summoner__icon(data-ng-src='{{ summonerIconSrc }}', alt='My summoner icon')
+      span.lol-stats-summoner__name {{ stats.summonerName }}
+      span.lol-stats-summoner__id (ID \#{{ stats.summonerId }})
+
+    .lol-stats-stats(data-ng-show="selected == 'ranked'")
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueTakedownsMedalSrc }}', data-ng-alt='{{ soloQueueTakedownsMedalAlt }}')
+        .lol-stats-data-point__title: strong Takedowns
+        .lol-stats-data-point__value: strong {{ stats.soloQueueKills + stats.soloQueueAssists }}
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueRankMedalSrc }}', data-ng-alt='{{ soloQueueRankMedalAlt }}')
+        .lol-stats-data-point__title: strong {{ soloQueueRank }}
+        .lol-stats-data-point__value: strong {{ stats.soloQueueLeaguePoints }} LP
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueWinsMedalSrc }}', data-ng-alt='{{ soloQueueWinsMedalAlt }}')
+        .lol-stats-data-point__title: strong Wins/Losses
+        .lol-stats-data-point__value: strong {{ stats.soloQueueWins }} - {{ stats.soloQueueLosses }}
+
+    .lol-stats-stats(data-ng-show="selected == 'normals'")
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ normalTakedownsMedalSrc }}', data-ng-alt='{{ normalTakedownsMedalAlt }}')
+        .lol-stats-data-point__title: strong Takedowns
+        .lol-stats-data-point__value: strong {{ stats.normalKills + stats.normalAssists }}
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ normalWinsMedalSrc }}', data-ng-alt='{{ normalWinsMedalAlt }}')
+        .lol-stats-data-point__title: strong Wins
+        .lol-stats-data-point__value: strong {{ stats.normalWins }}
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ normalCreepScoreMedalSrc }}', data-ng-alt='{{ normalCreepScoreMedalAlt }}')
+        .lol-stats-data-point__title: strong Creep Score
+        .lol-stats-data-point__value: strong {{ stats.normalCreepScore }}
+
+    .lol-stats-stats(data-ng-show="selected == 'aram'")
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ aramTakedownsMedalSrc }}', data-ng-alt='{{ aramTakedownsMedalAlt }}')
+        .lol-stats-data-point__title: strong Takedowns
+        .lol-stats-data-point__value: strong {{ stats.aramKills + stats.aramAssists }}
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ aramWinsMedalSrc }}', data-ng-alt='{{ aramWinsMedalAlt }}')
+        .lol-stats-data-point__title: strong Wins
+        .lol-stats-data-point__value: strong {{ stats.aramWins }}
+      .lol-stats-data-point
+        img.lol-stats-data-point__medal(data-ng-src='{{ aramTowersMedalSrc }}', data-ng-alt='{{ aramTowersMedalAlt }}')
+        .lol-stats-data-point__title: strong Towers Destroyed
+        .lol-stats-data-point__value: strong {{ stats.aramTurretKills }}

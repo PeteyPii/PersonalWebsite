@@ -1,4 +1,5 @@
 {
-  "port": 80,
-  "cache_life": 86400000
+  "cache_life": 86400000,
+  "is_prod": false,
+  "port": 80
 }

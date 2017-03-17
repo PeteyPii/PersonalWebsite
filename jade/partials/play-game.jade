@@ -1,0 +1,13 @@
+div(data-ng-controller='PlayGameController')
+  .play-game-btn-container
+    button.play-game-btn(data-ng-click='playBtnClick()')
+      canvas#play-game-canvas(width='0', height='0')
+
+  .play-game-tab(data-ng-show='playGameButton.isSupported')
+    .play-game-tab__bar
+    svg.play-game-tab__btn-side(viewBox='0 0 100 100', version='1.1', xmlns='http://www.w3.org/2000/svg', preserveAspectRatio='none')
+      path(d='M100 0 L 0 0 Q 35 0, 50 50 Q 65 100, 100 100')
+    button#play-game-tab-btn.play-game-tab__btn(tabindex='-1', data-ng-click='tabBtnClick()')
+      i.navbar-icon.fa.fa-bars.fa-2x
+    svg.play-game-tab__btn-side(viewBox='0 0 100 100', version='1.1', xmlns='http://www.w3.org/2000/svg', preserveAspectRatio='none')
+      path(d='M0 100 Q 35 100, 50 50 Q 65 0, 100 0 L 0 0')

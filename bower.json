@@ -1,0 +1,21 @@
+{
+  "name": "patrick-wrobel-ca",
+  "description": "Patrick Wrobel's Personal Website",
+  "main": "README.md",
+  "license": "MIT",
+  "keywords": [
+    "patrickwrobel.ca"
+  ],
+  "homepage": "https://github.com/PeteyPii/PersonalWebsite",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "3.3.2",
+    "font-awesome": "4.6.1",
+    "angular": "1.2.26",
+    "angular-route": "1.2.26",
+    "jquery": "1.11.2",
+    "archivonarrow-googlefont": "*",
+    "oswald-googlefont": "*",
+    "bitter-googlefont": "*"
+  }
+}
