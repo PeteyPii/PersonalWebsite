@@ -11,7 +11,7 @@ Medal.getBreakpoint = function(value, breakpoints) {
 };
 
 Medal.medalImageSrc = function(value, breakpoints) {
-  return '/imgs/lolmedals/' + Medal.breakpointToMedalSrc[Medal.getBreakpoint(value, breakpoints)] + '.png';
+  return '/imgs/lolmedals/' + Medal.breakpointToMedalSrc[Medal.getBreakpoint(value, breakpoints)] + '.png?v=' + gVersion;
 };
 
 Medal.medalImageAlt = function(value, breakpoints) {
@@ -21,12 +21,12 @@ Medal.medalImageAlt = function(value, breakpoints) {
 Medal.rankedMedalImageSrc = function(tier, division) {
   if (tier && division) {
     if (tier in Medal.divisionlessTiers) {
-      return '/imgs/lolmedals/' + tier.toLowerCase() + '.png';
+      return '/imgs/lolmedals/' + tier.toLowerCase() + '.png?v=' + gVersion;
     } else {
-      return '/imgs/lolmedals/' + tier.toLowerCase() + '-' + division.toLowerCase() + '.png';
+      return '/imgs/lolmedals/' + tier.toLowerCase() + '-' + division.toLowerCase() + '.png?v=' + gVersion;
     }
   } else {
-    return '/imgs/lolmedals/provisional.png';
+    return '/imgs/lolmedals/provisional.png?v=' + gVersion;
   }
 };
 
@@ -91,7 +91,7 @@ Medal.tierToAltText = {
 app.directive('pwLolStats', ['$http', function($http) {
   return {
     restrict: 'A', // attribute name only
-    templateUrl: '/partials/lol-stats.html',
+    templateUrl: '/partials/lol-stats.html?v=' + gVersion,
     scope: {},
     controller: ['$scope', function($scope) {
       $scope.stats = {};
@@ -123,7 +123,7 @@ app.directive('pwLolStats', ['$http', function($http) {
         $scope.aramTowersMedalSrc = Medal.medalImageSrc(stats.aramTurretKills, Medal.aramTowersBreakpoints);
         $scope.aramTowersMedalAlt = Medal.medalImageAlt(stats.aramTurretKills, Medal.aramTowersBreakpoints);
 
-        $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png';
+        $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png?v=' + gVersion;
 
         $scope.loading = false;
       }).error(function() {

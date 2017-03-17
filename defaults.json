@@ -1,5 +1,6 @@
 {
-  "cache_life": 86400000,
+  "api_cache_life": 86400000,
+  "asset_cache_time": 31536000000,
   "is_prod": false,
   "port": 80
 }

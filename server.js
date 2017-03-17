@@ -21,8 +21,13 @@ try {
   });
 
   app.use(compression());
-  app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico')));
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(favicon(path.join(__dirname, 'public/assets/favicon.ico'), {
+    maxAge: settings.is_prod ? settings.asset_cache_time : 0,
+  }));
+  app.use(express.static(path.join(__dirname, 'public'), {
+    redirect: false,
+    maxAge: settings.is_prod ? settings.asset_cache_time : 0,
+  }));
 
   app.set('trust proxy', 'loopback');
 

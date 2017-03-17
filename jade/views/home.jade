@@ -2,11 +2,11 @@
   .container
     .row.side-by-side-sm
       .col-md-3.col-sm-6.hidden-xs
-        img.light-img-frame(src='/imgs/jace.jpg', title='Jace from MTG. An avatar I like to use.', alt='Jace from MTG. An avatar I like to use.')
+        img.light-img-frame(src='/imgs/jace.jpg?v=' + version, title='Jace from MTG. An avatar I like to use.', alt='Jace from MTG. An avatar I like to use.')
       .col-md-8.col-md-push-1.col-sm-6.col-xs-12
         div
           p Hi there! I'm an avid programmer and gamer and I'm a 4A computer science student at the University of Waterloo. I have many cool projects that you can check out here and on my GitHub page.
           p Take a look at my latest projects that I'm working on: #[a(href='/mlf', target='_self') My LoL Fantasy] and #[a(href='/teamtris', target='_self') Teamtris].
 
-div(data-ng-include, data-src="'/partials/play-game.html'")
+div(data-ng-include, data-src="'/partials/play-game.html?v=#{version}'")
 .yolo

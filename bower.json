@@ -16,6 +16,7 @@
     "jquery": "1.11.2",
     "archivonarrow-googlefont": "*",
     "oswald-googlefont": "*",
-    "bitter-googlefont": "*"
+    "bitter-googlefont": "*",
+    "opensans-googlefont": "*"
   }
 }
