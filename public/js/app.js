@@ -44,7 +44,8 @@ app.config(['$routeProvider', '$locationProvider',
     });
 
     $locationProvider.html5Mode(true);
-  }]);
+  }
+]);
 
 app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $window) {
   $rootScope.$on('$viewContentLoaded', function() {

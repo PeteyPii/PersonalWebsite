@@ -97,8 +97,8 @@ app.directive('pwLolStats', ['$http', function($http) {
       $scope.stats = {};
       $scope.loading = true;
       $scope.error = false;
-      $http.get('/api/lol').success(function(data) {
-        var stats = data;
+      $http.get('/api/lol').then(function(resp) {
+        var stats = resp.data;
         $scope.stats = stats;
 
         $scope.soloQueueRank = stats.soloQueueTier ?
@@ -123,10 +123,10 @@ app.directive('pwLolStats', ['$http', function($http) {
         $scope.aramTowersMedalSrc = Medal.medalImageSrc(stats.aramTurretKills, Medal.aramTowersBreakpoints);
         $scope.aramTowersMedalAlt = Medal.medalImageAlt(stats.aramTurretKills, Medal.aramTowersBreakpoints);
 
-        $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png?v=' + gVersion;
+        $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png';
 
         $scope.loading = false;
-      }).error(function() {
+      }, function() {
         $scope.error = true;
         $scope.loading = false;
       });

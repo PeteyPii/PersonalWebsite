@@ -11,9 +11,9 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $rootScope.title = 'Projects';
 
     $scope.problemsSolved = '90+';
-    $http.get('/api/euler').success(function(data) {
-      $scope.problemsSolved = data.problemsSolved;
-    }).error(function() {
+    $http.get('/api/euler').then(function(resp) {
+      $scope.problemsSolved = resp.data.problemsSolved;
+    }, function() {
       // Silently fail since we have a default value which is sufficient.
     });
   }

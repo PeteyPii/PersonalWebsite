@@ -16,7 +16,7 @@
 
   .lol-stats-container__info(data-ng-show='!loading && !error')
     .lol-stats-summoner
-      .lol-stats-summoner__icon(data-ng-src='{{ summonerIconSrc }}', alt='My summoner icon')
+      img.lol-stats-summoner__icon(data-ng-src='{{ summonerIconSrc }}', alt='My summoner icon')
       span.lol-stats-summoner__name {{ stats.summonerName }}
       span.lol-stats-summoner__id (ID \#{{ stats.summonerId }})
 

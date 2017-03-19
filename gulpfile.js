@@ -205,7 +205,7 @@ gulp.task('build_css', ['less', 'bower'], function() {
   return gulp.src(files)
     .pipe(concat(paths.buildCss))
     .pipe(cleanCss({
-      keepSpecialComments: 0,
+      specialComments: 0,
     }))
     .pipe(gulp.dest('.'));
 });
