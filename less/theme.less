@@ -6,17 +6,17 @@
 @md-max-width: 1199px;
 @lg-min-width: 1200px;
 
-@black-font-colour: #111;
-@dark-font-colour: #444;
-@light-grey-font-colour: #AAA;
-@white-font-colour: #EEE;
-@grey-bg-colour: #CCC;
+@black-font-colour: #111111;
+@dark-font-colour: #444444;
+@light-grey-font-colour: #aaaaaa;
+@white-font-colour: #eeeeee;
+@grey-bg-colour: #cccccc;
 
-@dark-theme-colour: #027;
-@medium-theme-colour: #04C;
-@light-theme-colour: #06C;
-@lighter-theme-colour: #08C;
-@washed-theme-colour: #9BC;
+@dark-theme-colour: #002277;
+@medium-theme-colour: #0044cc;
+@light-theme-colour: #0066cc;
+@lighter-theme-colour: #0088cc;
+@washed-theme-colour: #99bbcc;
 
 @navbar-height: 64px;
 @navbar-brand-font-size: 32px;
@@ -73,7 +73,8 @@ body {
   background-color: @grey-bg-colour;
 }
 
-body, html {
+body,
+html {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -163,6 +164,7 @@ hr {
   @media(max-width: @sm-max-width) {
     margin-right: 0;
   }
+
   @media(min-width: @md-min-width) {
     margin-right: 25px;
   }
@@ -174,7 +176,7 @@ hr {
       height: @navbar-height;
       padding: 22px;
       font-size: @navbar-link-font-size;
-      color: #EEE;
+      color: #eeeeee;
 
       @media(max-width: @md-max-width) {
         padding-left: 12px;
@@ -200,6 +202,7 @@ hr {
       }
     }
   }
+
   & > li.active {
     & > a {
       background-color: @light-theme-colour;
@@ -241,6 +244,7 @@ hr {
   h1 {
     margin-top: 0;
   }
+
   p {
     margin-bottom: 28px;
 
@@ -248,11 +252,13 @@ hr {
       margin-bottom: 0;
     }
   }
-  a {
-    color: #66A1D3;
 
-    &:hover, &:focus {
-      color: #4B82B3;
+  a {
+    color: #66a1d3;
+
+    &:hover,
+    &:focus {
+      color: #4b82b3;
     }
   }
 }
@@ -262,8 +268,9 @@ hr {
 .footer__github,
 .footer__legal {
   font-size: @footer-font-size;
+
   @media(max-width: @sm-max-width) {
-    margin-bottom: 5px;;
+    margin-bottom: 5px;
     text-align: center;
   }
 }
@@ -278,6 +285,7 @@ hr {
   @media(min-width: @md-min-width) {
     text-align: right;
   }
+
   @media(max-width: @sm-max-width) {
     margin-bottom: 10px;
   }
@@ -307,7 +315,7 @@ hr {
   color: @white-font-colour;
   height: @play-game-tab-height;
   vertical-align: top;
-  border: none;
+  border: 0;
 
   &:hover {
     color: @washed-theme-colour;
@@ -338,12 +346,12 @@ hr {
   margin: 15px;
   background: transparent;
   outline-width: 0;
-  border: none;
-  background-color: #222;
+  border: 0;
+  background-color: #222222;
 
   &:hover,
   &:focus {
-    background-color: #333;
+    background-color: #333333;
   }
 }
 
@@ -370,7 +378,9 @@ hr {
         font-weight: bold;
         text-decoration: underline;
       }
+
       .cta-github {
+        margin-left: 5px;
         font-size: @projects-link-size;
 
         a:hover,
@@ -378,16 +388,19 @@ hr {
           text-decoration: none;
         }
       }
+
       .time {
         font-size: @projects-dates-font-size;
 
         @media(min-width: @sm-min-width) {
           float: right;
         }
+
         @media(max-width: @xs-max-width) {
           display: block;
         }
       }
+
       .languages {
         color: @dark-font-colour;
         font-size: @projects-languages-font-size;
@@ -397,6 +410,7 @@ hr {
       ul {
         list-style-type: square;
         padding-left: 40px;
+
         li {
           font-size: 16px;
           font-weight: normal;
@@ -444,7 +458,7 @@ hr {
 }
 
 .lol-stats-tab__btn {
-  border: none;
+  border: 0;
   background: none;
   width: 100%;
   outline-width: 0;
@@ -479,6 +493,7 @@ hr {
 .lol-stats-summoner__name {
   font-size: @lol-stats-summoner-height - 2 * @lol-stats-summoner-padding;
   line-height: @lol-stats-summoner-height - 2 * @lol-stats-summoner-padding;
+
   @media(max-width: @xs-max-width) {
     font-size: @lol-stats-summoner-height * @lol-stats-summoner-mobile-scale - 2 * @lol-stats-summoner-padding;
     line-height: @lol-stats-summoner-height * @lol-stats-summoner-mobile-scale - 2 * @lol-stats-summoner-padding;
@@ -522,8 +537,7 @@ hr {
 }
 
 .lol-stats-container__loading,
-.lol-stats-container__error,
- {
+.lol-stats-container__error {
   flex: 5;
   background-color: @lol-stats-bg-colour;
   height: 300px;

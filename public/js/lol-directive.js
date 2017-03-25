@@ -8,31 +8,31 @@ Medal.getBreakpoint = function(value, breakpoints) {
   }
 
   return breakpoints.length;
-}
+};
 
 Medal.medalImageSrc = function(value, breakpoints) {
-  return '/imgs/lolmedals/' + Medal.breakpointToMedalSrc[Medal.getBreakpoint(value, breakpoints)] + '.png';
-}
+  return '/imgs/lolmedals/' + Medal.breakpointToMedalSrc[Medal.getBreakpoint(value, breakpoints)] + '.png?v=' + gVersion;
+};
 
 Medal.medalImageAlt = function(value, breakpoints) {
   return Medal.breakpointToMedalAlt[Medal.getBreakpoint(value, breakpoints)];
-}
+};
 
 Medal.rankedMedalImageSrc = function(tier, division) {
   if (tier && division) {
     if (tier in Medal.divisionlessTiers) {
-      return '/imgs/lolmedals/' + tier.toLowerCase() + '.png';
+      return '/imgs/lolmedals/' + tier.toLowerCase() + '.png?v=' + gVersion;
     } else {
-      return '/imgs/lolmedals/' + tier.toLowerCase() + '-' + division.toLowerCase() + '.png';
+      return '/imgs/lolmedals/' + tier.toLowerCase() + '-' + division.toLowerCase() + '.png?v=' + gVersion;
     }
   } else {
-    return '/imgs/lolmedals/provisional.png';
+    return '/imgs/lolmedals/provisional.png?v=' + gVersion;
   }
-}
+};
 
 Medal.rankedMedalImageAlt = function(tier) {
   return Medal.tierToAltText[tier] || 'Provisional tier icon for League of Legends';
-}
+};
 
 Medal.soloQueueTakedownsBreakpoints = [50, 250, 1000, 2500, 5000];
 Medal.soloQueueWinsBreakpoints = [1, 10, 25, 50, 100];
@@ -91,19 +91,19 @@ Medal.tierToAltText = {
 app.directive('pwLolStats', ['$http', function($http) {
   return {
     restrict: 'A', // attribute name only
-    templateUrl: '/partials/lol-stats.html',
+    templateUrl: '/partials/lol-stats.html?v=' + gVersion,
     scope: {},
     controller: ['$scope', function($scope) {
       $scope.stats = {};
       $scope.loading = true;
       $scope.error = false;
-      $http.get('/api/lol').success(function(data) {
-        var stats = data;
+      $http.get('/api/lol').then(function(resp) {
+        var stats = resp.data;
         $scope.stats = stats;
 
-        $scope.soloQueueRank = stats.soloQueueTier
-          ? Medal.tierToPrettyTier[stats.soloQueueTier] + ' ' + stats.soloQueueDivision
-          : 'Unranked';
+        $scope.soloQueueRank = stats.soloQueueTier ?
+          Medal.tierToPrettyTier[stats.soloQueueTier] + ' ' + stats.soloQueueDivision :
+          'Unranked';
         $scope.soloQueueTakedownsMedalSrc = Medal.medalImageSrc(stats.soloQueueKills + stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
         $scope.soloQueueTakedownsMedalAlt = Medal.medalImageAlt(stats.soloQueueKills + stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
         $scope.soloQueueRankMedalSrc = Medal.rankedMedalImageSrc(stats.soloQueueTier, stats.soloQueueDivision);
@@ -126,7 +126,7 @@ app.directive('pwLolStats', ['$http', function($http) {
         $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png';
 
         $scope.loading = false;
-      }).error(function() {
+      }, function() {
         $scope.error = true;
         $scope.loading = false;
       });

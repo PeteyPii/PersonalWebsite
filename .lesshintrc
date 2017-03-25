@@ -1,0 +1,12 @@
+{
+  "idSelector": false,
+  "importantRule": false,
+  "maxCharPerLine": false,
+  "propertyOrdering": false,
+  "qualifyingElement": false,
+  "spaceAroundComma": {
+    "enabled": true,
+    "allowNewline": true
+  },
+  "zeroUnit": false
+}

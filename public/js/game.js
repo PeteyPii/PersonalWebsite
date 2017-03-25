@@ -284,7 +284,7 @@ Game.prototype.beginGame = function() {
   var gameOverTextColour = '#ffffff';
   var gameOverNormalTextSize = 0.05;
 
-  var gameOverAnnounceText = 'Game Over!'
+  var gameOverAnnounceText = 'Game Over!';
   var gameOverBackText = 'Back to Menu';
   var gameOverScoreText = 'You achieved a score of: ';
   var gameOverHighScoreText = 'New High Score!';
@@ -416,15 +416,15 @@ Game.prototype.beginGame = function() {
 
   menuItemActions[itemPlayId] = function() {
     gameState = playStateId;
-  }
+  };
 
   menuItemActions[itemInstructionsId] = function() {
     gameState = instructionsStateId;
-  }
+  };
 
   menuItemActions[itemHighScoresId] = function() {
     gameState = highScoresStateId;
-  }
+  };
 
   menuItemActions[itemExitId] = this.endGame.bind(this, true);
 
@@ -454,7 +454,7 @@ Game.prototype.beginGame = function() {
       } else {
         itemSelected--;
         if (itemSelected === -1) {
-          itemSelected = itemCount - 1;;
+          itemSelected = itemCount - 1;
         }
       }
     }
@@ -489,7 +489,7 @@ Game.prototype.beginGame = function() {
     }
 
     itemSelectedMarkerAngle += itemSelectedMarkerSpeed;
-  }
+  };
 
   stateDraw[titleStateId] = function() {
     ctx.fillStyle = bgColour;
@@ -535,21 +535,22 @@ Game.prototype.beginGame = function() {
 
       ctx.restore();
     }
-  }
+  };
 
   stateStep[playStateId] = function() {
     if (!gameOver) {
       wallAngle = Math.atan2(cursorY - midY, cursorX - midX);
 
+      var dot;
       for (var dotId in dots) {
-        var dot = dots[dotId];
+        dot = dots[dotId];
 
         dot.previousDistance = dot.distance;
         dot.distance -= dot.speed;
       }
 
-      for (var dotId in dots) {
-        var dot = dots[dotId];
+      for (dotId in dots) {
+        dot = dots[dotId];
 
         if (dot.previousDistance + dotSize >= wallDistance - wallThickness / 2 && dot.distance - dotSize <= wallDistance + wallThickness / 2) {
           if (Math.abs(angleDifference(wallAngle, dot.direction)) <= wallBBoxHalfWidth) {
@@ -567,7 +568,7 @@ Game.prototype.beginGame = function() {
       }
 
       if (Math.random() < dotSpawnChance) {
-        var dot = {};
+        dot = {};
 
         dot.speed = Math.random() * (dotMaxSpeed - dotMinSpeed) + dotMinSpeed;
         dot.direction = 2 * Math.PI * Math.random();
@@ -599,7 +600,7 @@ Game.prototype.beginGame = function() {
         }
       }
     }
-  }
+  };
 
   stateDraw[playStateId] = function() {
     // Draw bg
@@ -674,7 +675,7 @@ Game.prototype.beginGame = function() {
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(gameOverBackText, width * gameOverBackTextX, height * gameOverBackTextY);
     }
-  }
+  };
 
   stateStep[highScoresStateId] = function() {
     if (leftMBDown && !prevLeftMBDown) {
@@ -682,7 +683,7 @@ Game.prototype.beginGame = function() {
         gameState = titleStateId;
       }
     }
-  }
+  };
 
   stateDraw[highScoresStateId] = function() {
     ctx.fillStyle = bgColour;
@@ -704,7 +705,7 @@ Game.prototype.beginGame = function() {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText(highScoresBackText, width * highScoresBackTextX, height * highScoresBackTextY);
-  }
+  };
 
   stateStep[instructionsStateId] = function() {
     if (leftMBDown && !prevLeftMBDown) {
@@ -712,7 +713,7 @@ Game.prototype.beginGame = function() {
         gameState = titleStateId;
       }
     }
-  }
+  };
 
   stateDraw[instructionsStateId] = function() {
     ctx.fillStyle = bgColour;
@@ -733,7 +734,7 @@ Game.prototype.beginGame = function() {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText(instructionsBackText, width * instructionsBackTextX, height * instructionsBackTextY);
-  }
+  };
 
   function screenResize() {
     // Update certain semi-constants after the screen size changes
@@ -862,7 +863,7 @@ Game.prototype.beginGame = function() {
       bottom: instructionsBackTextY * height,
     };
 
-    itemSelectedMarkerPath = new Path2D()
+    itemSelectedMarkerPath = new Path2D();
 
     itemSelectedMarkerPath.moveTo(height * itemSelectedMarkerSize, 0);
     itemSelectedMarkerPath.lineTo(0, height * itemSelectedMarkerSize);
@@ -917,7 +918,7 @@ Game.prototype.beginGame = function() {
     this.loopHandle = setInterval(gameLoop, 16);
     this.gameRunning = true;
   }
-}
+};
 
 Game.prototype.endGame = function(goBack) {
   if (this.gameRunning) {
@@ -937,4 +938,4 @@ Game.prototype.endGame = function(goBack) {
       window.history.back();
     }
   }
-}
+};

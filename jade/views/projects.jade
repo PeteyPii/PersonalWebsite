@@ -1,0 +1,80 @@
+.jumbotron.jumbotron--projects
+  .container
+    h1 Projects
+    p Here you can find a list of the projects I've worked on. For more in-depth information, you can check out my GitHub profile where I publish most of my code.
+.container.projects-list
+  ul
+    li
+      .header
+        span.title My LoL Fantasy
+        span.cta-github: a.fa.fa-share-square-o(href='https://github.com/PeteyPii/MyLoLFantasy', title='Project link')
+        span.time November 2014 &ndash; Present
+      .subheader
+        span.languages JavaScript, HTML5, CSS3, SQL
+      ul
+        li Web app I made with my friends at a UWaterloo hackathon
+        li The app tracks you and your friends' stats in League of Legends games and compares them in a Fantasy-esque system
+        li ExpressJS web server renders #[a(href='http://jade-lang.com/') jade] templates for client requests
+        li User and statistic data is persisted in a #[a(href='http://www.postgresql.org/') PostgreSQL] database
+        li #[a(href='http://redis.io/') Redis] is used to cache session data and #[a(href='https://developer.riotgames.com/') Riot Games API] requests
+
+    li
+      .header
+        span.title Personal Website
+        span.cta-github: a.fa.fa-share-square-o(href='https://github.com/PeteyPii/PersonalWebsite', title='Project link')
+        span.time July 2014 &ndash; Present
+      .subheader
+        span.languages JavaScript, HTML5, CSS3
+      ul
+        li Website I created to showcase my professional career and to gain some web development skills
+        li Houses a mini-game I made called #[a(href='/meteorite') Meteorite]
+        li Makes use the following frameworks: #[a(href='https://nodejs.org/en/') Node.js] and #[a(href='https://angularjs.org/') AngularJS]
+
+    li
+      .header
+        span.title Project Euler
+        span.cta-github: a.fa.fa-share-square-o(href='https://github.com/PeteyPii/Euler', title='Project link')
+        span.time March 2014 &ndash; Present
+      .subheader
+        span.languages C++
+      ul
+        li I like puzzles so I have done many of the problems on #[a(href='https://projecteuler.net/about') Project Euler]
+        li {{ problemsSolved }} problems solved
+        li I code general solutions to problems and try to make my code as efficient as possible
+        li Top 3% of participants!
+
+    li
+      .header
+        span.title Pokémon Type Effectiveness Table
+        span.time December 2013
+      .subheader
+        span.languages Python, Regular Expression
+      ul
+        li Out of frustration with new Pokémon being released and the new Fairy type, I wanted a quick lookup table to know which moves to use against which Pokémon
+        li Scrapes the HTML of a web page on #[a(href='http://bulbapedia.bulbagarden.net/wiki/Main_Page') Bulbapedia] with a Regular Expression (knowing full well that HTML is not a regular language!)
+        li A Python script uses the parsed data to create a table that shows the effectiveness of every type versus every Pokémon
+
+    li
+      .header
+        span.title Minesweeper
+        span.cta-github: a.fa.fa-share-square-o(href='https://github.com/PeteyPii/Minesweeper', title='Project link')
+        span.time May 2013 &ndash; July 2013
+      .subheader
+        span.languages C++
+      ul
+        li I wanted to automatically keep track of some more specific stats while playing Minesweeper so I created my own app for it
+        li Full game complete with graphics, settings, and persisted statistics
+        li Works on Windows, OS X, and Linux
+        li OS specific tasks are done using #[a(href='http://www.sfml-dev.org/') SFML]
+
+    li
+      .header
+        span.title Dominion
+        span.cta-github: a.fa.fa-share-square-o(href='https://github.com/PeteyPii/Dominion', title='Project link')
+        span.time September 2012 &ndash; November 2012
+      .subheader
+        span.languages C++
+      ul
+        li I created a text-based version of this deck-building card game because shuffling decks is annoying
+        li Every feature and card of the original version of the game is implemented
+        li Cross-platform multiplayer support using a client/server model

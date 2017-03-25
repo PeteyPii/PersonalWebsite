@@ -10,10 +10,10 @@ app.controller('ProjectsController', ['$scope', '$rootScope', '$http',
     $rootScope.setActiveNavLink('projects');
     $rootScope.title = 'Projects';
 
-    $scope.problemsSolved = '75+';
-    $http.get('/api/euler').success(function(data) {
-      $scope.problemsSolved = data.problemsSolved;
-    }).error(function() {
+    $scope.problemsSolved = '90+';
+    $http.get('/api/euler').then(function(resp) {
+      $scope.problemsSolved = resp.data.problemsSolved;
+    }, function() {
       // Silently fail since we have a default value which is sufficient.
     });
   }

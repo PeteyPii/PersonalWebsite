@@ -1,0 +1,82 @@
+doctype html
+html(lang='en', data-ng-app='pwApp')
+  head
+    base(href='/')
+
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description' content='A website to showcase what I am working on and what I have done.')
+    meta(name='author' content='Patrick Wrobel')
+
+    link(rel='icon', href='/assets/favicon.ico?v=' + version)
+
+    title(data-ng-bind="(title ? title + ' - ' : '') + 'Patrick Wrobel'") Patrick Wrobel
+
+    if settings.is_prod
+      link(rel='stylesheet', href='css/bundle.css?v=' + version)
+    else
+      for dep in deps.css
+        link(rel='stylesheet', href=dep)
+
+    if settings.is_prod
+      script.
+        !function(P,a,t,r,i,c,k){P.GoogleAnalyticsObject=t;P[t]||(P[t]=function(){
+        (P[t].q=P[t].q||[]).push(arguments)});P[t].l=+new Date;c=a.createElement(r);
+        k=a.getElementsByTagName(r)[0];c.src=i;k.parentNode.insertBefore(c,k)}
+        (window,document,'ga','script','//www.google-analytics.com/analytics.js');
+
+        ga('create', 'UA-69572448-1', 'auto');
+
+    script.
+      var gVersion = '#{version}'
+
+    if settings.is_prod
+      script(src='js/bundle_head.js?v=' + version)
+    else
+      for dep in deps.headJs
+        script(src=dep)
+
+  body
+    nav.navbar.navbar-static-top.main-site
+      div.container
+        div.navbar-header
+          a.navbar-brand(href='/home', tabindex='-1') Patrick Wrobel
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.fa.fa-bars
+        #navbar.navbar-collapse.collapse(aria-expanded='false')
+          ul.nav.navbar-nav
+            li(data-ng-class='{ active: activeNavLinks.home }'): a(href='/home') Home
+            li(data-ng-class='{ active: activeNavLinks.projects }'): a(href='/projects') Projects
+            li(data-ng-class='{ active: activeNavLinks.resume }'): a(href='/resume') Resume
+            li(data-ng-class='{ active: activeNavLinks.aboutMe }'): a(href='/about-me') About Me
+          ul.nav.navbar-nav.navbar-right
+            li.hidden-xs: a.navbar-icon.fa.fa-linkedin-square(href='http://ca.linkedin.com/in/patrickwrobel')
+            li.hidden-xs: a.navbar-icon.fa.fa-github(href='https://github.com/PeteyPii')
+            li.visible-xs
+              a(href='https://github.com/PeteyPii').
+                #[span.fa.fa-lg.fa-github] GitHub
+            li.visible-xs
+              a(href='http://ca.linkedin.com/in/patrickwrobel').
+                #[span.fa.fa-lg.fa-linkedin-square] LinkedIn
+
+    div(data-ng-view)
+
+    .footer.container.main-site
+      hr
+      .row
+        .col-md-4.col-xs-12
+          p.footer__contact Contact me at #[a(href='mailto:pwrobel@uwaterloo.ca') pwrobel@uwaterloo.ca]
+        .col-md-4.col-xs-12
+          p.footer__github #[i.fa.fa-github.fa-lg] View this project on #[a(href='https://github.com/PeteyPii/PersonalWebsite') GitHub]
+        .col-md-4.col-xs-12
+          p.footer__legal #[a(href='/licenses', data-pw-no-focus) Licenses], #[a(href='/privacy-policy', data-pw-no-focus) Privacy Policy], and #[a(href='/about', data-pw-no-focus) About]
+
+    span#oswald-loader .
+
+    if settings.is_prod
+      script(src='js/bundle_final.js?v=' + version)
+    else
+      for dep in deps.finalJs
+        script(src=dep)
