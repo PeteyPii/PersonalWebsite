@@ -1,4 +1,15 @@
 # Changelog
+## v2.3.0
+- Changed favicon to be some Jace pixel art
+- Updated term number and program
+- Cache and file rev static content
+- Use gulp insead of grunt
+- GA isogram is now 'Patrick'
+- Front end dependencies are retrieved from bower
+- Minor updates to career section of about me
+- Added linting
+- HTML is pre-rendered using jade
+
 ## v2.2.3
 - Changed URLs to be lowercase
 - Updated Node.js dependencies
