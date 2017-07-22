@@ -2,7 +2,7 @@ function Medal() {}
 
 Medal.getBreakpoint = function(value, breakpoints) {
   for (var i = 0; i < breakpoints.length; i++) {
-    if (value <= breakpoints[i]) {
+    if (value < breakpoints[i]) {
       return i;
     }
   }
@@ -34,16 +34,16 @@ Medal.rankedMedalImageAlt = function(tier) {
   return Medal.tierToAltText[tier] || 'Provisional tier icon for League of Legends';
 };
 
-Medal.soloQueueTakedownsBreakpoints = [50, 250, 1000, 2500, 5000];
-Medal.soloQueueWinsBreakpoints = [1, 10, 25, 50, 100];
+Medal.prettyMasteryPoints = function(points) {
+  if (points < 10000) {
+    return points.toString();
+  } else {
+    return (points / 1000).toFixed(1) + 'K';
+  }
+};
 
-Medal.normalTakedownsBreakpoints = [100, 500, 2500, 5000, 10000];
-Medal.normalWinsBreakpoints = [5, 25, 100, 300, 600];
-Medal.normalCreepScoreBreakpoints = [2000, 10000, 50000, 100000, 200000];
-
-Medal.aramTakedownsBreakpoints = [100, 500, 2500, 5000, 10000];
-Medal.aramWinsBreakpoints = [5, 25, 100, 300, 600];
-Medal.aramTowersBreakpoints = [5, 25, 100, 200, 500];
+Medal.masteryScoreBreakpoints = [10, 50, 100, 250, 500];
+Medal.masteryPointsBreakpoints = [10000, 100000, 500000, 1000000, 2500000];
 
 Medal.breakpointToMedalSrc = [
   'none',
@@ -64,11 +64,13 @@ Medal.breakpointToMedalAlt = [
 ];
 
 Medal.divisionlessTiers = {
+  'UNRANKED': true,
   'MASTER': true,
   'CHALLENGER': true,
 };
 
 Medal.tierToPrettyTier = {
+  'UNRANKED': 'Unranked',
   'BRONZE': 'Bronze',
   'SILVER': 'Silver',
   'GOLD': 'Gold',
@@ -79,6 +81,7 @@ Medal.tierToPrettyTier = {
 };
 
 Medal.tierToAltText = {
+  'UNRANKED': 'Unranked tier icon for League of Legends',
   'BRONZE': 'Bronze tier icon for League of Legends',
   'SILVER': 'Silver tier icon for League of Legends',
   'GOLD': 'Gold tier icon for League of Legends',
@@ -101,29 +104,43 @@ app.directive('pwLolStats', ['$http', function($http) {
         var stats = resp.data;
         $scope.stats = stats;
 
-        $scope.soloQueueRank = stats.soloQueueTier ?
-          Medal.tierToPrettyTier[stats.soloQueueTier] + ' ' + stats.soloQueueDivision :
-          'Unranked';
-        $scope.soloQueueTakedownsMedalSrc = Medal.medalImageSrc(stats.soloQueueKills + stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
-        $scope.soloQueueTakedownsMedalAlt = Medal.medalImageAlt(stats.soloQueueKills + stats.soloQueueAssists, Medal.soloQueueTakedownsBreakpoints);
-        $scope.soloQueueRankMedalSrc = Medal.rankedMedalImageSrc(stats.soloQueueTier, stats.soloQueueDivision);
-        $scope.soloQueueRankMedalAlt = Medal.rankedMedalImageAlt(stats.soloQueueTier);
-        $scope.soloQueueWinsMedalSrc = Medal.medalImageSrc(stats.soloQueueWins, Medal.soloQueueWinsBreakpoints);
-        $scope.soloQueueWinsMedalAlt = Medal.medalImageAlt(stats.soloQueueWins, Medal.soloQueueWinsBreakpoints);
-        $scope.normalTakedownsMedalSrc = Medal.medalImageSrc(stats.normalKills + stats.normalAssists, Medal.normalTakedownsBreakpoints);
-        $scope.normalTakedownsMedalAlt = Medal.medalImageSrc(stats.normalKills + stats.normalAssists, Medal.normalTakedownsBreakpoints);
-        $scope.normalWinsMedalSrc = Medal.medalImageSrc(stats.normalWins, Medal.normalWinsBreakpoints);
-        $scope.normalWinsMedalAlt = Medal.medalImageAlt(stats.normalWins, Medal.normalWinsBreakpoints);
-        $scope.normalCreepScoreMedalSrc = Medal.medalImageSrc(stats.normalCreepScore, Medal.normalCreepScoreBreakpoints);
-        $scope.normalCreepScoreMedalAlt = Medal.medalImageAlt(stats.normalCreepScore, Medal.normalCreepScoreBreakpoints);
-        $scope.aramTakedownsMedalSrc = Medal.medalImageSrc(stats.aramKills + stats.aramAssists, Medal.aramTakedownsBreakpoints);
-        $scope.aramTakedownsMedalAlt = Medal.medalImageAlt(stats.aramKills + stats.aramAssists, Medal.aramTakedownsBreakpoints);
-        $scope.aramWinsMedalSrc = Medal.medalImageSrc(stats.aramWins, Medal.aramWinsBreakpoints);
-        $scope.aramWinsMedalAlt = Medal.medalImageAlt(stats.aramWins, Medal.aramWinsBreakpoints);
-        $scope.aramTowersMedalSrc = Medal.medalImageSrc(stats.aramTurretKills, Medal.aramTowersBreakpoints);
-        $scope.aramTowersMedalAlt = Medal.medalImageAlt(stats.aramTurretKills, Medal.aramTowersBreakpoints);
+        $scope.soloQueueRank = Medal.divisionlessTiers[stats.soloQueue.tier] ?
+          Medal.tierToPrettyTier[stats.soloQueue.tier] :
+          (Medal.tierToPrettyTier[stats.soloQueue.tier] + ' ' + stats.soloQueue.division);
+        $scope.soloQueueMedalSrc = Medal.rankedMedalImageSrc(stats.soloQueue.tier, stats.soloQueue.division);
+        $scope.soloQueueMedalAlt = Medal.rankedMedalImageAlt(stats.soloQueue.tier);
+
+        $scope.flexRank = Medal.divisionlessTiers[stats.flex.tier] ?
+          Medal.tierToPrettyTier[stats.flex.tier] :
+          (Medal.tierToPrettyTier[stats.flex.tier] + ' ' + stats.flex.division);
+        $scope.flexMedalSrc = Medal.rankedMedalImageSrc(stats.flex.tier, stats.flex.division);
+        $scope.flexMedalAlt = Medal.rankedMedalImageAlt(stats.flex.tier);
+
+        $scope.threesRank = Medal.divisionlessTiers[stats.threes.tier] ?
+          Medal.tierToPrettyTier[stats.threes.tier] :
+          (Medal.tierToPrettyTier[stats.threes.tier] + ' ' + stats.threes.division);
+        $scope.threesMedalSrc = Medal.rankedMedalImageSrc(stats.threes.tier, stats.threes.division);
+        $scope.threesMedalAlt = Medal.rankedMedalImageAlt(stats.threes.tier);
+
+        $scope.totalMasteryPoints = Medal.prettyMasteryPoints(stats.masteryPoints);
+        $scope.masteryScoreMedalSrc = Medal.medalImageSrc(stats.masteryScore, Medal.masteryScoreBreakpoints);
+        $scope.masteryScoreMedalAlt = Medal.medalImageAlt(stats.masteryScore, Medal.masteryScoreBreakpoints);
+        $scope.masteryPointsMedalSrc = Medal.medalImageSrc(stats.masteryPoints, Medal.masteryPointsBreakpoints);
+        $scope.masteryPointsMedalAlt = Medal.medalImageAlt(stats.masteryPoints, Medal.masteryPointsBreakpoints);
 
         $scope.summonerIconSrc = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/profileicon/' + stats.profileIconId + '.png';
+
+        for (var i = 0; i < stats.topChamps.length; i++) {
+          var topChamp = stats.topChamps[i];
+          topChamp.points = Medal.prettyMasteryPoints(topChamp.points);
+          topChamp.image = '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/champion/' + topChamp.image;
+        }
+        while (stats.topChamps.length < 4) {
+          stats.topChamps.push({
+            points: '0',
+            image: '//ddragon.leagueoflegends.com/cdn/' + stats.version + '/img/champion/Teemo.png',
+          });
+        }
 
         $scope.loading = false;
       }, function() {
