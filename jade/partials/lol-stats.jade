@@ -2,10 +2,8 @@
   .lol-stats-container__tabs(data-ng-init="selected = 'ranked'")
     .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'ranked' }")
       button#lol-stats-ranked-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'ranked'") Ranked
-    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'normals' }")
-      button#lol-stats-normals-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'normals'") Classic
-    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'aram' }")
-      button#lol-stats-aram-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'aram'") ARAM
+    .lol-stats-tab(data-ng-class="{ 'lol-stats-tab--selected': selected == 'mastery' }")
+      button#lol-stats-mastery-btn.lol-stats-tab__btn(tabindex='-1', data-ng-click="selected = 'mastery'") Mastery
 
   .lol-stats-container__loading(data-ng-show='loading')
     h2.lol-stats-message #[i.fa.fa-spinner.fa-spin] Loading...
@@ -22,42 +20,32 @@
 
     .lol-stats-stats(data-ng-show="selected == 'ranked'")
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueTakedownsMedalSrc }}', data-ng-alt='{{ soloQueueTakedownsMedalAlt }}')
-        .lol-stats-data-point__title: strong Takedowns
-        .lol-stats-data-point__value: strong {{ stats.soloQueueKills + stats.soloQueueAssists }}
+        img.lol-stats-data-point__medal(data-ng-src='{{ threesMedalSrc }}', data-ng-alt='{{ threesMedalAlt }}')
+        .lol-stats-data-point__title: em 3v3
+        .lol-stats-data-point__rank-title: strong {{ threesRank }} - {{ stats.threes.leaguePoints }} LP
+        .lol-stats-data-point__rank-wins: strong  {{ stats.threes.wins }} W / {{ stats.threes.losses }} L
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueRankMedalSrc }}', data-ng-alt='{{ soloQueueRankMedalAlt }}')
-        .lol-stats-data-point__title: strong {{ soloQueueRank }}
-        .lol-stats-data-point__value: strong {{ stats.soloQueueLeaguePoints }} LP
+        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueMedalSrc }}', data-ng-alt='{{ soloQueueMedalAlt }}')
+        .lol-stats-data-point__title: em Solo/Duo
+        .lol-stats-data-point__rank-title: strong {{ soloQueueRank }} - {{ stats.soloQueue.leaguePoints }} LP
+        .lol-stats-data-point__rank-wins: strong  {{ stats.soloQueue.wins }} W / {{ stats.soloQueue.losses }} L
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ soloQueueWinsMedalSrc }}', data-ng-alt='{{ soloQueueWinsMedalAlt }}')
-        .lol-stats-data-point__title: strong Wins/Losses
-        .lol-stats-data-point__value: strong {{ stats.soloQueueWins }} - {{ stats.soloQueueLosses }}
+        img.lol-stats-data-point__medal(data-ng-src='{{ flexMedalSrc }}', data-ng-alt='{{ flexMedalAlt }}')
+        .lol-stats-data-point__title: em Flex
+        .lol-stats-data-point__rank-title: strong {{ flexRank }} - {{ stats.flex.leaguePoints }} LP
+        .lol-stats-data-point__rank-wins: strong  {{ stats.flex.wins }} W / {{ stats.flex.losses }} L
 
-    .lol-stats-stats(data-ng-show="selected == 'normals'")
+    .lol-stats-stats(data-ng-show="selected == 'mastery'")
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ normalTakedownsMedalSrc }}', data-ng-alt='{{ normalTakedownsMedalAlt }}')
-        .lol-stats-data-point__title: strong Takedowns
-        .lol-stats-data-point__value: strong {{ stats.normalKills + stats.normalAssists }}
+        .lol-stats-top-champs
+          .lol-stats-top-champ(data-ng-repeat='topChamp in stats.topChamps')
+            img.lol-stats-top-champ__img(data-ng-src='{{ topChamp.image }}')
+            .lol-stats-top-champ__text #[strong {{ topChamp.points }}] pts
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ normalWinsMedalSrc }}', data-ng-alt='{{ normalWinsMedalAlt }}')
-        .lol-stats-data-point__title: strong Wins
-        .lol-stats-data-point__value: strong {{ stats.normalWins }}
+        img.lol-stats-data-point__medal(data-ng-src='{{ masteryScoreMedalSrc }}', data-ng-alt='{{ masteryScoreMedalAlt }}')
+        .lol-stats-data-point__title: strong Mastery Score
+        .lol-stats-data-point__value: strong {{ stats.masteryScore }}
       .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ normalCreepScoreMedalSrc }}', data-ng-alt='{{ normalCreepScoreMedalAlt }}')
-        .lol-stats-data-point__title: strong Creep Score
-        .lol-stats-data-point__value: strong {{ stats.normalCreepScore }}
-
-    .lol-stats-stats(data-ng-show="selected == 'aram'")
-      .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ aramTakedownsMedalSrc }}', data-ng-alt='{{ aramTakedownsMedalAlt }}')
-        .lol-stats-data-point__title: strong Takedowns
-        .lol-stats-data-point__value: strong {{ stats.aramKills + stats.aramAssists }}
-      .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ aramWinsMedalSrc }}', data-ng-alt='{{ aramWinsMedalAlt }}')
-        .lol-stats-data-point__title: strong Wins
-        .lol-stats-data-point__value: strong {{ stats.aramWins }}
-      .lol-stats-data-point
-        img.lol-stats-data-point__medal(data-ng-src='{{ aramTowersMedalSrc }}', data-ng-alt='{{ aramTowersMedalAlt }}')
-        .lol-stats-data-point__title: strong Towers Destroyed
-        .lol-stats-data-point__value: strong {{ stats.aramTurretKills }}
+        img.lol-stats-data-point__medal(data-ng-src='{{ masteryPointsMedalSrc }}', data-ng-alt='{{ masteryPointsMedalAlt }}')
+        .lol-stats-data-point__title: strong Total Mastery Points
+        .lol-stats-data-point__value: strong {{ totalMasteryPoints }}

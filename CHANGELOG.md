@@ -1,4 +1,8 @@
 # Changelog
+## v2.3.1
+- Updated LoL API to use new Riot APIs
+- LoL stats shows champion mastery but no aggregated normal stats now
+
 ## v2.3.0
 - Changed favicon to be some Jace pixel art
 - Updated term number and program

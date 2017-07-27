@@ -37,6 +37,9 @@
 @lol-stats-button-font-size: 20px;
 @lol-stats-title-font-size: 16px;
 @lol-stats-value-font-size: 20px;
+@lol-stats-rank-title-font-size: 20px;
+@lol-stats-rank-wins-font-size: 16px;
+@lol-stats-top-champ-font-size: 16px;
 @lol-stats-bg-colour: @dark-theme-colour;
 @lol-stats-bg-colour-inactive: @medium-theme-colour;
 @lol-stats-bg-colour-selected: @light-theme-colour;
@@ -522,6 +525,7 @@ hr {
 .lol-stats-data-point {
   flex: 1;
   text-align: center;
+  margin-bottom: 5px;
 }
 
 .lol-stats-data-point__medal {
@@ -534,6 +538,52 @@ hr {
 
 .lol-stats-data-point__value {
   font-size: @lol-stats-value-font-size;
+  padding-bottom: @lol-stats-rank-wins-font-size + 6px;
+}
+
+.lol-stats-data-point__rank-title {
+  font-size: @lol-stats-rank-title-font-size;
+
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-rank-title-font-size * 0.75;
+  }
+}
+
+.lol-stats-data-point__rank-wins {
+  font-size: @lol-stats-rank-wins-font-size;
+
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-rank-wins-font-size * 0.75;
+  }
+}
+
+.lol-stats-top-champs {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.lol-stats-top-champ {
+  float: left;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.lol-stats-top-champ__img {
+  padding: 2.5px;
+  background-color: @white-font-colour;
+  width: 50%;
+}
+
+.lol-stats-top-champ__text {
+  font-size: @lol-stats-top-champ-font-size;
+
+  @media(max-width: @xs-max-width) {
+    font-size: @lol-stats-top-champ-font-size * 0.75;
+  }
 }
 
 .lol-stats-container__loading,
