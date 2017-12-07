@@ -1,4 +1,7 @@
 # Changelog
+## v2.3.2
+- Updated resume post Facebook internship
+
 ## v2.3.1
 - Updated LoL API to use new Riot APIs
 - LoL stats shows champion mastery but no aggregated normal stats now
