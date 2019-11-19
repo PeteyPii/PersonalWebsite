@@ -24,7 +24,7 @@
     "jshint": "2.9.4",
     "lodash": "4.17.4",
     "merge-stream": "1.0.1",
-    "open": "0.0.5",
+    "open": "7.0.0",
     "q": "1.4.1",
     "request": "2.81.0",
     "serve-favicon": "2.4.1"
