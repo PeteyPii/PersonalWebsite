@@ -22,7 +22,7 @@
     "gulp-uglify": "2.1.0",
     "gulp-watch": "4.3.11",
     "jshint": "2.9.4",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "merge-stream": "1.0.1",
     "open": "0.0.5",
     "q": "1.4.1",
